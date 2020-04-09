@@ -1,0 +1,32 @@
+PENDIENTES:
+
+- Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
+- Buscar imagenes para identificar a:
+  --> "8 bit galaga martian": Enemigos
+  --> "8 bit cannon": Jugador
+  --> "bullet": Bala disparada
+  --> "explosion": Enemigo destruído
+  --> "skull": Jugador eliminado (se restaría una vida)
+- Elegir el background color que tendrá el juego.
+- Hacer css animations para el movimiento de los enemigos dentro de su casilla, y para animar la bala subiendo
+  en cada casilla, por niveles (x3), a medida que se desplaza. La bala no sería del alto de la casilla.
+- Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
+- Se debe mover el jugador con las flechas, y disparar con barra espaciadora.
+- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
+- Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
+  en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
+  de nivel.
+- Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
+  y horizontalmente.
+- Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
+  juego.
+- Se podría incluir un botón que permita cambiar el avatar del jugador: Cañón, ovni, Milennium Falcon, etc.
+- Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
+  silenciar la música.
+- Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
+- Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
+
+YA HECHAS:
+- Definir el número de columnas (20?) que tendrá el board grid. El player platform tendrá el mismo número 
+  de columnas.
+- Crear una separación visual entre casillas, para poder diferenciarlas.
