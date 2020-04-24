@@ -2,16 +2,26 @@ PENDIENTES:
 
 - Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
 - Buscar imagenes para identificar a:
-  --> "8 bit galaga martian": Enemigos
-  --> "8 bit cannon": Jugador
+*  --> "8 bit galaga martian": Enemigos
+*  --> "8 bit cannon": Jugador
   --> "bullet": Bala disparada
   --> "explosion": Enemigo destruído
   --> "skull": Jugador eliminado (se restaría una vida)
+*  --> "logo": Logo de Galaga retro (NES)
 - Elegir el background color que tendrá el juego.
 - Hacer css animations para el movimiento de los enemigos dentro de su casilla, y para animar la bala subiendo
   en cada casilla, por niveles (x3), a medida que se desplaza. La bala no sería del alto de la casilla.
 - Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
-- Se debe mover el jugador con las flechas, y disparar con barra espaciadora.
+- Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
+  dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
+  mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
+- El estado global también debe contener un array (matríz?) por cada fila de enemigos, con valores que indiquen si en
+  cada casilla hay o no un enemigo, qué tipo de enemigo es, cuántos impactos ha recibido y cuántos faltan por darle
+  antes de poder destruirlo, etc. Se supone que deben haber enemigos más difíciles; no todos se deben poder destruir
+  sólo con un tiro.
+- Se podrían luego incluir obstáculos que haya que destruir primero con balas, y que se vayan desintegrando por
+  niveles, para después de destruirlos poder impactar los enemigos que hay detrás. Los enemigos deberían poder saber
+  si mientras avanzan encuentran un obstáculo, y rodearlo, antes de seguir avanzando hacia abajo.
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
@@ -23,10 +33,19 @@ PENDIENTES:
 - Se podría incluir un botón que permita cambiar el avatar del jugador: Cañón, ovni, Milennium Falcon, etc.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
   silenciar la música.
+- Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
+  pérdida de una vida, comienzo de un nuevo nivel.
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 
 YA HECHAS:
 - Definir el número de columnas (20?) que tendrá el board grid. El player platform tendrá el mismo número 
   de columnas.
-- Crear una separación visual entre casillas, para poder diferenciarlas.
+- Crear una separación visual entre casillas, para poder diferenciarlas durante el desarrollo. En la versión final
+  se debe retirar, al igual que los bordes punteados.
+- Se debe mover el jugador con las flechas, y disparar con barra espaciadora.
+
+PREGUNTAS:
+- Cómo se enlazan propiedades css a una imagen insertada en un componente en React? Que tome las propiedades definidas
+  en un archivo css aparte, sólo con incluirle el atributo className? Sólo lo he podido hacer con inline styling o
+  creando un objeto con las propiedades css, al final del código del componente donde va la imagen.

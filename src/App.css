@@ -11,8 +11,8 @@ body {
 .status-bar-container {
   display: grid;
   grid-template-areas:
-    'SB-left SB-middle SB-middle SB-right'
-    'SB-left SB-middle SB-middle SB-right';
+    'SB-left SB-left SB-middle SB-middle SB-right SB-right'
+    'SB-left SB-left SB-middle SB-middle SB-right SB-right';
   grid-gap: 5px;
   
   width: 80%;
@@ -28,11 +28,12 @@ body {
   grid-area: SB-left; 
   background-color: rgb(214, 214, 97);
   border: 3px solid;
+  padding-top: 15px;
 }
 
 .status-bar-middle { 
   grid-area: SB-middle;   
-  background-color: rgb(214, 214, 97);
+  background-color: #b7b6c7;
   border: 3px solid;
   padding-top: 15px;
   padding-bottom: 15px;
@@ -43,7 +44,8 @@ body {
 .status-bar-right { 
   grid-area: SB-right;  
   background-color: rgb(214, 214, 97);
-  border: 3px solid ;
+  border: 3px solid;
+  padding-top: 15px;
 }
 
 .player-platform-container {
@@ -53,7 +55,7 @@ body {
   auto auto auto auto
   auto auto auto auto
   auto auto auto auto
-  auto auto auto auto;
+  auto auto auto;           /* 19 columnas */
   grid-gap: 1px;
   
   width: 80%;
@@ -70,6 +72,7 @@ body {
   background-color: rgb(92, 194, 146);
   border: 1px solid;
   font-size: 10px;
+  min-width: 35px;
 }
 
 .enemy-grid-container {
@@ -79,7 +82,7 @@ body {
   auto auto auto auto
   auto auto auto auto
   auto auto auto auto
-  auto auto auto auto;
+  auto auto auto;           /* 19 columnas */
   grid-gap: 1px;
   
   width: 80%;
@@ -95,4 +98,11 @@ body {
   background-color: rgb(226, 110, 57);
   border: 1px solid;
   font-size: 10px;
+  min-width: 35px;
 }
+
+/* .logo {
+  max-height: '80px';
+  width: 'auto',;
+  padding: '5px';
+} */

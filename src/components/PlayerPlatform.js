@@ -1,30 +1,36 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react'
+import ship from '../assets/images/spaceShip.png'
+
+import { GlobalContext } from '../context/GalagaState'
 
 const PlayerPlatform = () => {
+  const { playerPos, initializePlayerPos } = useContext(GlobalContext)
+
+  // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar nave del jugador
+  useEffect(() => {
+    initializePlayerPos(playerPos)
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <Fragment>
-      <div className='player'>Player 1</div>
-      <div className='player'>Player 2</div>
-      <div className='player'>Player 3</div>
-      <div className='player'>Player 4</div>
-      <div className='player'>Player 5</div>
-      <div className='player'>Player 6</div>
-      <div className='player'>Player 7</div>
-      <div className='player'>Player 8</div>
-      <div className='player'>Player 9</div>
-      <div className='player'>Player 10</div>
-      <div className='player'>Player 11</div>
-      <div className='player'>Player 12</div>
-      <div className='player'>Player 13</div>
-      <div className='player'>Player 14</div>
-      <div className='player'>Player 15</div>
-      <div className='player'>Player 16</div>
-      <div className='player'>Player 17</div>
-      <div className='player'>Player 18</div>
-      <div className='player'>Player 19</div>
-      <div className='player'>Player 20</div>
+      {playerPos.map(pos => <div className='player' key={Math.floor(Math.random() * 100000000 )}>
+                              {pos === 1 ? <img src={ship} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
+                              <br />
+                              {pos}
+                            </div>
+                    )}
     </Fragment>
-  );
-};
+  )
+}
 
-export default PlayerPlatform;
+// Estilos para la imagen de la nave del jugador
+const spaceShipStyle = {
+  // maxHeight: '30px',
+  maxWidth: '33px',
+  height: '30px',
+  backgroundColor: 'transparent',   // REVISAR CÓMO SE PONE FONDO TRANSPARENTE A UNA IMAGEN PNG...
+  paddingTop: '8px',
+}
+
+export default PlayerPlatform

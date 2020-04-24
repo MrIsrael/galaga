@@ -1,45 +1,27 @@
-import React, { Fragment } from 'react';
-import StatusBar from './components/StatusBar';
-import EnemyGrid from './components/EnemyGrid';
-import PlayerPlatform from './components/PlayerPlatform';
+import React from 'react'
+import StatusBar from './components/StatusBar'
+import EnemyGrid from './components/EnemyGrid'
+import PlayerPlatform from './components/PlayerPlatform'
 
-import './App.css';
+import { GlobalProvider } from "./context/GalagaState"
+
+import './App.css'
 
 const App = () => {
   return (
-    <Fragment>
+    <GlobalProvider>
       <div className='status-bar-container'>
         <StatusBar />
       </div>
       <div className='enemy-grid-container'>
         <EnemyGrid />
         <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
-        <EnemyGrid />
       </div>
       <div className='player-platform-container'>
         <PlayerPlatform />
       </div>
-    </Fragment>
-  );
-};
+    </GlobalProvider>
+  )
+}
 
-export default App;
+export default App

@@ -1,30 +1,31 @@
-import React, { Fragment } from 'react';
+import React, { Fragment } from 'react'
+import enemy from '../assets/images/enemy.png'
+
+let enemyPos = new Array(19)
+
+for (let i=0; i<19; i++) {
+  enemyPos[i] = i + 1
+}
 
 const EnemyGrid = () => {
   return (
     <Fragment>
-      <div className='enemy'>Enemy 1</div>
-      <div className='enemy'>Enemy 2</div>
-      <div className='enemy'>Enemy 3</div>
-      <div className='enemy'>Enemy 4</div>
-      <div className='enemy'>Enemy 5</div>
-      <div className='enemy'>Enemy 6</div>
-      <div className='enemy'>Enemy 7</div>
-      <div className='enemy'>Enemy 8</div>
-      <div className='enemy'>Enemy 9</div>
-      <div className='enemy'>Enemy 10</div>
-      <div className='enemy'>Enemy 11</div>
-      <div className='enemy'>Enemy 12</div>
-      <div className='enemy'>Enemy 13</div>
-      <div className='enemy'>Enemy 14</div>
-      <div className='enemy'>Enemy 15</div>
-      <div className='enemy'>Enemy 16</div>
-      <div className='enemy'>Enemy 17</div>
-      <div className='enemy'>Enemy 18</div>
-      <div className='enemy'>Enemy 19</div>
-      <div className='enemy'>Enemy 20</div>
+      {enemyPos.map(pos => <div className='enemy' key={pos}>
+                              <img src={enemy} alt='space-ship' style={enemyShipStyle} />
+                              <br />
+                              {pos}
+                            </div>
+                    )}
     </Fragment>
-  );
-};
+  )
+}
 
-export default EnemyGrid;
+// Estilos para la imagen del enemigo
+const enemyShipStyle = {
+  // maxHeight: '30px',
+  maxWidth: '33px',
+  backgroundColor: 'transparent',   // REVISAR CÓMO SE PONE FONDO TRANSPARENTE A UNA IMAGEN PNG...
+  paddingTop: '8px',
+}
+
+export default EnemyGrid
