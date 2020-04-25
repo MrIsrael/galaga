@@ -18,17 +18,23 @@ export default (state, action) => {
     case 'INITIALIZE_PLAYER_ARRAY':
       return {
         ...state,
-        playerPos: action.payload
+        playerInfo: action.payload
+      }
+    case 'UPDATE_ENEMY_ARRAY':
+      return {
+        ...state,
+        enemyInfo: action.payload,
+        enemiesLeft: action.size
       }
     case 'FIRE_BUTTON_PRESSED':
       return {
         ...state,
-        killed: action.payload
+        firedBullets: action.payload
       }
     case 'MOVE_PLAYER':
       return {
         ...state,
-        playerPos: action.payload
+        playerInfo: action.payload
       }
     default:
       return state

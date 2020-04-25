@@ -15,7 +15,6 @@ const App = () => {
       </div>
       <div className='enemy-grid-container'>
         <EnemyGrid />
-        <EnemyGrid />
       </div>
       <div className='player-platform-container'>
         <PlayerPlatform />

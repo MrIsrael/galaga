@@ -1,31 +1,43 @@
-import React, { Fragment } from 'react'
-import enemy from '../assets/images/enemy.png'
+import React, { Fragment, useContext, useEffect } from 'react'
+import soldier from '../assets/images/enemy.png'
+import boss from '../assets/images/boss.jpeg'
 
-let enemyPos = new Array(19)
-
-for (let i=0; i<19; i++) {
-  enemyPos[i] = i + 1
-}
+import { GlobalContext } from '../context/GalagaState'
 
 const EnemyGrid = () => {
+  const { enemyInfo, initializeEnemyFormation } = useContext(GlobalContext)
+
+  // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
+  useEffect(() => {
+    initializeEnemyFormation(enemyInfo)
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <Fragment>
-      {enemyPos.map(pos => <div className='enemy' key={pos}>
-                              <img src={enemy} alt='space-ship' style={enemyShipStyle} />
-                              <br />
-                              {pos}
-                            </div>
+      {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
+                                {!alien.enemyHere && <div style={emptyAlienStyle}></div>}
+                                {alien.enemyHere && alien.type === 'soldier' && <img src={soldier} alt='alien-ship' style={alienStyle} />}
+                                {alien.enemyHere && alien.type === 'boss' && <img src={boss} alt='alien-ship' style={alienStyle} />}
+                                {alien.position}
+                              </div>
                     )}
     </Fragment>
   )
 }
 
 // Estilos para la imagen del enemigo
-const enemyShipStyle = {
-  // maxHeight: '30px',
+const alienStyle = {
   maxWidth: '33px',
-  backgroundColor: 'transparent',   // REVISAR CÓMO SE PONE FONDO TRANSPARENTE A UNA IMAGEN PNG...
-  paddingTop: '8px',
+  minHeight: '35px',
+  paddingTop: '2px',
+}
+
+const emptyAlienStyle = {
+  maxWidth: '33px',
+  minHeight: '35px',
+  paddingTop: '2px',
+  backgroundColor: '#ccc',
 }
 
 export default EnemyGrid

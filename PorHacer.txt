@@ -1,5 +1,4 @@
 PENDIENTES:
-
 - Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
 - Buscar imagenes para identificar a:
 *  --> "8 bit galaga martian": Enemigos
@@ -36,10 +35,11 @@ PENDIENTES:
 - Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
   pérdida de una vida, comienzo de un nuevo nivel.
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
+- Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 
 YA HECHAS:
-- Definir el número de columnas (20?) que tendrá el board grid. El player platform tendrá el mismo número 
+- Definir el número de columnas (19) que tendrá el board grid. El player platform tendrá el mismo número 
   de columnas.
 - Crear una separación visual entre casillas, para poder diferenciarlas durante el desarrollo. En la versión final
   se debe retirar, al igual que los bordes punteados.
@@ -49,3 +49,9 @@ PREGUNTAS:
 - Cómo se enlazan propiedades css a una imagen insertada en un componente en React? Que tome las propiedades definidas
   en un archivo css aparte, sólo con incluirle el atributo className? Sólo lo he podido hacer con inline styling o
   creando un objeto con las propiedades css, al final del código del componente donde va la imagen.
+- Cómo lograr que una imagen se muestre con fondo transparente? Debe ser .png?
+- Cómo fijar el ancho de ima grid-template-area en css? Si algo dentro de ella cambia de ancho (como la longitud de un
+  texto), el área cambia también su ancho proporcionalmente (el container si conserva el ancho fijo total).
+- Cuál es la mejor manera de ordenar los archivos de la aplicación? Cómo se configura adecuadamente un Context Provider
+  en conjunto con un índice de Reducers, para poder tener Context, Actions y Reducers en achivos separados? Cuál es el
+  patrón de diseño ideal en este caso?
