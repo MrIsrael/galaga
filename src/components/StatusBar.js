@@ -1,11 +1,11 @@
 import React, { Fragment, useContext } from 'react'
-import logo from '../assets/images/logo.png'
+import logo from '../assets/images/logo3.jpeg'
 
 import { GlobalContext } from '../context/GalagaState'
 
 // Si aquí se engloba todo el JSX en un tag diferente de <Fragment> (p.ej. <div>), el css grid se daña!
 const StatusBar = () => {
-  const { playerInfo, killed, resumeButtonText, pressedKeyCode, startGame, pauseGame, keyCode,
+  const { pausedGame, playerInfo, killed, resumeButtonText, pressedKeyCode, startGame, pauseGame, keyCode,
           enemiesLeft, firedBullets, level, speed, lives } = useContext(GlobalContext)
 
   return (
@@ -17,12 +17,13 @@ const StatusBar = () => {
         <h4>Pressed key: {pressedKeyCode}</h4>
       </div>
       <div className='status-bar-middle'>
-        <img src={logo} alt='game-logo' style={logoStyle}/>
+        {pausedGame && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+        {!pausedGame && <img src={logo} alt='game-logo' style={logoStyle}/>}
         <br />
-        <input type='text' readOnly size='23' value={resumeButtonText} style={buttonStyle} 
-              onKeyDown={(event) => keyCode(event, firedBullets, playerInfo)}
-              onFocus={() => startGame()}
-              onBlur={() => pauseGame()}
+        <input type='text' readOnly size='35' value={resumeButtonText} style={buttonStyle} 
+              onKeyDown={(event) => keyCode(event, firedBullets, playerInfo, pausedGame)}
+              onFocus={() => startGame('Press Enter or click outside to pause')}
+              onBlur={() => pauseGame('Press Tab or click here to resume')}
         />
       </div>
       <div className='status-bar-right'>
@@ -42,13 +43,25 @@ const logoStyle = {
   padding: '0px',
 }
 
-// Estilos para el textfield de incio / pausa del juego
+const messageStyle = {
+  margin: 'auto',
+  height: '75px',
+  border: '3px dotted',
+  maxWidth: '170px',
+  padding: '5px',
+}
+
+const textStyle = {
+  paddingTop: '10px',
+}
+
+// Estilos para el textfield de inicio / pausa del juego
 const buttonStyle = {
   fontSize: '12px',
   textAlign: 'center',
   color: 'white',
   backgroundColor: 'purple',
-  marginTop: '4px',
+  marginTop: '3px',
   padding: '10px',
 }
 

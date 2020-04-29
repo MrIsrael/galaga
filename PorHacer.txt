@@ -1,5 +1,4 @@
-PENDIENTES:
-- Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
+PENDIENTES FASE 1:
 - Buscar imagenes para identificar a:
 *  --> "8 bit galaga martian": Enemigos
 *  --> "8 bit cannon": Jugador
@@ -8,9 +7,9 @@ PENDIENTES:
   --> "skull": Jugador eliminado (se restaría una vida)
 *  --> "logo": Logo de Galaga retro (NES)
 - Elegir el background color que tendrá el juego.
-- Hacer css animations para el movimiento de los enemigos dentro de su casilla, y para animar la bala subiendo
-  en cada casilla, por niveles (x3), a medida que se desplaza. La bala no sería del alto de la casilla.
 - Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
+- Hacer css animations para el movimiento de la bala subiendo en cada casilla, por niveles (x3), a medida que se desplaza. 
+  La bala no sería del alto de la casilla.
 - Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
   dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
   mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
@@ -18,10 +17,12 @@ PENDIENTES:
   cada casilla hay o no un enemigo, qué tipo de enemigo es, cuántos impactos ha recibido y cuántos faltan por darle
   antes de poder destruirlo, etc. Se supone que deben haber enemigos más difíciles; no todos se deben poder destruir
   sólo con un tiro.
-- Se podrían luego incluir obstáculos que haya que destruir primero con balas, y que se vayan desintegrando por
-  niveles, para después de destruirlos poder impactar los enemigos que hay detrás. Los enemigos deberían poder saber
-  si mientras avanzan encuentran un obstáculo, y rodearlo, antes de seguir avanzando hacia abajo.
-- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
+- Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
+  pasar de nivel, etc.
+
+PENDIENTES FASE 2:
+- Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
+  se restaría una de las navecitas.
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
   de nivel.
@@ -29,11 +30,19 @@ PENDIENTES:
   y horizontalmente.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
+
+PENDIENTES FASE 3:
+- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
+- Se podrían luego incluir obstáculos que haya que destruir primero con balas, y que se vayan desintegrando por
+  niveles, para después de destruirlos poder impactar los enemigos que hay detrás. Los enemigos deberían poder saber
+  si mientras avanzan encuentran un obstáculo, y rodearlo, antes de seguir avanzando hacia abajo.
 - Se podría incluir un botón que permita cambiar el avatar del jugador: Cañón, ovni, Milennium Falcon, etc.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
   silenciar la música.
 - Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
   pérdida de una vida, comienzo de un nuevo nivel.
+
+PENDIENTES FASE 4:
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
 - Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
@@ -44,14 +53,29 @@ YA HECHAS:
 - Crear una separación visual entre casillas, para poder diferenciarlas durante el desarrollo. En la versión final
   se debe retirar, al igual que los bordes punteados.
 - Se debe mover el jugador con las flechas, y disparar con barra espaciadora.
+- Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
+- Si pausedGame = true, todo se debería detener, debería aparecer un letrero que diga "paused" y debería sólo poder
+  reiniciarse si se presiona Enter.
+  La única manera de que el juego inicie es que input.onFocus se dispare, dando clic dentro de él, y poder capturar
+  los códigos de las teclas del teclado presionadas.
+  El juego se puede pausar si input.onBlur se dispara, si se presiona Tab o Enter. Enter también sale del modo pausa.
+  Debería aparecer el aviso correcto para reiniciar el juego, dependiendo de qué lo pausó:
+  --> Si fue input.onBlur: "Clic en el botón púrpura para volver al juego"
+  --> Si fue Tab: "Clic en el botón púrpura para volver al juego"
+  --> Si fue Enter: "Presione Enter para volver al juego"
+- Hacer css animations para el movimiento de los enemigos dentro de su casilla.
+
 
 PREGUNTAS:
 - Cómo se enlazan propiedades css a una imagen insertada en un componente en React? Que tome las propiedades definidas
   en un archivo css aparte, sólo con incluirle el atributo className? Sólo lo he podido hacer con inline styling o
   creando un objeto con las propiedades css, al final del código del componente donde va la imagen.
 - Cómo lograr que una imagen se muestre con fondo transparente? Debe ser .png?
-- Cómo fijar el ancho de ima grid-template-area en css? Si algo dentro de ella cambia de ancho (como la longitud de un
+- Cómo fijar el ancho de una grid-template-area en css? Si algo dentro de ella cambia de ancho (como la longitud de un
   texto), el área cambia también su ancho proporcionalmente (el container si conserva el ancho fijo total).
+- Dónde poner un addEventListener() que permita ejecutar una función dependiendo de una tecla del teclado presionada, en
+  cualquier momento? En index.js? Solo he podido hacerlo leyendo el evento KeyDown.event.keyCode, cuando un input tiene
+  activada su propiedad onFocus, y el teclado puede leerse (solo en ese caso, una tecla presionada genera un evento).
 - Cuál es la mejor manera de ordenar los archivos de la aplicación? Cómo se configura adecuadamente un Context Provider
   en conjunto con un índice de Reducers, para poder tener Context, Actions y Reducers en achivos separados? Cuál es el
   patrón de diseño ideal en este caso?

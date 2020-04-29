@@ -5,7 +5,7 @@ import boss from '../assets/images/boss.jpeg'
 import { GlobalContext } from '../context/GalagaState'
 
 const EnemyGrid = () => {
-  const { enemyInfo, initializeEnemyFormation } = useContext(GlobalContext)
+  const { pausedGame, enemyInfo, initializeEnemyFormation } = useContext(GlobalContext)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
   useEffect(() => {
@@ -17,9 +17,12 @@ const EnemyGrid = () => {
     <Fragment>
       {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
                                 {!alien.enemyHere && <div style={emptyAlienStyle}></div>}
-                                {alien.enemyHere && alien.type === 'soldier' && <img src={soldier} alt='alien-ship' style={alienStyle} />}
-                                {alien.enemyHere && alien.type === 'boss' && <img src={boss} alt='alien-ship' style={alienStyle} />}
+                                {alien.enemyHere && alien.type === 'soldier' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
+                                    <img src={soldier} alt='alien-ship' style={alienStyle} /></div>}
+                                {alien.enemyHere && alien.type === 'boss' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
+                                    <img src={boss} alt='alien-ship' style={alienStyle} /></div>}
                                 {alien.position}
+                                {/* alien.position */}
                               </div>
                     )}
     </Fragment>
@@ -30,10 +33,11 @@ const EnemyGrid = () => {
 const alienStyle = {
   maxWidth: '33px',
   minHeight: '35px',
-  paddingTop: '2px',
+  padding: '1px',
 }
 
 const emptyAlienStyle = {
+  margin: 'auto',
   maxWidth: '33px',
   minHeight: '35px',
   paddingTop: '2px',

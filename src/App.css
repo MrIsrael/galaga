@@ -18,7 +18,7 @@ body {
   
   width: 80%;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 10px;
   border: dotted 3px #333;
   padding: 5px;
   border-radius: 15px;
@@ -62,8 +62,8 @@ body {
   
   width: 80%;
   margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 2px;
+  margin-bottom: 25px;
   border: dotted 3px #333;
   padding: 5px;
   border-radius: 15px;
@@ -74,7 +74,7 @@ body {
   background-color: rgb(246, 246, 246);
   border: 1px solid;
  /* font-size: 10px; */
-  min-width: 35px;
+  min-width: 50px;
 }
 
 .enemy-grid-container {
@@ -89,7 +89,7 @@ body {
   
   width: 80%;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 10px;
   border: dotted 3px #333;
   padding: 5px;
   border-radius: 15px;
@@ -100,7 +100,58 @@ body {
   background-color: rgb(226, 110, 57);
   border: 1px solid;
   font-size: 10px; 
-  min-width: 35px;
+  min-width: 50px;
+/*  animation: enemymove 2s infinite alternate;
+  animation-timing-function: ease-in-out; */
+}
+
+#enemydiv-paused {
+  margin: auto;
+  width: 35px;
+  height: 37px;
+  border: 1px solid;
+}
+
+#enemydiv {
+  margin-inline-end: auto;
+  width: 35px;
+  height: 37px;
+  border: 1px solid;
+  position: relative;
+  animation: enemymove 2s infinite alternate;
+  animation-timing-function: ease-in-out;
+}
+
+/* Medium devices (laptops/desktops, 1270px and down) */
+@media only screen and (max-width: 1280px) {
+  @keyframes enemymove {
+    from {left: 0px;}
+    to {left: 15px;}
+  }
+}
+
+/* Large devices (large laptops and desktops, 1280px and up) */
+@media only screen and (min-width: 1280px) {
+  @keyframes enemymove {
+    from {left: 0px;}
+    to {left: 20px;}
+  }
+}
+
+/* Large devices (large laptops and desktops, 1500px and up) */
+@media only screen and (min-width: 1500px) {
+  @keyframes enemymove {
+    from {left: 0px;}
+    to {left: 30px;}
+  }
+}
+
+/* Extra large devices (extra-large laptops and desktops, 1700px and up) */
+@media only screen and (min-width: 1700px) {
+  @keyframes enemymove {
+    from {left: 0px;}
+    to {left: 39px;}
+  }
 }
 
 /* .logo {

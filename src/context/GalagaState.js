@@ -3,13 +3,14 @@ import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
 const initialState = {
-  playerInfo: [],
-  enemyInfo: [],
-  resumeButtonText: 'Click here to play',
-  pressedKeyCode: 0,
+pausedGame: true,
+playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false) }
+enemyInfo: [],                            // enemyArray[i] = { id, enemyHere, position, type ('soldier', 'boss'...), remainingShots }
+resumeButtonText: 'Click here or press Tab to play',
+pressedKeyCode: 0,
   killed: 0,
-  enemiesLeft: 190,
-  firedBullets: 0,
+enemiesLeft: 190,
+firedBullets: 0,
   level: 1,
   speed: 1,
   lives: 5,
@@ -23,41 +24,53 @@ export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GalagaReducer, initialState);
 
   // Actions
-  function startGame() {
+  function startGame(text) {
     dispatch({
       type: 'START_GAME',
-      payload: 'Click outside to pause',
+      payload: text,
     })
   }
 
-  function pauseGame() {
+  function pauseGame(text) {
     dispatch({
       type: 'PAUSE_GAME',
-      payload: 'Click here to resume',
+      payload: text,
     })
   }
 
-  // Códigos de teclas: Barra espaciadora: 32, Flecha izquierda: 37, Flecha derecha: 39, ESC: 27
-  function keyCode(event, firedBullets, playerArray) {
+  // Códigos de teclas: Barra espaciadora: 32, Flecha izquierda: 37, Flecha derecha: 39, ESC: 27, Enter: 13, Tab: 9
+  function keyCode(event, firedBullets, playerArray, pausedGame) {
     switch (event.keyCode) {
-      case 32:
-        fire(firedBullets + 1)
-        break
-      case 37:  // Mover jugador a la izquierda
-        const dummy1 = playerArray.findIndex(pos => pos.playerHere)
-        if (dummy1 !== 0) {
-          playerArray[dummy1].playerHere = false
-          playerArray[dummy1 - 1].playerHere = true
-          movePlayer(playerArray)
+      case 32:    // Disparar cañón
+        if(!pausedGame){
+          fire(firedBullets + 1)
         }
         break
-      case 39:  // Mover jugador a la derecha
-        const dummy2 = playerArray.findIndex(pos => pos.playerHere)
-        if (dummy2 !== 18) {
-          playerArray[dummy2].playerHere = false
-          playerArray[dummy2 + 1].playerHere = true
-          movePlayer(playerArray)
+      case 37:    // Mover jugador a la izquierda
+        if(!pausedGame){
+          const dummy1 = playerArray.findIndex(pos => pos.playerHere)
+          if (dummy1 !== 0) {
+            playerArray[dummy1].playerHere = false
+            playerArray[dummy1 - 1].playerHere = true
+            movePlayer(playerArray)
+          }
         }
+        break
+      case 39:    // Mover jugador a la derecha
+        if(!pausedGame){
+          const dummy2 = playerArray.findIndex(pos => pos.playerHere)
+          if (dummy2 !== 18) {
+            playerArray[dummy2].playerHere = false
+            playerArray[dummy2 + 1].playerHere = true
+            movePlayer(playerArray)
+          }
+        }
+        break
+      case 9:     // Tecla Tab presionada: Pausar el juego
+        pauseGame('Press Tab or click here to resume')
+        break
+      case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
+        pausedGame ? startGame('Press Enter or click outside to pause') : pauseGame('Press Enter to resume')
         break
       default: break
     }
@@ -102,7 +115,7 @@ export const GlobalProvider = ({ children }) => {
         remainingShots: i < (state.enemiesLeft / 2) ? 1 : 0,
       }
     }
-    updateEnemyFormation(enemyArray, [9,10,11,1,4,19,57,56,55,39,40,41])
+    updateEnemyFormation(enemyArray, [20,39,40,58,38,56,57,76])
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
       payload: enemyArray,
@@ -126,6 +139,7 @@ export const GlobalProvider = ({ children }) => {
   }
 
   return (<GlobalContext.Provider value={{
+    pausedGame: state.pausedGame,
     playerInfo: state.playerInfo,
     enemyInfo: state.enemyInfo,
     killed: state.killed,

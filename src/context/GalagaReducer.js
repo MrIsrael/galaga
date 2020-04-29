@@ -3,12 +3,14 @@ export default (state, action) => {
     case 'START_GAME':
       return {
          ...state,
-        resumeButtonText: action.payload
+        resumeButtonText: action.payload,
+        pausedGame: false
       }
     case 'PAUSE_GAME':
       return {
         ...state,
-        resumeButtonText: action.payload
+        resumeButtonText: action.payload,
+        pausedGame: true
       }
     case 'SHOW_KEY_CODE':
       return {
@@ -16,6 +18,11 @@ export default (state, action) => {
         pressedKeyCode: action.payload
       }
     case 'INITIALIZE_PLAYER_ARRAY':
+      return {
+        ...state,
+        playerInfo: action.payload
+      }
+    case 'MOVE_PLAYER':
       return {
         ...state,
         playerInfo: action.payload
@@ -30,11 +37,6 @@ export default (state, action) => {
       return {
         ...state,
         firedBullets: action.payload
-      }
-    case 'MOVE_PLAYER':
-      return {
-        ...state,
-        playerInfo: action.payload
       }
     default:
       return state
