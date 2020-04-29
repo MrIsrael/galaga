@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import ship from '../assets/images/spaceShip.png'
+import ship from '../assets/images/spaceShip.gif'
+import skull from '../assets/images/skull.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 

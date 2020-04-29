@@ -101,8 +101,6 @@ body {
   border: 1px solid;
   font-size: 10px; 
   min-width: 50px;
-/*  animation: enemymove 2s infinite alternate;
-  animation-timing-function: ease-in-out; */
 }
 
 #enemydiv-paused {

@@ -3,17 +3,17 @@ import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
 const initialState = {
-pausedGame: true,
-playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false) }
-enemyInfo: [],                            // enemyArray[i] = { id, enemyHere, position, type ('soldier', 'boss'...), remainingShots }
-resumeButtonText: 'Click here or press Tab to play',
-pressedKeyCode: 0,
-  killed: 0,
-enemiesLeft: 190,
-firedBullets: 0,
-  level: 1,
-  speed: 1,
-  lives: 5,
+  pausedGame: true,
+  playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false) }
+  enemyInfo: [],                            // enemyArray[i] = { id, enemyHere, position, type ('soldier', 'boss'...), remainingShots }
+  resumeButtonText: 'Click here or press Tab to play',
+  pressedKeyCode: 0,
+killed: 0,
+  enemiesLeft: 190,
+  firedBullets: 0,
+level: 1,
+speed: 1,
+lives: 5,
 }
 
 // Create Context
@@ -106,13 +106,21 @@ export const GlobalProvider = ({ children }) => {
   }
 
   function initializeEnemyFormation(enemyArray) {
-    for (let i=0; i < state.enemiesLeft; i++) {
+    for (let i=0; i < 190; i++) {
       enemyArray[i] = {
         id: i,
-        enemyHere: i < (state.enemiesLeft / 2) ? true : false,
+        enemyHere: i < (190 / 2) ? true : false,
         position: i+1,
-        type: i < (state.enemiesLeft / 2) ? 'soldier' : '',
-        remainingShots: i < (state.enemiesLeft / 2) ? 1 : 0,
+        type: i < (190 / 2) ? 'soldier' : '',
+        remainingShots: i < (190 / 2) ? 1 : 0,
+      }
+    }
+    for (let i=171; i < 190; i++) {
+      enemyArray[i] = {
+        id: i,
+        enemyHere: false,
+        position: i+1,
+        type: 'bullet',
       }
     }
     updateEnemyFormation(enemyArray, [20,39,40,58,38,56,57,76])

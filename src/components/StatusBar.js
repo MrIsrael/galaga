@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import logo from '../assets/images/logo3.jpeg'
+import logo from '../assets/images/logo.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 
@@ -43,6 +43,7 @@ const logoStyle = {
   padding: '0px',
 }
 
+// Estilos para el textfield de sucesos del juego (pausado, cambio de nivel, etc)
 const messageStyle = {
   margin: 'auto',
   height: '75px',
@@ -55,7 +56,7 @@ const textStyle = {
   paddingTop: '10px',
 }
 
-// Estilos para el textfield de inicio / pausa del juego
+// Estilos para el textfield ("botón") de inicio / pausa del juego
 const buttonStyle = {
   fontSize: '12px',
   textAlign: 'center',

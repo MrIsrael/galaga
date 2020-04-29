@@ -1,6 +1,8 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import soldier from '../assets/images/enemy.png'
-import boss from '../assets/images/boss.jpeg'
+import soldier from '../assets/images/enemy1.gif'
+import boss from '../assets/images/boss2.gif'
+import bullet from '../assets/images/bullet1.gif'
+import explosion from '../assets/images/explosion.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 
@@ -16,11 +18,12 @@ const EnemyGrid = () => {
   return (
     <Fragment>
       {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
-                                {!alien.enemyHere && <div style={emptyAlienStyle}></div>}
+                                {!alien.enemyHere && alien.type === 'bullet' && <img src={bullet} alt='alien-ship' style={alienStyle} />}
+                                {!alien.enemyHere && alien.type === '' && <div style={emptyAlienStyle}></div>}
                                 {alien.enemyHere && alien.type === 'soldier' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
                                     <img src={soldier} alt='alien-ship' style={alienStyle} /></div>}
                                 {alien.enemyHere && alien.type === 'boss' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
-                                    <img src={boss} alt='alien-ship' style={alienStyle} /></div>}
+                                    <img src={boss} alt='alien-boss' style={alienStyle} /></div>}
                                 {alien.position}
                                 {/* alien.position */}
                               </div>

@@ -1,12 +1,4 @@
 PENDIENTES FASE 1:
-- Buscar imagenes para identificar a:
-*  --> "8 bit galaga martian": Enemigos
-*  --> "8 bit cannon": Jugador
-  --> "bullet": Bala disparada
-  --> "explosion": Enemigo destruído
-  --> "skull": Jugador eliminado (se restaría una vida)
-*  --> "logo": Logo de Galaga retro (NES)
-- Elegir el background color que tendrá el juego.
 - Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
 - Hacer css animations para el movimiento de la bala subiendo en cada casilla, por niveles (x3), a medida que se desplaza. 
   La bala no sería del alto de la casilla.
@@ -30,6 +22,7 @@ PENDIENTES FASE 2:
   y horizontalmente.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
+- Elegir el background color que tendrá el juego.
 
 PENDIENTES FASE 3:
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
@@ -48,6 +41,13 @@ PENDIENTES FASE 4:
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 
 YA HECHAS:
+- Buscar imagenes para identificar a:
+  --> "8 bit galaga martian": Enemigos
+  --> "8 bit cannon": Jugador
+  --> "bullet": Bala disparada
+  --> "explosion": Enemigo destruído
+  --> "skull": Jugador eliminado (se restaría una vida)
+  --> "logo": Logo de Galaga retro (NES)
 - Definir el número de columnas (19) que tendrá el board grid. El player platform tendrá el mismo número 
   de columnas.
 - Crear una separación visual entre casillas, para poder diferenciarlas durante el desarrollo. En la versión final
