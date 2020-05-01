@@ -1,8 +1,15 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import soldier from '../assets/images/enemy1.gif'
-import boss from '../assets/images/boss2.gif'
+import scarecrow from '../assets/images/enemies/enemy1.gif'
+// import bane from '../assets/images/enemies/enemy2.gif'
+// import joker from '../assets/images/enemies/enemy3.gif'
+// import theThing from '../assets/images/enemies/boss1.gif'
+// import terminator from '../assets/images/enemies/boss2.gif'
+import alienQueen from '../assets/images/enemies/boss3.gif'
+// import predator from '../assets/images/enemies/boss4.gif'
 import bullet from '../assets/images/bullet1.gif'
-import explosion from '../assets/images/explosion.gif'
+// import explosion from '../assets/images/explosion.gif'
+// import bomb from '../assets/images/bomb1.gif'
+// import bomb from '../assets/images/bomb2.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 
@@ -18,12 +25,12 @@ const EnemyGrid = () => {
   return (
     <Fragment>
       {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
-                                {!alien.enemyHere && alien.type === 'bullet' && <img src={bullet} alt='alien-ship' style={alienStyle} />}
-                                {!alien.enemyHere && alien.type === '' && <div style={emptyAlienStyle}></div>}
-                                {alien.enemyHere && alien.type === 'soldier' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
-                                    <img src={soldier} alt='alien-ship' style={alienStyle} /></div>}
-                                {alien.enemyHere && alien.type === 'boss' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
-                                    <img src={boss} alt='alien-boss' style={alienStyle} /></div>}
+                                {alien.type === 'bullet' && <img src={bullet} alt='bullet' style={alienStyle} />}
+                                {alien.type === 'none' && <div style={emptyAlienStyle}></div>}
+                                {alien.type === 'scarecrow' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
+                                    <img src={scarecrow} alt='alien' style={alienStyle} /></div>}
+                                {alien.type === 'alienQueen' && <div id={!pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
+                                    <img src={alienQueen} alt='alien' style={alienStyle} /></div>}
                                 {alien.position}
                                 {/* alien.position */}
                               </div>

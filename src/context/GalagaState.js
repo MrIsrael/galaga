@@ -4,8 +4,8 @@ import GalagaReducer from '../context/GalagaReducer'
 // Initial state
 const initialState = {
   pausedGame: true,
-  playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false) }
-  enemyInfo: [],                            // enemyArray[i] = { id, enemyHere, position, type ('soldier', 'boss'...), remainingShots }
+  playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
+  enemyInfo: [],                            // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots }
   resumeButtonText: 'Click here or press Tab to play',
   pressedKeyCode: 0,
 killed: 0,
@@ -14,6 +14,8 @@ killed: 0,
 level: 1,
 speed: 1,
 lives: 5,
+score: 0,
+highScore: 0,
 }
 
 // Create Context
@@ -66,7 +68,7 @@ export const GlobalProvider = ({ children }) => {
           }
         }
         break
-      case 9:     // Tecla Tab presionada: Pausar el juego
+      case 9:     // Tecla Tab presionada: Pausar / Reanudar el juego
         pauseGame('Press Tab or click here to resume')
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
@@ -94,10 +96,11 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
   function initializePlayerPos(playerArray) {
     for (let i=0; i<19; i++) {
-      i === 9 ? playerArray[i] = { id: i, playerHere: true } 
-              : playerArray[i] = { id: i, playerHere: false }
+      i === 9 ? playerArray[i] = { id: i, playerHere: true, wasHit: false } 
+              : playerArray[i] = { id: i, playerHere: false, wasHit: false }
     }
     dispatch({
       type: 'INITIALIZE_PLAYER_ARRAY',
@@ -105,37 +108,40 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots, scoreIfDestroyed }
+  // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator
   function initializeEnemyFormation(enemyArray) {
     for (let i=0; i < 190; i++) {
       enemyArray[i] = {
         id: i,
-        enemyHere: i < (190 / 2) ? true : false,
         position: i+1,
-        type: i < (190 / 2) ? 'soldier' : '',
+        type: i < (190 / 2) ? 'scarecrow' : 'none',
         remainingShots: i < (190 / 2) ? 1 : 0,
+        scoreIfDestroyed: 100,
       }
     }
     for (let i=171; i < 190; i++) {
       enemyArray[i] = {
         id: i,
-        enemyHere: false,
         position: i+1,
         type: 'bullet',
+        remainingShots: 0,
+        scoreIfDestroyed: 0
       }
     }
     updateEnemyFormation(enemyArray, [20,39,40,58,38,56,57,76])
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
       payload: enemyArray,
-      size: enemyArray.filter(alien => alien.enemyHere).length,
+      size: enemyArray.filter(alien => alien.type !== 'none' && alien.type !== 'bullet').length,
     })
   }
 
+  // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots }
   function updateEnemyFormation(enemyArray, noAlienPosArray) {
     for (let i=0; i<190; i++) {
       if (noAlienPosArray.some(pos => pos === enemyArray[i].position)) { 
-        enemyArray[i].enemyHere = false
-        enemyArray[i].type = ''
+        enemyArray[i].type = 'none'
         enemyArray[i].remainingShots = 0
       }
     }
@@ -158,14 +164,16 @@ export const GlobalProvider = ({ children }) => {
     level: state.level,
     speed: state.speed,
     lives: state.lives,
+    score: state.score,
+    highScore: state.highScore,
     startGame,
     pauseGame,
     keyCode,
+    fire,
+    movePlayer,
     initializePlayerPos,
     initializeEnemyFormation,
     updateEnemyFormation,
-    fire,
-    movePlayer,
   }}>
     { children }
   </GlobalContext.Provider>)

@@ -1,7 +1,8 @@
 PENDIENTES FASE 1:
+- Modificar la función updateEnemyFormation() para que se le pasen como parámetros el id inicial y final a cambiar,
+  y el nuevo tipo de enemigo a poner. Los atributos remainingShots y scoreIfDestroyed podrían asignarse con una
+  función aparte, que evalúe el tipo de enemigo y le asigne esos valores automáticamente.
 - Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
-- Hacer css animations para el movimiento de la bala subiendo en cada casilla, por niveles (x3), a medida que se desplaza. 
-  La bala no sería del alto de la casilla.
 - Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
   dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
   mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
@@ -64,6 +65,8 @@ YA HECHAS:
   --> Si fue Tab: "Clic en el botón púrpura para volver al juego"
   --> Si fue Enter: "Presione Enter para volver al juego"
 - Hacer css animations para el movimiento de los enemigos dentro de su casilla.
+- Hacer css animations para el movimiento de la bala subiendo en cada casilla, por niveles (x3), a medida que se desplaza. 
+  La bala no sería del alto de la casilla (se incluyó una imagen gif, en vez de hacer un css animation).
 
 
 PREGUNTAS:

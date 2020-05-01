@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import ship from '../assets/images/spaceShip.gif'
+import spaceShip from '../assets/images/spaceShip.gif'
 import skull from '../assets/images/skull.gif'
 
 import { GlobalContext } from '../context/GalagaState'
@@ -16,7 +16,8 @@ const PlayerPlatform = () => {
   return (
     <Fragment>
       {playerInfo.map(pos => <div className='player' key={pos.id}>
-                              {pos.playerHere ? <img src={ship} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && !pos.wasHit ? <img src={spaceShip} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && pos.wasHit ? <img src={skull} alt='space-ship-down' style={spaceShipStyle} /> : <i></i>}
                             </div>
                      )}
     </Fragment>

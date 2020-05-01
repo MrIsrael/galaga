@@ -6,7 +6,7 @@ import { GlobalContext } from '../context/GalagaState'
 // Si aquí se engloba todo el JSX en un tag diferente de <Fragment> (p.ej. <div>), el css grid se daña!
 const StatusBar = () => {
   const { pausedGame, playerInfo, killed, resumeButtonText, pressedKeyCode, startGame, pauseGame, keyCode,
-          enemiesLeft, firedBullets, level, speed, lives } = useContext(GlobalContext)
+          enemiesLeft, firedBullets, level, speed, lives, } = useContext(GlobalContext)   // Agregar luego score, highScore
 
   return (
     <Fragment>
@@ -14,7 +14,9 @@ const StatusBar = () => {
         <h4>Level: {level}</h4>
         <h4>Speed: x{speed}</h4>
         <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
+        {/* <h4>High score: {highScore}</h4> */}
         <h4>Pressed key: {pressedKeyCode}</h4>
+        {/* <h4>Score: {score}</h4> */}
       </div>
       <div className='status-bar-middle'>
         {pausedGame && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
@@ -38,7 +40,7 @@ const StatusBar = () => {
 
 // Estilos para la imagen del logo del juego
 const logoStyle = {
-  maxHeight: '100px',
+  maxHeight: '102px',
   backgroundColor: 'transparent',   // REVISAR CÓMO SE PONE FONDO TRANSPARENTE A UNA IMAGEN PNG...
   padding: '0px',
 }
