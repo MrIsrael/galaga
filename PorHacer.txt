@@ -1,24 +1,20 @@
 PENDIENTES FASE 1:
-- Modificar la función updateEnemyFormation() para que se le pasen como parámetros el id inicial y final a cambiar,
-  y el nuevo tipo de enemigo a poner. Los atributos remainingShots y scoreIfDestroyed podrían asignarse con una
-  función aparte, que evalúe el tipo de enemigo y le asigne esos valores automáticamente.
-- Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador.
-- Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
-  dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
-  mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
-- El estado global también debe contener un array (matríz?) por cada fila de enemigos, con valores que indiquen si en
-  cada casilla hay o no un enemigo, qué tipo de enemigo es, cuántos impactos ha recibido y cuántos faltan por darle
-  antes de poder destruirlo, etc. Se supone que deben haber enemigos más difíciles; no todos se deben poder destruir
-  sólo con un tiro.
+- Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador. Los enemigos deben poder 
+  moverse hacia abajo y hacia los lados, en su misma fila; los jefes deberían poder esquivar las balas de vez en cuando,
+  o moverse aleatoriamente.
+- Definir setInterval() para tiempos de movimiento de enemigos, cuánto tiempo se muestra la explosión, qué tan rápido
+  cae la bomba, qué tan rápido sube la bala, etc.
 - Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
   pasar de nivel, etc.
 
 PENDIENTES FASE 2:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
   se restaría una de las navecitas.
+- Cuando el jugador continús, después de haber gastado una vida, debería ser inmune a los enemigos durante unos
+  segundos, y la nave debería parpadear durante ese tiempo de "invisibilidad".
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
-  de nivel.
+  de nivel. Debería haber un puntaje extra por esto.
 - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
   y horizontalmente.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
@@ -67,6 +63,16 @@ YA HECHAS:
 - Hacer css animations para el movimiento de los enemigos dentro de su casilla.
 - Hacer css animations para el movimiento de la bala subiendo en cada casilla, por niveles (x3), a medida que se desplaza. 
   La bala no sería del alto de la casilla (se incluyó una imagen gif, en vez de hacer un css animation).
+- El estado global también debe contener un array (matríz?) por cada fila de enemigos, con valores que indiquen si en
+  cada casilla hay o no un enemigo, qué tipo de enemigo es, cuántos impactos ha recibido y cuántos faltan por darle
+  antes de poder destruirlo, etc. Se supone que deben haber enemigos más difíciles; no todos se deben poder destruir
+  sólo con un tiro.
+- Modificar la función updateEnemyFormation() para que se le pasen como parámetros el id inicial y final a cambiar,
+  y el nuevo tipo de enemigo a poner. Los atributos remainingShots y scoreIfDestroyed podrían asignarse con una
+  función aparte, que evalúe el tipo de enemigo y le asigne esos valores automáticamente.
+- Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
+  dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
+  mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
 
 
 PREGUNTAS:

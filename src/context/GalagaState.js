@@ -3,19 +3,21 @@ import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
 const initialState = {
-  pausedGame: true,
-  playerInfo: [],                           // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
-  enemyInfo: [],                            // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots }
-  resumeButtonText: 'Click here or press Tab to play',
-  pressedKeyCode: 0,
-killed: 0,
-  enemiesLeft: 190,
-  firedBullets: 0,
-level: 1,
-speed: 1,
-lives: 5,
-score: 0,
-highScore: 0,
+  playerInfo: [],             // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
+  enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
+  gameInfo: {                 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+    buttonText: 'Click here or press Tab to play',
+    pausedGame: true,
+    pressedKeyCode: 0,
+    killed: 0,
+    enemiesLeft: 0,
+    firedBullets: 0,
+    level: 1,
+    speed: 1,
+    lives: 5,
+    score: 0,
+    highScore: 0,
+  }
 }
 
 // Create Context
@@ -23,20 +25,21 @@ export const GlobalContext = createContext(initialState)
 
 // Provider component
 export const GlobalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(GalagaReducer, initialState);
+  const [state, dispatch] = useReducer(GalagaReducer, initialState)
+  const enemyGridWidth = 19
 
   // Actions
   function startGame(text) {
     dispatch({
       type: 'START_GAME',
-      payload: text,
+      payload: text
     })
   }
 
   function pauseGame(text) {
     dispatch({
       type: 'PAUSE_GAME',
-      payload: text,
+      payload: text
     })
   }
 
@@ -61,7 +64,7 @@ export const GlobalProvider = ({ children }) => {
       case 39:    // Mover jugador a la derecha
         if(!pausedGame){
           const dummy2 = playerArray.findIndex(pos => pos.playerHere)
-          if (dummy2 !== 18) {
+          if (dummy2 !== (enemyGridWidth - 1)) {
             playerArray[dummy2].playerHere = false
             playerArray[dummy2 + 1].playerHere = true
             movePlayer(playerArray)
@@ -78,102 +81,129 @@ export const GlobalProvider = ({ children }) => {
     }
     dispatch({
       type: 'SHOW_KEY_CODE',
-      payload: event.keyCode,
+      payload: event.keyCode
     })
   }
 
   function fire(newFiredBulletsCount) {
     dispatch({
       type: 'FIRE_BUTTON_PRESSED',
-      payload: newFiredBulletsCount,
+      payload: newFiredBulletsCount
     })
   }
 
   function movePlayer(newPlayerPos) {
     dispatch({
       type: 'MOVE_PLAYER',
-      payload: newPlayerPos,
+      payload: newPlayerPos
     })
   }
 
   // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
   function initializePlayerPos(playerArray) {
-    for (let i=0; i<19; i++) {
-      i === 9 ? playerArray[i] = { id: i, playerHere: true, wasHit: false } 
-              : playerArray[i] = { id: i, playerHere: false, wasHit: false }
+    for (let i=0; i < enemyGridWidth; i++) {
+      i === ((enemyGridWidth - 1) / 2) ? playerArray[i] = { id: i, playerHere: true, wasHit: false } 
+                                       : playerArray[i] = { id: i, playerHere: false, wasHit: false }
     }
     dispatch({
       type: 'INITIALIZE_PLAYER_ARRAY',
-      payload: playerArray,
+      payload: playerArray
     })
   }
-
-  // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots, scoreIfDestroyed }
-  // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator
-  function initializeEnemyFormation(enemyArray) {
-    for (let i=0; i < 190; i++) {
+  
+  function setEnemyFormation(enemyArray, initialPos, finalPos, enemyTypeToInsert) {
+    for (let i = initialPos - 1; i < finalPos; i++) {
       enemyArray[i] = {
         id: i,
         position: i+1,
-        type: i < (190 / 2) ? 'scarecrow' : 'none',
-        remainingShots: i < (190 / 2) ? 1 : 0,
-        scoreIfDestroyed: 100,
+        type: enemyTypeToInsert,
+      }
+      switch (enemyTypeToInsert) {     
+        case 'scarecrow':
+          enemyArray[i].remainingShots = 1
+          enemyArray[i].scoreIfDestroyed = 100
+          break
+        case 'bane':
+          enemyArray[i].remainingShots = 3
+          enemyArray[i].scoreIfDestroyed = 300
+          break
+        case 'joker':
+          enemyArray[i].remainingShots = 5
+          enemyArray[i].scoreIfDestroyed = 500
+          break
+        case 'theThing':
+          enemyArray[i].remainingShots = 10
+          enemyArray[i].scoreIfDestroyed = 5000
+          break
+        case 'terminator':
+          enemyArray[i].remainingShots = 15
+          enemyArray[i].scoreIfDestroyed = 7500
+          break
+        case 'alienQueen':
+          enemyArray[i].remainingShots = 25
+          enemyArray[i].scoreIfDestroyed = 12500
+          break
+        case 'predator':
+          enemyArray[i].remainingShots = 35
+          enemyArray[i].scoreIfDestroyed = 30000
+          break
+        case 'none':
+        case 'bullet':
+        case 'explosion':
+        case 'bomb':
+          enemyArray[i].remainingShots = 0
+          enemyArray[i].scoreIfDestroyed = 0
+          break
+        default: break
       }
     }
-    for (let i=171; i < 190; i++) {
-      enemyArray[i] = {
-        id: i,
-        position: i+1,
-        type: 'bullet',
-        remainingShots: 0,
-        scoreIfDestroyed: 0
-      }
-    }
-    updateEnemyFormation(enemyArray, [20,39,40,58,38,56,57,76])
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray,
-      size: enemyArray.filter(alien => alien.type !== 'none' && alien.type !== 'bullet').length,
+      payload: enemyArray
     })
   }
 
-  // enemyArray[i] = { id, position, type ('soldier', 'boss', 'bullet', 'none'...), remainingShots }
-  function updateEnemyFormation(enemyArray, noAlienPosArray) {
-    for (let i=0; i<190; i++) {
+  function setIsolatedNoEnemyPlaces(enemyArray, noAlienPosArray) {
+    for (let i=0; i < enemyGridWidth * 10; i++) {
       if (noAlienPosArray.some(pos => pos === enemyArray[i].position)) { 
         enemyArray[i].type = 'none'
         enemyArray[i].remainingShots = 0
+        enemyArray[i].scoreIfDestroyed = 0
       }
     }
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray,
-      size: enemyArray.filter(alien => alien.enemyHere).length,
+      payload: enemyArray
+    })
+  }
+
+  function setBullet(enemyArray, position) {
+    enemyArray[position - 1].type = 'bullet'
+  }
+
+  // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
+  // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+  function initializeEnemyFormation(enemyArray) {
+    setEnemyFormation(enemyArray, 1, ((enemyGridWidth * 10) / 2), 'scarecrow')
+    setEnemyFormation(enemyArray, 8, 12, 'alienQueen')
+    setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')
+    setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76])
+    setBullet(enemyArray, 189-(19*0))
+    dispatch({
+      type: 'UPDATE_ENEMY_ARRAY',
+      payload: enemyArray
     })
   }
 
   return (<GlobalContext.Provider value={{
-    pausedGame: state.pausedGame,
     playerInfo: state.playerInfo,
     enemyInfo: state.enemyInfo,
-    killed: state.killed,
-    resumeButtonText: state.resumeButtonText,
-    pressedKeyCode: state.pressedKeyCode,
-    enemiesLeft: state.enemiesLeft,
-    firedBullets: state.firedBullets,
-    level: state.level,
-    speed: state.speed,
-    lives: state.lives,
-    score: state.score,
-    highScore: state.highScore,
+    gameInfo: state.gameInfo,
     startGame,
     pauseGame,
     keyCode,
-    fire,
-    movePlayer,
     initializePlayerPos,
     initializeEnemyFormation,
-    updateEnemyFormation,
   }}>
     { children }
   </GlobalContext.Provider>)

@@ -2,20 +2,18 @@ export default (state, action) => {
   switch (action.type) {
     case 'START_GAME':
       return {
-         ...state,
-        resumeButtonText: action.payload,
-        pausedGame: false
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: false } }
       }
     case 'PAUSE_GAME':
       return {
         ...state,
-        resumeButtonText: action.payload,
-        pausedGame: true
+        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: true } }
       }
     case 'SHOW_KEY_CODE':
       return {
         ...state,
-        pressedKeyCode: action.payload
+        gameInfo: { ...state.gameInfo, ...{ pressedKeyCode: action.payload } }
       }
     case 'INITIALIZE_PLAYER_ARRAY':
       return {
@@ -31,12 +29,12 @@ export default (state, action) => {
       return {
         ...state,
         enemyInfo: action.payload,
-        enemiesLeft: action.size
+        gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet').length } }  // 87
       }
     case 'FIRE_BUTTON_PRESSED':
       return {
         ...state,
-        firedBullets: action.payload
+        gameInfo: { ...state.gameInfo, ...{ firedBullets: action.payload } }
       }
     default:
       return state

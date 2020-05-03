@@ -5,34 +5,33 @@ import { GlobalContext } from '../context/GalagaState'
 
 // Si aquí se engloba todo el JSX en un tag diferente de <Fragment> (p.ej. <div>), el css grid se daña!
 const StatusBar = () => {
-  const { pausedGame, playerInfo, killed, resumeButtonText, pressedKeyCode, startGame, pauseGame, keyCode,
-          enemiesLeft, firedBullets, level, speed, lives, } = useContext(GlobalContext)   // Agregar luego score, highScore
+  const { gameInfo, playerInfo, startGame, pauseGame, keyCode } = useContext(GlobalContext)
 
   return (
     <Fragment>
       <div className='status-bar-left'>
-        <h4>Level: {level}</h4>
-        <h4>Speed: x{speed}</h4>
+        <h4>Level: {gameInfo.level}</h4>
+        <h4>Speed: x{gameInfo.speed}</h4>
         <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
-        {/* <h4>High score: {highScore}</h4> */}
-        <h4>Pressed key: {pressedKeyCode}</h4>
-        {/* <h4>Score: {score}</h4> */}
+        {/* <h4>High score: {gameInfo.highScore}</h4> */}
+        <h4>Pressed key: {gameInfo.pressedKeyCode}</h4>
+        {/* <h4>Score: {gameInfo.score}</h4> */}
       </div>
       <div className='status-bar-middle'>
-        {pausedGame && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
-        {!pausedGame && <img src={logo} alt='game-logo' style={logoStyle}/>}
+        {gameInfo.pausedGame && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+        {!gameInfo.pausedGame && <img src={logo} alt='game-logo' style={logoStyle}/>}
         <br />
-        <input type='text' readOnly size='35' value={resumeButtonText} style={buttonStyle} 
-              onKeyDown={(event) => keyCode(event, firedBullets, playerInfo, pausedGame)}
+        <input type='text' readOnly size='35' value={gameInfo.buttonText} style={buttonStyle} 
+              onKeyDown={(event) => keyCode(event, gameInfo.firedBullets, playerInfo, gameInfo.pausedGame)}
               onFocus={() => startGame('Press Enter or click outside to pause')}
               onBlur={() => pauseGame('Press Tab or click here to resume')}
         />
       </div>
       <div className='status-bar-right'>
-        <h4>Enemies killed: {killed}</h4>
-        <h4>Enemies left: {enemiesLeft}</h4>
-        <h4>Bullets fired: {firedBullets}</h4>
-        <h4>Lives: {lives}</h4>
+        <h4>Enemies killed: {gameInfo.killed}</h4>
+        <h4>Enemies left: {gameInfo.enemiesLeft}</h4>
+        <h4>Bullets fired: {gameInfo.firedBullets}</h4>
+        <h4>Lives: {gameInfo.lives}</h4>
       </div>
     </Fragment>
   )
@@ -41,7 +40,6 @@ const StatusBar = () => {
 // Estilos para la imagen del logo del juego
 const logoStyle = {
   maxHeight: '102px',
-  backgroundColor: 'transparent',   // REVISAR CÓMO SE PONE FONDO TRANSPARENTE A UNA IMAGEN PNG...
   padding: '0px',
 }
 
