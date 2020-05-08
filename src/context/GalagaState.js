@@ -8,6 +8,8 @@ const initialState = {
   gameInfo: {                 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
     buttonText: 'Click here or press Tab to play',
     pausedGame: true,
+    enemyGridAction: true,
+    timeElapsed: 0,
     pressedKeyCode: 0,
     killed: 0,
     enemiesLeft: 0,
@@ -29,6 +31,13 @@ export const GlobalProvider = ({ children }) => {
   const enemyGridWidth = 19
 
   // Actions
+  function setSecondsElapsed(seconds) {
+    dispatch({
+      type: 'INCREMENT_TIME_ELAPSED',
+      payload: seconds
+    })
+  }
+
   function startGame(text) {
     dispatch({
       type: 'START_GAME',
@@ -48,7 +57,7 @@ export const GlobalProvider = ({ children }) => {
     switch (event.keyCode) {
       case 32:    // Disparar cañón
         if(!pausedGame){
-          fire(firedBullets + 1)
+          fire(firedBullets + 1, state.enemyInfo, playerArray.findIndex(pos => pos.playerHere) + 1 + 171)
         }
         break
       case 37:    // Mover jugador a la izquierda
@@ -85,7 +94,8 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function fire(newFiredBulletsCount) {
+  function fire(newFiredBulletsCount, enemyArray, position) {
+    setBullet(enemyArray, position)
     dispatch({
       type: 'FIRE_BUTTON_PRESSED',
       payload: newFiredBulletsCount
@@ -105,10 +115,7 @@ export const GlobalProvider = ({ children }) => {
       i === ((enemyGridWidth - 1) / 2) ? playerArray[i] = { id: i, playerHere: true, wasHit: false } 
                                        : playerArray[i] = { id: i, playerHere: false, wasHit: false }
     }
-    dispatch({
-      type: 'INITIALIZE_PLAYER_ARRAY',
-      payload: playerArray
-    })
+    movePlayer(playerArray)
   }
   
   function setEnemyFormation(enemyArray, initialPos, finalPos, enemyTypeToInsert) {
@@ -179,6 +186,12 @@ export const GlobalProvider = ({ children }) => {
 
   function setBullet(enemyArray, position) {
     enemyArray[position - 1].type = 'bullet'
+    enemyArray[position - 1].remainingShots = 0
+    enemyArray[position - 1].scoreIfDestroyed = 0
+    dispatch({
+      type: 'UPDATE_ENEMY_ARRAY',
+      payload: enemyArray
+    })
   }
 
   // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
@@ -188,11 +201,7 @@ export const GlobalProvider = ({ children }) => {
     setEnemyFormation(enemyArray, 8, 12, 'alienQueen')
     setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')
     setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76])
-    setBullet(enemyArray, 189-(19*0))
-    dispatch({
-      type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray
-    })
+//  setBullet(enemyArray, 189-(19*0))
   }
 
   return (<GlobalContext.Provider value={{
@@ -201,9 +210,13 @@ export const GlobalProvider = ({ children }) => {
     gameInfo: state.gameInfo,
     startGame,
     pauseGame,
+    setSecondsElapsed,
     keyCode,
     initializePlayerPos,
     initializeEnemyFormation,
+    setEnemyFormation,
+    setIsolatedNoEnemyPlaces,
+    setBullet,
   }}>
     { children }
   </GlobalContext.Provider>)

@@ -34,7 +34,6 @@ body {
 
 .status-bar-middle { 
   grid-area: SB-middle;   
-  background-color: #b7b6c7;
   border: 3px solid;
   padding-top: 8px;
   padding-bottom: 5px;

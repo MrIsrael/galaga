@@ -10,7 +10,7 @@ PENDIENTES FASE 1:
 PENDIENTES FASE 2:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
   se restaría una de las navecitas.
-- Cuando el jugador continús, después de haber gastado una vida, debería ser inmune a los enemigos durante unos
+- Cuando el jugador continúa, después de haber gastado una vida, debería ser inmune a los enemigos durante unos
   segundos, y la nave debería parpadear durante ese tiempo de "invisibilidad".
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador

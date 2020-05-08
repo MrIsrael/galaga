@@ -10,15 +10,15 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: true } }
       }
+    case 'INCREMENT_TIME_ELAPSED':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ timeElapsed: action.payload } }
+      }
     case 'SHOW_KEY_CODE':
       return {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ pressedKeyCode: action.payload } }
-      }
-    case 'INITIALIZE_PLAYER_ARRAY':
-      return {
-        ...state,
-        playerInfo: action.payload
       }
     case 'MOVE_PLAYER':
       return {
@@ -29,7 +29,8 @@ export default (state, action) => {
       return {
         ...state,
         enemyInfo: action.payload,
-        gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet').length } }  // 87
+        gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet' &&
+                                                                                        alien.type !== 'explosion' && alien.type !== 'bomb').length } }  // valor inicial = 87
       }
     case 'FIRE_BUTTON_PRESSED':
       return {

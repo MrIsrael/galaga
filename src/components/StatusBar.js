@@ -4,6 +4,7 @@ import logo from '../assets/images/logo.gif'
 import { GlobalContext } from '../context/GalagaState'
 
 // Si aquí se engloba todo el JSX en un tag diferente de <Fragment> (p.ej. <div>), el css grid se daña!
+// Tener en cuenta gameInfo.timeElapsed y gameInfo.enemyGridAction (ambos booleanos)
 const StatusBar = () => {
   const { gameInfo, playerInfo, startGame, pauseGame, keyCode } = useContext(GlobalContext)
 
@@ -11,7 +12,8 @@ const StatusBar = () => {
     <Fragment>
       <div className='status-bar-left'>
         <h4>Level: {gameInfo.level}</h4>
-        <h4>Speed: x{gameInfo.speed}</h4>
+        <h4>Time elapsed: {gameInfo.timeElapsed}</h4>
+        {/* <h4>Speed: x{gameInfo.speed}</h4> */}
         <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
         {/* <h4>High score: {gameInfo.highScore}</h4> */}
         <h4>Pressed key: {gameInfo.pressedKeyCode}</h4>

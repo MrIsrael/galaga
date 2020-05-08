@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from 'react'
+import React, { Fragment, useState, useContext, useEffect } from 'react'
 import scarecrow from '../assets/images/enemies/enemy1.gif'
 import bane from '../assets/images/enemies/enemy2.gif'
 import joker from '../assets/images/enemies/enemy3.gif'
@@ -14,13 +14,45 @@ import bomb from '../assets/images/bomb1.gif'
 import { GlobalContext } from '../context/GalagaState'
 
 const EnemyGrid = () => {
-  const { gameInfo, enemyInfo, initializeEnemyFormation } = useContext(GlobalContext)
+  const { gameInfo, enemyInfo, initializeEnemyFormation, setSecondsElapsed, setEnemyFormation, setIsolatedNoEnemyPlaces, setBullet } = useContext(GlobalContext)
+  const [flag, setFlag] = useState(false)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
   useEffect(() => {
     initializeEnemyFormation(enemyInfo)
+    if (gameInfo.enemyGridAction) {
+      let seconds = gameInfo.timeElapsed
+      setInterval(() => {
+        seconds++
+        setSecondsElapsed(seconds)
+        setFlag(true)
+      }, 1000)
+    }
     // eslint-disable-next-line
   }, [])
+
+  if (flag && !gameInfo.pausedGame) {     // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego
+    setFlag(false)
+    console.log(gameInfo.timeElapsed)
+
+    switch (gameInfo.level) {
+      case 1:
+        const temp = enemyInfo.filter(alien => alien.type === 'bullet')
+      //  const temp2 = temp.map(alien => )
+        console.log(temp)
+
+        // setEnemyFormation(enemyArray, initialPos, finalPos, enemyTypeToInsert)
+        // setIsolatedNoEnemyPlaces(enemyArray, noAlienPosArray)
+        // setBullet(enemyArray, position)
+
+        // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
+        // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+        // const aw = state.enemyInfo.filter(alien => alien.type === 'bullet')
+        // console.log('aw')  
+        break
+      default: break
+    }
+  }
 
   return (
     <Fragment>
