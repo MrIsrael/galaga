@@ -3,7 +3,7 @@ import StatusBar from './components/StatusBar'
 import EnemyGrid from './components/EnemyGrid'
 import PlayerPlatform from './components/PlayerPlatform'
 
-import { GlobalProvider } from "./context/GalagaState"
+import { GlobalProvider } from './context/GalagaState'
 
 import './App.css'
 

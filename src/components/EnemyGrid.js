@@ -6,15 +6,15 @@ import theThing from '../assets/images/enemies/boss1.gif'
 import terminator from '../assets/images/enemies/boss2.gif'
 import alienQueen from '../assets/images/enemies/boss3.gif'
 import predator from '../assets/images/enemies/boss4.gif'
-import bullet from '../assets/images/bullet1.gif'
+import bullet from '../assets/images/bullet2.gif'
 import explosion from '../assets/images/explosion.gif'
 import bomb from '../assets/images/bomb1.gif'
-// import bomb from '../assets/images/bomb2.gif'
 
 import { GlobalContext } from '../context/GalagaState'
+import { BulletMovement } from '../functions/BulletMovement'
 
 const EnemyGrid = () => {
-  const { gameInfo, enemyInfo, initializeEnemyFormation, setSecondsElapsed, setEnemyFormation, setIsolatedNoEnemyPlaces, setBullet } = useContext(GlobalContext)
+  const { gameInfo, enemyInfo, initializeEnemyFormation, setSecondsElapsed, updateBattleground } = useContext(GlobalContext)
   const [flag, setFlag] = useState(false)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
@@ -33,22 +33,11 @@ const EnemyGrid = () => {
 
   if (flag && !gameInfo.pausedGame) {     // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego
     setFlag(false)
-    console.log(gameInfo.timeElapsed)
 
     switch (gameInfo.level) {
       case 1:
-        const temp = enemyInfo.filter(alien => alien.type === 'bullet')
-      //  const temp2 = temp.map(alien => )
-        console.log(temp)
+        updateBattleground( BulletMovement(enemyInfo), gameInfo.bulletShot ? 1 : 0 )
 
-        // setEnemyFormation(enemyArray, initialPos, finalPos, enemyTypeToInsert)
-        // setIsolatedNoEnemyPlaces(enemyArray, noAlienPosArray)
-        // setBullet(enemyArray, position)
-
-        // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
-        // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
-        // const aw = state.enemyInfo.filter(alien => alien.type === 'bullet')
-        // console.log('aw')  
         break
       default: break
     }

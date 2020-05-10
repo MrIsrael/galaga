@@ -24,7 +24,7 @@ const StatusBar = () => {
         {!gameInfo.pausedGame && <img src={logo} alt='game-logo' style={logoStyle}/>}
         <br />
         <input type='text' readOnly size='35' value={gameInfo.buttonText} style={buttonStyle} 
-              onKeyDown={(event) => keyCode(event, gameInfo.firedBullets, playerInfo, gameInfo.pausedGame)}
+              onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
               onFocus={() => startGame('Press Enter or click outside to pause')}
               onBlur={() => pauseGame('Press Tab or click here to resume')}
         />

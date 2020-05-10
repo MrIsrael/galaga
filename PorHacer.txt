@@ -6,6 +6,8 @@ PENDIENTES FASE 1:
   cae la bomba, qué tan rápido sube la bala, etc.
 - Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
   pasar de nivel, etc.
+- Hay necesidad de mantener gameInfo.enemyGridAction?
+- También incorporar la cuenta de gameInfo.killed
 
 PENDIENTES FASE 2:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
@@ -16,7 +18,7 @@ PENDIENTES FASE 2:
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
   de nivel. Debería haber un puntaje extra por esto.
 - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
-  y horizontalmente.
+  y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
 - Elegir el background color que tendrá el juego.
@@ -73,6 +75,8 @@ YA HECHAS:
 - Incluir context API para poner un global state que guarde el estado del juego: En qué posición está el jugador,
   dónde van las balas y las bombas, cuántos enemigos hay por fila, si la bala o bomba impactó qué figura o animación
   mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
+- Arreglar el conteo de gameInfo.firedBullets, para que coincida con las balas realmente disparadas, y no con las veces
+  que se ha presionado la barra espaciadora. Se incrementa la cuenta con setBullet(). La función fire() desaparece.
 
 
 PREGUNTAS:

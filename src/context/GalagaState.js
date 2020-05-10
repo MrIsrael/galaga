@@ -13,6 +13,7 @@ const initialState = {
     pressedKeyCode: 0,
     killed: 0,
     enemiesLeft: 0,
+    bulletShot: false,
     firedBullets: 0,
     level: 1,
     speed: 1,
@@ -53,11 +54,11 @@ export const GlobalProvider = ({ children }) => {
   }
 
   // Códigos de teclas: Barra espaciadora: 32, Flecha izquierda: 37, Flecha derecha: 39, ESC: 27, Enter: 13, Tab: 9
-  function keyCode(event, firedBullets, playerArray, pausedGame) {
+  function keyCode(event, playerArray, pausedGame) {
     switch (event.keyCode) {
       case 32:    // Disparar cañón
         if(!pausedGame){
-          fire(firedBullets + 1, state.enemyInfo, playerArray.findIndex(pos => pos.playerHere) + 1 + 171)
+          setBullet(state.enemyInfo, playerArray.findIndex(pos => pos.playerHere) + 171 + 1)
         }
         break
       case 37:    // Mover jugador a la izquierda
@@ -91,14 +92,6 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'SHOW_KEY_CODE',
       payload: event.keyCode
-    })
-  }
-
-  function fire(newFiredBulletsCount, enemyArray, position) {
-    setBullet(enemyArray, position)
-    dispatch({
-      type: 'FIRE_BUTTON_PRESSED',
-      payload: newFiredBulletsCount
     })
   }
 
@@ -147,17 +140,20 @@ export const GlobalProvider = ({ children }) => {
           enemyArray[i].scoreIfDestroyed = 7500
           break
         case 'alienQueen':
-          enemyArray[i].remainingShots = 25
+enemyArray[i].remainingShots = 5                    // Valor original = 25
           enemyArray[i].scoreIfDestroyed = 12500
           break
         case 'predator':
           enemyArray[i].remainingShots = 35
           enemyArray[i].scoreIfDestroyed = 30000
           break
+        case 'bomb':
+          enemyArray[i].remainingShots = 1
+          enemyArray[i].scoreIfDestroyed = 250
+          break
         case 'none':
         case 'bullet':
         case 'explosion':
-        case 'bomb':
           enemyArray[i].remainingShots = 0
           enemyArray[i].scoreIfDestroyed = 0
           break
@@ -166,7 +162,9 @@ export const GlobalProvider = ({ children }) => {
     }
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray
+      payload: enemyArray,
+      firedBullets: state.gameInfo.firedBullets,
+      bulletShot: false
     })
   }
 
@@ -180,7 +178,9 @@ export const GlobalProvider = ({ children }) => {
     }
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray
+      payload: enemyArray,
+      firedBullets: state.gameInfo.firedBullets,
+      bulletShot: false
     })
   }
 
@@ -190,7 +190,18 @@ export const GlobalProvider = ({ children }) => {
     enemyArray[position - 1].scoreIfDestroyed = 0
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray
+      payload: enemyArray,
+      firedBullets: state.gameInfo.firedBullets,
+      bulletShot: true                                          // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
+    })
+  }
+
+  function updateBattleground(enemyArray, addedBullets) {
+    dispatch({
+      type: 'UPDATE_ENEMY_ARRAY',
+      payload: enemyArray,
+      firedBullets: state.gameInfo.firedBullets + addedBullets,
+      bulletShot: false
     })
   }
 
@@ -201,7 +212,6 @@ export const GlobalProvider = ({ children }) => {
     setEnemyFormation(enemyArray, 8, 12, 'alienQueen')
     setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')
     setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76])
-//  setBullet(enemyArray, 189-(19*0))
   }
 
   return (<GlobalContext.Provider value={{
@@ -214,9 +224,7 @@ export const GlobalProvider = ({ children }) => {
     keyCode,
     initializePlayerPos,
     initializeEnemyFormation,
-    setEnemyFormation,
-    setIsolatedNoEnemyPlaces,
-    setBullet,
+    updateBattleground,
   }}>
     { children }
   </GlobalContext.Provider>)

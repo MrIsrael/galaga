@@ -29,13 +29,13 @@ export default (state, action) => {
       return {
         ...state,
         enemyInfo: action.payload,
-        gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet' &&
-                                                                                        alien.type !== 'explosion' && alien.type !== 'bomb').length } }  // valor inicial = 87
-      }
-    case 'FIRE_BUTTON_PRESSED':
-      return {
-        ...state,
-        gameInfo: { ...state.gameInfo, ...{ firedBullets: action.payload } }
+        gameInfo: { ...state.gameInfo, 
+                    ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet' &&
+                                                                     alien.type !== 'explosion' && alien.type !== 'bomb').length,   // valor inicial = 87
+                         firedBullets: action.firedBullets,
+                         bulletShot: action.bulletShot
+                       } 
+                  }
       }
     default:
       return state
