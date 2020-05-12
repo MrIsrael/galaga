@@ -11,7 +11,7 @@ import explosion from '../assets/images/explosion.gif'
 import bomb from '../assets/images/bomb1.gif'
 
 import { GlobalContext } from '../context/GalagaState'
-import { BulletMovement } from '../functions/BulletMovement'
+import { GridMovement } from '../functions/GridMovement'
 
 const EnemyGrid = () => {
   const { gameInfo, enemyInfo, initializeEnemyFormation, setSecondsElapsed, updateBattleground } = useContext(GlobalContext)
@@ -36,7 +36,7 @@ const EnemyGrid = () => {
 
     switch (gameInfo.level) {
       case 1:
-        updateBattleground( BulletMovement(enemyInfo), gameInfo.bulletShot ? 1 : 0 )
+        updateBattleground( GridMovement(enemyInfo, gameInfo.timeElapsed), gameInfo.bulletShot ? 1 : 0 )
 
         break
       default: break

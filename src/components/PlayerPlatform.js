@@ -18,7 +18,7 @@ const PlayerPlatform = () => {
       {playerInfo.map(pos => <div className='player' key={pos.id}>
                               {pos.playerHere && !pos.wasHit ? <img src={spaceShip} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
                               {pos.playerHere && pos.wasHit ? <img src={skull} alt='space-ship-down' style={spaceShipStyle} /> : <i></i>}
-                            </div>
+                             </div>
                      )}
     </Fragment>
   )

@@ -6,6 +6,8 @@ PENDIENTES FASE 1:
   cae la bomba, qué tan rápido sube la bala, etc.
 - Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
   pasar de nivel, etc.
+- Indicarle a GridMovement que debe mover los enemigos hacia los lados o hacia abajo, dependiendo del residuo del valor
+  que se le pase en el parámetro secondsElapsed
 - Hay necesidad de mantener gameInfo.enemyGridAction?
 - También incorporar la cuenta de gameInfo.killed
 

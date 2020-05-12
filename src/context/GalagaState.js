@@ -140,7 +140,7 @@ export const GlobalProvider = ({ children }) => {
           enemyArray[i].scoreIfDestroyed = 7500
           break
         case 'alienQueen':
-enemyArray[i].remainingShots = 5                    // Valor original = 25
+          enemyArray[i].remainingShots = 5                    // Valor original = 25
           enemyArray[i].scoreIfDestroyed = 12500
           break
         case 'predator':
