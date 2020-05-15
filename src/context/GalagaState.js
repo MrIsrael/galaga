@@ -3,21 +3,23 @@ import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
 const initialState = {
-  playerInfo: [],             // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
+  playerInfo: [],             // playerArray[i] = { id, playerHere (true, false) }
   enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
   gameInfo: {                 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
     buttonText: 'Click here or press Tab to play',
     pausedGame: true,
-    enemyGridAction: true,
+   enemyGridAction: true,
     timeElapsed: 0,
     pressedKeyCode: 0,
-    killed: 0,
+    enemiesKilled: 0,
     enemiesLeft: 0,
     bulletShot: false,
     firedBullets: 0,
-    level: 1,
-    speed: 1,
-    lives: 5,
+   playerWasHit: false,
+   level: 1,
+   speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
+    msInterval: 400,
+   lives: 5,
     score: 0,
     highScore: 0,
   }
@@ -30,12 +32,13 @@ export const GlobalContext = createContext(initialState)
 export const GlobalProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GalagaReducer, initialState)
   const enemyGridWidth = 19
+  let highScore = state.gameInfo.score > state.gameInfo.highScore ? state.gameInfo.score : state.gameInfo.highScore
 
   // Actions
-  function setSecondsElapsed(seconds) {
+  function setIntervalsElapsed(intervals) {
     dispatch({
       type: 'INCREMENT_TIME_ELAPSED',
-      payload: seconds
+      payload: intervals
     })
   }
 
@@ -102,11 +105,11 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  // playerArray[i] = { id, playerHere (true, false), wasHit (true, false) }
+  // playerArray[i] = { id, playerHere (true, false) }
   function initializePlayerPos(playerArray) {
     for (let i=0; i < enemyGridWidth; i++) {
-      i === ((enemyGridWidth - 1) / 2) ? playerArray[i] = { id: i, playerHere: true, wasHit: false } 
-                                       : playerArray[i] = { id: i, playerHere: false, wasHit: false }
+      i === ((enemyGridWidth - 1) / 2) ? playerArray[i] = { id: i, playerHere: true } 
+                                       : playerArray[i] = { id: i, playerHere: false }
     }
     movePlayer(playerArray)
   }
@@ -184,16 +187,38 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function setBullet(enemyArray, position) {
-    enemyArray[position - 1].type = 'bullet'
-    enemyArray[position - 1].remainingShots = 0
-    enemyArray[position - 1].scoreIfDestroyed = 0
-    dispatch({
-      type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray,
-      firedBullets: state.gameInfo.firedBullets,
-      bulletShot: true                                          // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
-    })
+  function setBullet(enemyArray, newPosForBullet) {
+    if (state.gameInfo.enemyGridAction) {
+      const wasHit = false
+      let enemiesKilled = 0
+      let scorePlus = 0
+      if (enemyArray[newPosForBullet - 1].type === 'none' || enemyArray[newPosForBullet - 1].type === 'bullet' || enemyArray[newPosForBullet - 1].type === 'explosion') {
+        enemyArray[newPosForBullet - 1].type = 'bullet'
+        enemyArray[newPosForBullet - 1].remainingShots = 0
+        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+      } else if (enemyArray[newPosForBullet - 1].type === 'bomb' || enemyArray[newPosForBullet - 1].remainingShots === 1) {
+        enemiesKilled++
+        scorePlus += enemyArray[newPosForBullet - 1].scoreIfDestroyed
+        enemyArray[newPosForBullet - 1].type = 'explosion'
+        enemyArray[newPosForBullet - 1].remainingShots = 0
+        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+      } else if (enemyArray[newPosForBullet - 1].remainingShots > 1) {
+        enemyArray[newPosForBullet - 1].remainingShots--
+      }
+      dispatch({
+        type: 'UPDATE_ENEMY_ARRAY',
+        payload: enemyArray,
+        firedBullets: state.gameInfo.firedBullets,
+        bulletShot: true                                 // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
+      })
+      dispatch({
+        type: 'UPDATE_SCORE',
+        payload: wasHit,
+        enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
+        addToScore: state.gameInfo.score + scorePlus,
+        highScore: highScore
+      })
+    }
   }
 
   function updateBattleground(enemyArray, addedBullets) {
@@ -202,6 +227,16 @@ export const GlobalProvider = ({ children }) => {
       payload: enemyArray,
       firedBullets: state.gameInfo.firedBullets + addedBullets,
       bulletShot: false
+    })
+  }
+
+  function updateScore(wasHit, enemiesKilled, addToScore) {
+    dispatch({
+      type: 'UPDATE_SCORE',
+      payload: wasHit,
+      enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
+      addToScore: state.gameInfo.score + addToScore,
+      highScore: highScore
     })
   }
 
@@ -220,11 +255,12 @@ export const GlobalProvider = ({ children }) => {
     gameInfo: state.gameInfo,
     startGame,
     pauseGame,
-    setSecondsElapsed,
+    setIntervalsElapsed,
     keyCode,
     initializePlayerPos,
     initializeEnemyFormation,
     updateBattleground,
+    updateScore,
   }}>
     { children }
   </GlobalContext.Provider>)

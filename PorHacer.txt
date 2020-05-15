@@ -1,15 +1,6 @@
 PENDIENTES FASE 1:
-- Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador. Los enemigos deben poder 
-  moverse hacia abajo y hacia los lados, en su misma fila; los jefes deberían poder esquivar las balas de vez en cuando,
-  o moverse aleatoriamente.
-- Definir setInterval() para tiempos de movimiento de enemigos, cuánto tiempo se muestra la explosión, qué tan rápido
-  cae la bomba, qué tan rápido sube la bala, etc.
-- Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
-  pasar de nivel, etc.
-- Indicarle a GridMovement que debe mover los enemigos hacia los lados o hacia abajo, dependiendo del residuo del valor
-  que se le pase en el parámetro secondsElapsed
-- Hay necesidad de mantener gameInfo.enemyGridAction?
-- También incorporar la cuenta de gameInfo.killed
+- Incluir lógica de movimiento de bombas. Se supone que solo las deberían poder disparar enemigos que no tuvieran otros
+  enemigos debajo; además, podría disparar la bomba cualquier enemigo que cumpla la condición anterior, aleatoriamente.
 
 PENDIENTES FASE 2:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
@@ -79,6 +70,17 @@ YA HECHAS:
   mostrar, los valores de nivel, score y demás, la formación con la que los enemigos comienzan el nuevo nivel, etc.
 - Arreglar el conteo de gameInfo.firedBullets, para que coincida con las balas realmente disparadas, y no con las veces
   que se ha presionado la barra espaciadora. Se incrementa la cuenta con setBullet(). La función fire() desaparece.
+- Indicarle a GridMovement que debe mover los enemigos hacia los lados o hacia abajo, dependiendo del residuo del valor
+  que se le pase en el parámetro secondsElapsed.
+- Definir setInterval() para tiempos de movimiento de enemigos, cuánto tiempo se muestra la explosión, qué tan rápido
+  cae la bomba, qué tan rápido sube la bala, etc.
+- Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador. Los enemigos deben poder 
+  moverse hacia abajo y hacia los lados, en su misma fila; los jefes deberían poder esquivar las balas de vez en cuando,
+  o moverse aleatoriamente.
+- Hay necesidad de mantener gameInfo.enemyGridAction? Si.
+- También incorporar la cuenta de gameInfo.killed.
+- Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
+  pasar de nivel, etc.
 
 
 PREGUNTAS:

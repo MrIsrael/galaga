@@ -29,12 +29,17 @@ export default (state, action) => {
       return {
         ...state,
         enemyInfo: action.payload,
-        gameInfo: { ...state.gameInfo, 
-                    ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && alien.type !== 'bullet' &&
-                                                                     alien.type !== 'explosion' && alien.type !== 'bomb').length,   // valor inicial = 87
-                         firedBullets: action.firedBullets,
-                         bulletShot: action.bulletShot
-                       } 
+        gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && 
+                                                                                        alien.type !== 'bullet' &&
+                                                                                        alien.type !== 'explosion').length,     // valor inicial = 87 
+                                            firedBullets: action.firedBullets, bulletShot: action.bulletShot }
+                  }
+      }
+    case 'UPDATE_SCORE':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ playerWasHit: action.payload, enemiesKilled: action.enemiesDown, 
+                                            score: action.addToScore, highScore: action.highScore } 
                   }
       }
     default:

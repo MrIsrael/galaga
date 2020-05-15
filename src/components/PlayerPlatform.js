@@ -5,7 +5,7 @@ import skull from '../assets/images/skull.gif'
 import { GlobalContext } from '../context/GalagaState'
 
 const PlayerPlatform = () => {
-  const { playerInfo, initializePlayerPos } = useContext(GlobalContext)
+  const { playerInfo, gameInfo, initializePlayerPos } = useContext(GlobalContext)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar nave del jugador
   useEffect(() => {
@@ -16,8 +16,8 @@ const PlayerPlatform = () => {
   return (
     <Fragment>
       {playerInfo.map(pos => <div className='player' key={pos.id}>
-                              {pos.playerHere && !pos.wasHit ? <img src={spaceShip} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
-                              {pos.playerHere && pos.wasHit ? <img src={skull} alt='space-ship-down' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && !gameInfo.playerWasHit ? <img src={spaceShip} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && gameInfo.playerWasHit ? <img src={skull} alt='space-ship-down' style={spaceShipStyle} /> : <i></i>}
                              </div>
                      )}
     </Fragment>

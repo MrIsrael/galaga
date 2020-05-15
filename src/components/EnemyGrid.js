@@ -14,19 +14,19 @@ import { GlobalContext } from '../context/GalagaState'
 import { GridMovement } from '../functions/GridMovement'
 
 const EnemyGrid = () => {
-  const { gameInfo, enemyInfo, initializeEnemyFormation, setSecondsElapsed, updateBattleground } = useContext(GlobalContext)
+  const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore } = useContext(GlobalContext)
   const [flag, setFlag] = useState(false)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
   useEffect(() => {
     initializeEnemyFormation(enemyInfo)
     if (gameInfo.enemyGridAction) {
-      let seconds = gameInfo.timeElapsed
+      let intervals = gameInfo.timeElapsed
       setInterval(() => {
-        seconds++
-        setSecondsElapsed(seconds)
+        intervals++
+        setIntervalsElapsed(intervals)
         setFlag(true)
-      }, 1000)
+      }, gameInfo.msInterval)
     }
     // eslint-disable-next-line
   }, [])
@@ -36,8 +36,9 @@ const EnemyGrid = () => {
 
     switch (gameInfo.level) {
       case 1:
-        updateBattleground( GridMovement(enemyInfo, gameInfo.timeElapsed), gameInfo.bulletShot ? 1 : 0 )
-
+        const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed)
+        updateBattleground( updatedGrid[0], gameInfo.bulletShot ? 1 : 0 )       // (enemyArray, addedBullets)
+        updateScore( updatedGrid[1], updatedGrid[2], updatedGrid[3] )           // (wasHit, enemiesKilled, addToScore)
         break
       default: break
     }
@@ -46,6 +47,7 @@ const EnemyGrid = () => {
   return (
     <Fragment>
       {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
+                                {/* alien.id */}
                                 {alien.type === 'bullet' && <img src={bullet} alt='bullet' style={alienStyle} />}
                                 {alien.type === 'none' && <div style={emptyAlienStyle}>NO ENEMY</div>}
                                 {alien.type === 'explosion' && <img src={explosion} alt='explosion' style={alienStyle} />}

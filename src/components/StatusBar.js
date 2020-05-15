@@ -12,12 +12,11 @@ const StatusBar = () => {
     <Fragment>
       <div className='status-bar-left'>
         <h4>Level: {gameInfo.level}</h4>
-        <h4>Time elapsed: {gameInfo.timeElapsed}</h4>
+        <h4>Elapsed intervals: {gameInfo.timeElapsed}</h4>
         {/* <h4>Speed: x{gameInfo.speed}</h4> */}
-        <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
-        {/* <h4>High score: {gameInfo.highScore}</h4> */}
+        <h4>High score: {gameInfo.highScore}</h4>
+        <h4>Score: {gameInfo.score}</h4>
         <h4>Pressed key: {gameInfo.pressedKeyCode}</h4>
-        {/* <h4>Score: {gameInfo.score}</h4> */}
       </div>
       <div className='status-bar-middle'>
         {gameInfo.pausedGame && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
@@ -30,10 +29,11 @@ const StatusBar = () => {
         />
       </div>
       <div className='status-bar-right'>
-        <h4>Enemies killed: {gameInfo.killed}</h4>
+        <h4>Enemies killed: {gameInfo.enemiesKilled}</h4>
         <h4>Enemies left: {gameInfo.enemiesLeft}</h4>
         <h4>Bullets fired: {gameInfo.firedBullets}</h4>
         <h4>Lives: {gameInfo.lives}</h4>
+        <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
       </div>
     </Fragment>
   )
@@ -43,11 +43,13 @@ const StatusBar = () => {
 const logoStyle = {
   maxHeight: '102px',
   padding: '0px',
+  paddingTop: '15px',         // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
 }
 
 // Estilos para el textfield de sucesos del juego (pausado, cambio de nivel, etc)
 const messageStyle = {
   margin: 'auto',
+  marginTop: '15px',          // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
   height: '75px',
   border: '3px dotted',
   maxWidth: '170px',
