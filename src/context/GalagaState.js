@@ -8,7 +8,8 @@ const initialState = {
   gameInfo: {                 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
     buttonText: 'Click here or press Tab to play',
     pausedGame: true,
-   enemyGridAction: true,
+    levelJustStarted: true,   // Si es true, el nivel recién comienza, o el jugador fue eliminado pero aún no ha agotado todas sus vidas
+    initialCountdown: 5,
     timeElapsed: 0,
     pressedKeyCode: 0,
     enemiesKilled: 0,
@@ -16,9 +17,10 @@ const initialState = {
     bulletShot: false,
     firedBullets: 0,
    playerWasHit: false,
+    bombProbability: 40,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
    level: 1,
    speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
-    msInterval: 400,
+    msInterval: 1000,
    lives: 5,
     score: 0,
     highScore: 0,
@@ -35,10 +37,10 @@ export const GlobalProvider = ({ children }) => {
   let highScore = state.gameInfo.score > state.gameInfo.highScore ? state.gameInfo.score : state.gameInfo.highScore
 
   // Actions
-  function setIntervalsElapsed(intervals) {
+  function setIntervalsElapsed(qty) {
     dispatch({
       type: 'INCREMENT_TIME_ELAPSED',
-      payload: intervals
+      payload: state.gameInfo.timeElapsed + qty
     })
   }
 
@@ -56,16 +58,32 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  function decreaseCountdown(qty) {
+    dispatch({
+      type: 'DECREASE_COUNTDOWN',
+      payload: state.gameInfo.initialCountdown - qty,
+    })
+    console.log(state.gameInfo.initialCountdown)
+  }
+
+  function turnOnMovement() {
+    dispatch({
+      type: 'TURN_ON_MOVEMENT',
+      payload: false
+    })
+    console.log('Fight!')
+  }
+
   // Códigos de teclas: Barra espaciadora: 32, Flecha izquierda: 37, Flecha derecha: 39, ESC: 27, Enter: 13, Tab: 9
   function keyCode(event, playerArray, pausedGame) {
     switch (event.keyCode) {
       case 32:    // Disparar cañón
-        if(!pausedGame){
+        if(!pausedGame && !state.gameInfo.levelJustStarted && !state.gameInfo.playerWasHit){
           setBullet(state.enemyInfo, playerArray.findIndex(pos => pos.playerHere) + 171 + 1)
         }
         break
       case 37:    // Mover jugador a la izquierda
-        if(!pausedGame){
+        if(!pausedGame && !state.gameInfo.levelJustStarted && !state.gameInfo.playerWasHit){
           const dummy1 = playerArray.findIndex(pos => pos.playerHere)
           if (dummy1 !== 0) {
             playerArray[dummy1].playerHere = false
@@ -75,7 +93,7 @@ export const GlobalProvider = ({ children }) => {
         }
         break
       case 39:    // Mover jugador a la derecha
-        if(!pausedGame){
+        if(!pausedGame && !state.gameInfo.levelJustStarted && !state.gameInfo.playerWasHit){
           const dummy2 = playerArray.findIndex(pos => pos.playerHere)
           if (dummy2 !== (enemyGridWidth - 1)) {
             playerArray[dummy2].playerHere = false
@@ -188,37 +206,35 @@ export const GlobalProvider = ({ children }) => {
   }
 
   function setBullet(enemyArray, newPosForBullet) {
-    if (state.gameInfo.enemyGridAction) {
-      const wasHit = false
-      let enemiesKilled = 0
-      let scorePlus = 0
-      if (enemyArray[newPosForBullet - 1].type === 'none' || enemyArray[newPosForBullet - 1].type === 'bullet' || enemyArray[newPosForBullet - 1].type === 'explosion') {
-        enemyArray[newPosForBullet - 1].type = 'bullet'
-        enemyArray[newPosForBullet - 1].remainingShots = 0
-        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
-      } else if (enemyArray[newPosForBullet - 1].type === 'bomb' || enemyArray[newPosForBullet - 1].remainingShots === 1) {
-        enemiesKilled++
-        scorePlus += enemyArray[newPosForBullet - 1].scoreIfDestroyed
-        enemyArray[newPosForBullet - 1].type = 'explosion'
-        enemyArray[newPosForBullet - 1].remainingShots = 0
-        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
-      } else if (enemyArray[newPosForBullet - 1].remainingShots > 1) {
-        enemyArray[newPosForBullet - 1].remainingShots--
-      }
-      dispatch({
-        type: 'UPDATE_ENEMY_ARRAY',
-        payload: enemyArray,
-        firedBullets: state.gameInfo.firedBullets,
-        bulletShot: true                                 // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
-      })
-      dispatch({
-        type: 'UPDATE_SCORE',
-        payload: wasHit,
-        enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
-        addToScore: state.gameInfo.score + scorePlus,
-        highScore: highScore
-      })
+    const wasHit = false
+    let enemiesKilled = 0
+    let scorePlus = 0
+    if (enemyArray[newPosForBullet - 1].type === 'none' || enemyArray[newPosForBullet - 1].type === 'bullet' || enemyArray[newPosForBullet - 1].type === 'explosion') {
+      enemyArray[newPosForBullet - 1].type = 'bullet'
+      enemyArray[newPosForBullet - 1].remainingShots = 0
+      enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+    } else if (enemyArray[newPosForBullet - 1].type === 'bomb' || enemyArray[newPosForBullet - 1].remainingShots === 1) {
+      enemiesKilled++
+      scorePlus += enemyArray[newPosForBullet - 1].scoreIfDestroyed
+      enemyArray[newPosForBullet - 1].type = 'explosion'
+      enemyArray[newPosForBullet - 1].remainingShots = 0
+      enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+    } else if (enemyArray[newPosForBullet - 1].remainingShots > 1) {
+      enemyArray[newPosForBullet - 1].remainingShots--
     }
+    dispatch({
+      type: 'UPDATE_ENEMY_ARRAY',
+      payload: enemyArray,
+      firedBullets: state.gameInfo.firedBullets,
+      bulletShot: true                                 // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
+    })
+    dispatch({
+      type: 'UPDATE_SCORE',
+      payload: wasHit,
+      enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
+      addToScore: state.gameInfo.score + scorePlus,
+      highScore: highScore
+    })
   }
 
   function updateBattleground(enemyArray, addedBullets) {
@@ -255,6 +271,8 @@ export const GlobalProvider = ({ children }) => {
     gameInfo: state.gameInfo,
     startGame,
     pauseGame,
+    turnOnMovement,
+    decreaseCountdown,
     setIntervalsElapsed,
     keyCode,
     initializePlayerPos,

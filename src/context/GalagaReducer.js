@@ -10,6 +10,16 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: true } }
       }
+    case 'DECREASE_COUNTDOWN':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ initialCountdown: action.payload } }
+      }
+    case 'TURN_ON_MOVEMENT':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ levelJustStarted: action.payload } }
+      }
     case 'INCREMENT_TIME_ELAPSED':
       return {
         ...state,

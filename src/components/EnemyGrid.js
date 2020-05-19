@@ -14,34 +14,41 @@ import { GlobalContext } from '../context/GalagaState'
 import { GridMovement } from '../functions/GridMovement'
 
 const EnemyGrid = () => {
-  const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore } = useContext(GlobalContext)
+  const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore,
+          pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
   const [flag, setFlag] = useState(false)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
   useEffect(() => {
     initializeEnemyFormation(enemyInfo)
-    if (gameInfo.enemyGridAction) {
-      let intervals = gameInfo.timeElapsed
-      setInterval(() => {
-        intervals++
-        setIntervalsElapsed(intervals)
-        setFlag(true)
-      }, gameInfo.msInterval)
-    }
+    setInterval(() => {
+      setFlag(true)
+    }, gameInfo.msInterval)
     // eslint-disable-next-line
   }, [])
 
-  if (flag && !gameInfo.pausedGame) {     // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego
+  // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida:
+  if (flag && !gameInfo.pausedGame && gameInfo.levelJustStarted) {
     setFlag(false)
+    gameInfo.initialCountdown === 0 ? turnOnMovement() : decreaseCountdown(1)
+  }
 
-    switch (gameInfo.level) {
-      case 1:
-        const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed)
-        updateBattleground( updatedGrid[0], gameInfo.bulletShot ? 1 : 0 )       // (enemyArray, addedBullets)
-        updateScore( updatedGrid[1], updatedGrid[2], updatedGrid[3] )           // (wasHit, enemiesKilled, addToScore)
-        break
-      default: break
-    }
+  // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego:
+  if (flag && !gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit) {
+    setFlag(false)
+    setIntervalsElapsed(1)
+    const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed, gameInfo.bombProbability)
+    updateBattleground( updatedGrid[0], gameInfo.bulletShot ? 1 : 0 )       // (enemyArray, addedBullets)
+    updateScore( updatedGrid[1], updatedGrid[2], updatedGrid[3] )           // (wasHit, enemiesKilled, addToScore)
+  }
+
+  // Si el jugador es destruido por un alienígena o una bomba:
+  if (flag && gameInfo.playerWasHit) {
+    setFlag(false)
+    pauseGame('Enemy won! Press Enter to continue')
+// SEGUIR AQUÍ CON LA LÓGICA DE "CONTINUE" O CAMBIO DE NIVEL, AL PRESIONAR ENTER
+// deberían reiniciarse: gameInfo.levelJustStarted = true, gameInfo.initialCountdown = 5, restarse una vida, o mostrar "GAME OVER"
+//  playerKilled(false)
   }
 
   return (
@@ -78,6 +85,7 @@ const EnemyGrid = () => {
 const alienStyle = {
   maxWidth: '33px',
   minHeight: '35px',
+  maxHeight: '35px',
   padding: '1px',
 }
 
@@ -85,6 +93,7 @@ const emptyAlienStyle = {
   margin: 'auto',
   maxWidth: '33px',
   minHeight: '35px',
+  maxHeight: '35px',
   paddingTop: '2px',
   backgroundColor: '#ccc',
 }

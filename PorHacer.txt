@@ -1,7 +1,3 @@
-PENDIENTES FASE 1:
-- Incluir lógica de movimiento de bombas. Se supone que solo las deberían poder disparar enemigos que no tuvieran otros
-  enemigos debajo; además, podría disparar la bomba cualquier enemigo que cumpla la condición anterior, aleatoriamente.
-
 PENDIENTES FASE 2:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
   se restaría una de las navecitas.
@@ -31,6 +27,7 @@ PENDIENTES FASE 4:
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
 - Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
+
 
 YA HECHAS:
 - Buscar imagenes para identificar a:
@@ -77,10 +74,13 @@ YA HECHAS:
 - Crear arrays y lógica de movimiento, que ubique y mueva los enemigos, la bala y el jugador. Los enemigos deben poder 
   moverse hacia abajo y hacia los lados, en su misma fila; los jefes deberían poder esquivar las balas de vez en cuando,
   o moverse aleatoriamente.
-- Hay necesidad de mantener gameInfo.enemyGridAction? Si.
 - También incorporar la cuenta de gameInfo.killed.
 - Incluir "score", "High score" (para cada sesión de juego) y definir qué puntación da destruir a cada tipo de enemigo,
   pasar de nivel, etc.
+- Incluir lógica de movimiento de bombas. Se supone que solo las deberían poder disparar enemigos que no tuvieran otros
+  enemigos debajo; además, podría disparar la bomba cualquier enemigo que cumpla la condición anterior, aleatoriamente.
+- Hay necesidad de mantener gameInfo.enemyGridAction? No, pero hay que resolver el problema de tiempos de setInterval 
+  dentro de useEffect.
 
 
 PREGUNTAS:
