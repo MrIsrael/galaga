@@ -1,13 +1,30 @@
+CONSTANTES DEL JUEGO:
+playerInfo[19] = { id, playerHere (true, false) }
+enemyInfo[190] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
+Enemy grid element types:
+  SOLDIERS: scarecrow, bane, joker
+  BOSSES: theThing, terminator, alienQueen, predator
+  AMMO: bullet, bomb
+  OTHERS: explosion, none
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+Atributos de gameInfo para cambio de nivel (automáticos): enemiesLeft
+Atributos de gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, lives, level, speed
+Atributos de gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
+Atributos de gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
+Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
 PENDIENTES FASE 2:
-- Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
-  se restaría una de las navecitas.
-- Cuando el jugador continúa, después de haber gastado una vida, debería ser inmune a los enemigos durante unos
-  segundos, y la nave debería parpadear durante ese tiempo de "invisibilidad".
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
   de nivel. Debería haber un puntaje extra por esto.
+- El siguiente nivel debe empezar con una formación enemiga diferente, incluyendo uno o varios bosses nuevos.
 - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
   y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
+  Tambien la cantidad de bombas, con bombProbability.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
 - Elegir el background color que tendrá el juego.
@@ -81,6 +98,11 @@ YA HECHAS:
   enemigos debajo; además, podría disparar la bomba cualquier enemigo que cumpla la condición anterior, aleatoriamente.
 - Hay necesidad de mantener gameInfo.enemyGridAction? No, pero hay que resolver el problema de tiempos de setInterval 
   dentro de useEffect.
+- Cuando el jugador continúa, después de haber gastado una vida, debería ser inmune a los enemigos durante unos
+  segundos, y la nave debería parpadear durante ese tiempo de "invisibilidad" (implementado ya con initialCountdown).
+- Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
+  se restaría una de las navecitas (se mostrarán las vidas mejor como números, para no tener que poner más <div> y
+  más reglas CSS).
 
 
 PREGUNTAS:

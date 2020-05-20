@@ -16,6 +16,8 @@ import { GridMovement } from '../functions/GridMovement'
 const EnemyGrid = () => {
   const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore,
           pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
+  // Flag que permite movimiento del juego sólo cada vez que transcurra 1 intervalo de tiempo definido por msInterval;
+  // de lo contrario, habría un loop infinito de re-renders y React estallaría:
   const [flag, setFlag] = useState(false)
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
@@ -38,18 +40,32 @@ const EnemyGrid = () => {
     setFlag(false)
     setIntervalsElapsed(1)
     const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed, gameInfo.bombProbability)
-    updateBattleground( updatedGrid[0], gameInfo.bulletShot ? 1 : 0 )       // (enemyArray, addedBullets)
-    updateScore( updatedGrid[1], updatedGrid[2], updatedGrid[3] )           // (wasHit, enemiesKilled, addToScore)
+    updateBattleground(updatedGrid[0])                                                            // (enemyArray)
+    updateScore(updatedGrid[1], updatedGrid[2], updatedGrid[3])                                   // (wasHit, enemiesKilled, addToScore)
   }
 
-  // Si el jugador es destruido por un alienígena o una bomba:
+  // Si el jugador es impactado por un alienígena o una bomba:
   if (flag && gameInfo.playerWasHit) {
     setFlag(false)
     pauseGame('Enemy won! Press Enter to continue')
-// SEGUIR AQUÍ CON LA LÓGICA DE "CONTINUE" O CAMBIO DE NIVEL, AL PRESIONAR ENTER
-// deberían reiniciarse: gameInfo.levelJustStarted = true, gameInfo.initialCountdown = 5, restarse una vida, o mostrar "GAME OVER"
-//  playerKilled(false)
   }
+
+  // Si todos los enemigos son eliminados y hay cambio de nivel:
+// if (flag && gameInfo.xxx) {
+
+    // Crear nuevo .js en functions, que maneje las formaciones de enemigos nuevas, con un switch, y generar nuevo nivel con un solo action / reducer
+    // usar todos los enemigos: dos niveles por enemigo? 
+// }
+
+  // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER!
+// if (flag && gameInfo.xxx) {
+// }
+
+// Atts gameInfo para cambio de nivel (automáticos): enemiesLeft
+// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, lives, level, speed
+// Atts gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
+// Atts gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
+// Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore
 
   return (
     <Fragment>

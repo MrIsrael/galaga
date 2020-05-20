@@ -1,4 +1,4 @@
-// Reglas de movimiento / creación / eliminación de EXPLOSIONES, ENEMIGOS, BOMBAS y BALAS:
+// Reglas de movimiento / aparición / eliminación de EXPLOSIONES, ENEMIGOS, BOMBAS y BALAS:
 // Primero se limpian las explosiones, luego se mueven los enemigos, luego las bombas, luego las balas
 // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
@@ -54,7 +54,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
   const t5 = enemyArray.filter(alien => alien.type !== 'none' && alien.type !== 'bullet' &&
                                alien.type !== 'explosion' && alien.type !== 'bomb').map(alien => alien.position)
 
-  if (intervalsElapsed % 3 === 0 && intervalsElapsed % 10 !== 0) { //  -->  Movimiento exclusivamente horizontal aleatorio de enemigos, cada 3 intervalos
+  if (intervalsElapsed % 3 === 0 && intervalsElapsed % 20 !== 0) { //  -->  Movimiento exclusivamente horizontal aleatorio de enemigos, cada 3 intervalos
     if (randomMove === 'right') {
       for (let i = t5.length - 1; i >= 0 ; i--) {
         if (t5[i] + 1 >= 191) {         //  -->  El alienígena está en la última casilla del tablero, antes de intentar moverse a la derecha;
@@ -116,7 +116,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
         }
       }
     }
-  } else if (intervalsElapsed % 10 === 0) { //  -->  Movimiento exclusivamente vertical de enemigos, cada 10 intervalos
+  } else if (intervalsElapsed % 20 === 0) { //  -->  Movimiento exclusivamente vertical de enemigos, cada 20 intervalos
     for (let i = t5.length - 1; i >= 0 ; i--) {
       if (t5[i] + 19 >= 191) { 
         wasHit = true                       //  -->  Un enemigo impactó al jugador! Se debe restar una vida!

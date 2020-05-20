@@ -5,7 +5,8 @@ import GalagaReducer from '../context/GalagaReducer'
 const initialState = {
   playerInfo: [],             // playerArray[i] = { id, playerHere (true, false) }
   enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
-  gameInfo: {                 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+                              // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+  gameInfo: {
     buttonText: 'Click here or press Tab to play',
     pausedGame: true,
     levelJustStarted: true,   // Si es true, el nivel recién comienza, o el jugador fue eliminado pero aún no ha agotado todas sus vidas
@@ -14,14 +15,13 @@ const initialState = {
     pressedKeyCode: 0,
     enemiesKilled: 0,
     enemiesLeft: 0,
-    bulletShot: false,
     firedBullets: 0,
-   playerWasHit: false,
-    bombProbability: 40,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
-   level: 1,
-   speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
-    msInterval: 1000,
-   lives: 5,
+    playerWasHit: false,
+    bombProbability: 25,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    level: 1,
+    speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
+    msInterval: 750,
+    lives: 5,
     score: 0,
     highScore: 0,
   }
@@ -106,13 +106,34 @@ export const GlobalProvider = ({ children }) => {
         pauseGame('Press Tab or click here to resume')
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
-        pausedGame ? startGame('Press Enter or click outside to pause') : pauseGame('Press Enter to resume')
+        if (pausedGame && !state.gameInfo.playerWasHit) { startGame('Press Enter or click outside to pause') }
+        if (!pausedGame && !state.gameInfo.playerWasHit) { pauseGame('Press Enter to resume') }
+        if (pausedGame && state.gameInfo.playerWasHit) {
+          // Borrar las balas, explosiones y bombas que hayan, dejar solo enemigos, antes de continuar el nivel actual al presionar Enter:
+          setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'bullet').map(bullet => bullet.position))
+          setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'bomb').map(bomb => bomb.position))
+          setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'explosion').map(explosion => explosion.position))
+          // Resetear atributos de gameInfo: levelJustStarted = true, playerWasHit = false, initialCountdown = 5, score = 0, lives--
+          continueCurrentLevel(true, false, 5, 0, -1)
+          startGame('Press Enter or click outside to pause')
+        }
         break
       default: break
     }
     dispatch({
       type: 'SHOW_KEY_CODE',
       payload: event.keyCode
+    })
+  }
+
+  function continueCurrentLevel(levelJustStarted, playerWasHit, initialCountdown, score, lives) {
+    dispatch({
+      type: 'CONTINUE_CURRENT_LEVEL',
+      restartLevel: levelJustStarted,
+      wasHit: playerWasHit,
+      countdown: initialCountdown,
+      score: score,
+      quitOneLife: state.gameInfo.lives + lives
     })
   }
 
@@ -145,28 +166,28 @@ export const GlobalProvider = ({ children }) => {
           enemyArray[i].scoreIfDestroyed = 100
           break
         case 'bane':
+          enemyArray[i].remainingShots = 2
+          enemyArray[i].scoreIfDestroyed = 200
+          break
+        case 'joker':
           enemyArray[i].remainingShots = 3
           enemyArray[i].scoreIfDestroyed = 300
           break
-        case 'joker':
-          enemyArray[i].remainingShots = 5
-          enemyArray[i].scoreIfDestroyed = 500
-          break
         case 'theThing':
-          enemyArray[i].remainingShots = 10
-          enemyArray[i].scoreIfDestroyed = 5000
+          enemyArray[i].remainingShots = 5
+          enemyArray[i].scoreIfDestroyed = 1500
           break
         case 'terminator':
-          enemyArray[i].remainingShots = 15
-          enemyArray[i].scoreIfDestroyed = 7500
+          enemyArray[i].remainingShots = 8
+          enemyArray[i].scoreIfDestroyed = 3000
           break
         case 'alienQueen':
-          enemyArray[i].remainingShots = 5                    // Valor original = 25
-          enemyArray[i].scoreIfDestroyed = 12500
+          enemyArray[i].remainingShots = 10
+          enemyArray[i].scoreIfDestroyed = 5500
           break
         case 'predator':
-          enemyArray[i].remainingShots = 35
-          enemyArray[i].scoreIfDestroyed = 30000
+          enemyArray[i].remainingShots = 15
+          enemyArray[i].scoreIfDestroyed = 13000
           break
         case 'bomb':
           enemyArray[i].remainingShots = 1
@@ -184,8 +205,7 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
       payload: enemyArray,
-      firedBullets: state.gameInfo.firedBullets,
-      bulletShot: false
+      firedBullets: state.gameInfo.firedBullets
     })
   }
 
@@ -200,49 +220,52 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
       payload: enemyArray,
-      firedBullets: state.gameInfo.firedBullets,
-      bulletShot: false
+      firedBullets: state.gameInfo.firedBullets
     })
   }
 
   function setBullet(enemyArray, newPosForBullet) {
-    const wasHit = false
-    let enemiesKilled = 0
-    let scorePlus = 0
-    if (enemyArray[newPosForBullet - 1].type === 'none' || enemyArray[newPosForBullet - 1].type === 'bullet' || enemyArray[newPosForBullet - 1].type === 'explosion') {
-      enemyArray[newPosForBullet - 1].type = 'bullet'
-      enemyArray[newPosForBullet - 1].remainingShots = 0
-      enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
-    } else if (enemyArray[newPosForBullet - 1].type === 'bomb' || enemyArray[newPosForBullet - 1].remainingShots === 1) {
-      enemiesKilled++
-      scorePlus += enemyArray[newPosForBullet - 1].scoreIfDestroyed
-      enemyArray[newPosForBullet - 1].type = 'explosion'
-      enemyArray[newPosForBullet - 1].remainingShots = 0
-      enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
-    } else if (enemyArray[newPosForBullet - 1].remainingShots > 1) {
-      enemyArray[newPosForBullet - 1].remainingShots--
+    if (enemyArray[newPosForBullet - 1].type !== 'bullet' && enemyArray[newPosForBullet - 1].type !== 'explosion') {
+      const wasHit = false
+      let enemiesKilled = 0
+      let scorePlus = 0
+      let addedBullets = 0
+      if (enemyArray[newPosForBullet - 1].type === 'none') {
+        addedBullets++
+        enemyArray[newPosForBullet - 1].type = 'bullet'
+        enemyArray[newPosForBullet - 1].remainingShots = 0
+        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+      } else if (enemyArray[newPosForBullet - 1].type === 'bomb' || enemyArray[newPosForBullet - 1].remainingShots === 1) {
+        enemiesKilled++
+        addedBullets++
+        scorePlus += enemyArray[newPosForBullet - 1].scoreIfDestroyed
+        enemyArray[newPosForBullet - 1].type = 'explosion'
+        enemyArray[newPosForBullet - 1].remainingShots = 0
+        enemyArray[newPosForBullet - 1].scoreIfDestroyed = 0
+      } else if (enemyArray[newPosForBullet - 1].remainingShots > 1) {
+        addedBullets++
+        enemyArray[newPosForBullet - 1].remainingShots--
+      }
+      dispatch({
+        type: 'UPDATE_ENEMY_ARRAY',
+        payload: enemyArray,
+        firedBullets: state.gameInfo.firedBullets + addedBullets
+      })
+      dispatch({
+        type: 'UPDATE_SCORE',
+        payload: wasHit,
+        enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
+        addToScore: state.gameInfo.score + scorePlus,
+        highScore: highScore
+      })
     }
-    dispatch({
-      type: 'UPDATE_ENEMY_ARRAY',
-      payload: enemyArray,
-      firedBullets: state.gameInfo.firedBullets,
-      bulletShot: true                                 // Sólo en este caso se aumenta la cuenta de balas disparadas a mostrar
-    })
-    dispatch({
-      type: 'UPDATE_SCORE',
-      payload: wasHit,
-      enemiesDown: state.gameInfo.enemiesKilled + enemiesKilled,
-      addToScore: state.gameInfo.score + scorePlus,
-      highScore: highScore
-    })
   }
 
-  function updateBattleground(enemyArray, addedBullets) {
+  function updateBattleground(enemyArray) {
     dispatch({
       type: 'UPDATE_ENEMY_ARRAY',
       payload: enemyArray,
-      firedBullets: state.gameInfo.firedBullets + addedBullets,
-      bulletShot: false
+      firedBullets: state.gameInfo.firedBullets
     })
   }
 
@@ -260,9 +283,9 @@ export const GlobalProvider = ({ children }) => {
   // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   function initializeEnemyFormation(enemyArray) {
     setEnemyFormation(enemyArray, 1, ((enemyGridWidth * 10) / 2), 'scarecrow')
-    setEnemyFormation(enemyArray, 8, 12, 'alienQueen')
+    setEnemyFormation(enemyArray, 9, 11, 'theThing')
     setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')
-    setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76])
+    setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76,59,60,77,78,74,75,94,95])
   }
 
   return (<GlobalContext.Provider value={{

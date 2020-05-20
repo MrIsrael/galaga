@@ -18,17 +18,22 @@ const StatusBar = () => {
         <h4>Pressed key: {gameInfo.pressedKeyCode}</h4>
       </div>
       <div className='status-bar-middle'>
+        
         {gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 5
-          && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
+              && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && (gameInfo.initialCountdown === 5 || gameInfo.initialCountdown === 4)
-          && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
+              && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 3 && <div style={messageStyle}><p style={textStyle}>3...</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 2 && <div style={messageStyle}><p style={textStyle}>2...</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 1 && <div style={messageStyle}><p style={textStyle}>1...</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 0 && <div style={messageStyle}><p style={textStyle}>FIGHT!</p></div>}
+        {gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown !== 5 && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+
         {!gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit && <img src={logo} alt='game-logo' style={logoStyle}/>}
         {gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+
         {!gameInfo.levelJustStarted && gameInfo.playerWasHit && <div style={messageStyle}><p style={textStyle}>PLAYER DOWN!</p></div>}
+        
         <br />
         <input type='text' readOnly size='35' value={gameInfo.buttonText} style={buttonStyle} 
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
