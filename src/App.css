@@ -9,6 +9,10 @@ body {
 	margin: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 .status-bar-container {
   display: grid;
   grid-template-areas:
@@ -91,6 +95,55 @@ body {
   padding: 5px;
   border-radius: 15px;
   text-align: center;
+}
+
+.welcome-screen-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-gap: 15px;
+
+  width: 80%;
+  margin: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border: dotted 3px #333;
+  padding: 5px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.welcome-screen-container > div {
+  vertical-align: middle;
+  border: 3px solid;
+  padding: 10px;
+  font-size: 25px;
+}
+
+.welcome-screen-banner { 
+  grid-column: 1 / span 3;
+  display: inline;
+}
+
+.language-banner { 
+  grid-column: 2 / span 2;
+}
+
+.button {
+	background-color: #686192;
+  border: 3px solid #4b4a4a;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  /* display: inline-block; */
+  font-size: 15px;
+  transition-duration: 0.5s;
+  cursor: pointer;
+}
+
+.button:hover {
+	background-color: #9997a7;
+  color: #4b4a4a;
 }
 
 .enemy { 

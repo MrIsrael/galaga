@@ -6,14 +6,14 @@ import theThing from '../assets/images/enemies/boss1.gif'
 import terminator from '../assets/images/enemies/boss2.gif'
 import alienQueen from '../assets/images/enemies/boss3.gif'
 import predator from '../assets/images/enemies/boss4.gif'
-import bullet from '../assets/images/bullet2.gif'
+import bullet from '../assets/images/bullet1.gif'
 import explosion from '../assets/images/explosion.gif'
 import bomb from '../assets/images/bomb1.gif'
 
 import { GlobalContext } from '../context/GalagaState'
-import { GridMovement } from '../functions/GridMovement'
+import { GridMovement } from '../functions/GridMovement'    // Contiene toda la lógica de movimiento en el tablero enemigo
 
-const EnemyGrid = () => {
+const EnemyGrid = ({ changeScreen }) => {
   const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore,
           pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
   // Flag que permite movimiento del juego sólo cada vez que transcurra 1 intervalo de tiempo definido por msInterval;
@@ -47,7 +47,7 @@ const EnemyGrid = () => {
   // Si el jugador es impactado por un alienígena o una bomba:
   if (flag && gameInfo.playerWasHit) {
     setFlag(false)
-    pauseGame('Enemy won! Press Enter to continue')
+    pauseGame(gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue')
   }
 
   // Si todos los enemigos son eliminados y hay cambio de nivel:
@@ -65,7 +65,7 @@ const EnemyGrid = () => {
 // Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, lives, level, speed
 // Atts gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
 // Atts gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
-// Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore
+// Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
 
   return (
     <Fragment>

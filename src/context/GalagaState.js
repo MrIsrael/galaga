@@ -7,7 +7,9 @@ const initialState = {
   enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
                               // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   gameInfo: {
-    buttonText: 'Click here or press Tab to play',
+    buttonText: 'Click here to play',
+    isSpanish: false,
+    avatar: 1,
     pausedGame: true,
     levelJustStarted: true,   // Si es true, el nivel recién comienza, o el jugador fue eliminado pero aún no ha agotado todas sus vidas
     initialCountdown: 5,
@@ -17,10 +19,10 @@ const initialState = {
     enemiesLeft: 0,
     firedBullets: 0,
     playerWasHit: false,
-    bombProbability: 25,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    bombProbability: 45,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
     speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
-    msInterval: 750,
+    msInterval: 1000,
     lives: 5,
     score: 0,
     highScore: 0,
@@ -41,6 +43,20 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'INCREMENT_TIME_ELAPSED',
       payload: state.gameInfo.timeElapsed + qty
+    })
+  }
+
+  function toggleLanguage(lang) {
+    dispatch({
+      type: 'CHANGE_LANGUAGE',
+      payload: lang
+    })
+  }
+
+  function chooseAvatar(avatar) {
+    dispatch({
+      type: 'CHOOSE_AVATAR',
+      payload: avatar
     })
   }
 
@@ -103,11 +119,11 @@ export const GlobalProvider = ({ children }) => {
         }
         break
       case 9:     // Tecla Tab presionada: Pausar / Reanudar el juego
-        pauseGame('Press Tab or click here to resume')
+        pauseGame(state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume')
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
-        if (pausedGame && !state.gameInfo.playerWasHit) { startGame('Press Enter or click outside to pause') }
-        if (!pausedGame && !state.gameInfo.playerWasHit) { pauseGame('Press Enter to resume') }
+        if (pausedGame && !state.gameInfo.playerWasHit) { startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') }
+        if (!pausedGame && !state.gameInfo.playerWasHit) { pauseGame(state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume') }
         if (pausedGame && state.gameInfo.playerWasHit) {
           // Borrar las balas, explosiones y bombas que hayan, dejar solo enemigos, antes de continuar el nivel actual al presionar Enter:
           setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'bullet').map(bullet => bullet.position))
@@ -115,7 +131,7 @@ export const GlobalProvider = ({ children }) => {
           setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'explosion').map(explosion => explosion.position))
           // Resetear atributos de gameInfo: levelJustStarted = true, playerWasHit = false, initialCountdown = 5, score = 0, lives--
           continueCurrentLevel(true, false, 5, 0, -1)
-          startGame('Press Enter or click outside to pause')
+          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')
         }
         break
       default: break
@@ -292,6 +308,8 @@ export const GlobalProvider = ({ children }) => {
     playerInfo: state.playerInfo,
     enemyInfo: state.enemyInfo,
     gameInfo: state.gameInfo,
+    toggleLanguage,
+    chooseAvatar,
     startGame,
     pauseGame,
     turnOnMovement,

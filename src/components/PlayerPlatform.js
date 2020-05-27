@@ -1,6 +1,8 @@
 import React, { Fragment, useContext, useEffect } from 'react'
-import spaceShip from '../assets/images/spaceShip.gif'
-import skull from '../assets/images/skull.gif'
+import spaceShip from '../assets/images/avatars/spaceShip.gif'
+import falcon from '../assets/images/avatars/millenium-falcon.gif'
+import ufo from '../assets/images/avatars/ufo.gif'
+import skull from '../assets/images/avatars/skull.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 
@@ -16,7 +18,9 @@ const PlayerPlatform = () => {
   return (
     <Fragment>
       {playerInfo.map(pos => <div className='player' key={pos.id}>
-                              {pos.playerHere && !gameInfo.playerWasHit ? <img src={spaceShip} alt='space-ship' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && !gameInfo.playerWasHit && gameInfo.avatar === 1 ? <img src={spaceShip} alt='spaceship' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && !gameInfo.playerWasHit && gameInfo.avatar === 2 ? <img src={falcon} alt='falcon' style={spaceShipStyle} /> : <i></i>}
+                              {pos.playerHere && !gameInfo.playerWasHit && gameInfo.avatar === 3 ? <img src={ufo} alt='ufo' style={spaceShipStyle} /> : <i></i>}
                               {pos.playerHere && gameInfo.playerWasHit ? <img src={skull} alt='space-ship-down' style={spaceShipStyle} /> : <i></i>}
                              </div>
                      )}

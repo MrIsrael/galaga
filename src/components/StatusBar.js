@@ -10,43 +10,49 @@ const StatusBar = () => {
   return (
     <Fragment>
       <div className='status-bar-left'>
-        <h4>Level: {gameInfo.level}</h4>
-        <h4>Elapsed intervals: {gameInfo.timeElapsed}</h4>
-        {/* <h4>Speed: x{gameInfo.speed}</h4> */}
-        <h4>High score: {gameInfo.highScore}</h4>
-        <h4>Score: {gameInfo.score}</h4>
-        <h4>Pressed key: {gameInfo.pressedKeyCode}</h4>
+        <h4>{gameInfo.isSpanish ? 'Nivel: ' : 'Level: '} {gameInfo.level}</h4>
+        <h4>{gameInfo.isSpanish ? 'Intervalos de tiempo: ' : 'Elapsed intervals: '} {gameInfo.timeElapsed}</h4>
+        {/* <h4>{gameInfo.isSpanish ? 'Velocidad: ' : 'Speed: '} x{gameInfo.speed}</h4> */}
+        <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
+        <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
+        <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4>
       </div>
+
       <div className='status-bar-middle'>
         
         {gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 5
-              && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'LISTO?' : 'READY?'}</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && (gameInfo.initialCountdown === 5 || gameInfo.initialCountdown === 4)
-              && <div style={messageStyle}><p style={textStyle}>READY?</p></div>}
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'LISTO?' : 'READY?'}</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 3 && <div style={messageStyle}><p style={textStyle}>3...</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 2 && <div style={messageStyle}><p style={textStyle}>2...</p></div>}
         {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 1 && <div style={messageStyle}><p style={textStyle}>1...</p></div>}
-        {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 0 && <div style={messageStyle}><p style={textStyle}>FIGHT!</p></div>}
-        {gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown !== 5 && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+        {!gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 0 
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'A LUCHAR!' : 'FIGHT!'}</p></div>}
+        {gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown !== 5 
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'}</p></div>}
 
-        {!gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit && <img src={logo} alt='game-logo' style={logoStyle}/>}
-        {gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit && <div style={messageStyle}><p style={textStyle}>GAME PAUSED</p></div>}
+        {!gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit && <img src={logo} alt='game-logo' style={logoStyle} />}
+        {gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit 
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'}</p></div>}
 
-        {!gameInfo.levelJustStarted && gameInfo.playerWasHit && <div style={messageStyle}><p style={textStyle}>PLAYER DOWN!</p></div>}
+        {!gameInfo.levelJustStarted && gameInfo.playerWasHit 
+              && <div style={messageStyle}><p style={textStyle}>{gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'}</p></div>}
         
         <br />
-        <input type='text' readOnly size='35' value={gameInfo.buttonText} style={buttonStyle} 
+        <input type='text' readOnly size='35' style={buttonStyle} value={gameInfo.buttonText}
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
-              onFocus={() => startGame('Press Enter or click outside to pause')}
-              onBlur={() => pauseGame('Press Tab or click here to resume')}
+              onFocus={() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')}
+              onBlur={() => pauseGame(gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Clic here to resume')}
         />
       </div>
+
       <div className='status-bar-right'>
-        <h4>Enemies killed: {gameInfo.enemiesKilled}</h4>
-        <h4>Enemies left: {gameInfo.enemiesLeft}</h4>
-        <h4>Bullets fired: {gameInfo.firedBullets}</h4>
-        <h4>Lives: {gameInfo.lives}</h4>
-        <h4>Player cell: {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
+        <h4>{gameInfo.isSpanish ? 'Enemigos aniquilados: ' : 'Enemies killed: '} {gameInfo.enemiesKilled}</h4>
+        <h4>{gameInfo.isSpanish ? 'Enemigos restantes: ' : 'Enemies left: '} {gameInfo.enemiesLeft}</h4>
+        <h4>{gameInfo.isSpanish ? 'Balas disparadas: ' : 'Bullets fired: '} {gameInfo.firedBullets}</h4>
+        <h4>{gameInfo.isSpanish ? 'Vidas restantes: ' : 'Lives remaining: '} {gameInfo.lives}</h4>
+        <h4>{gameInfo.isSpanish ? 'Posición del jugador: ' : 'Player cell: '} {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
       </div>
     </Fragment>
   )
@@ -78,7 +84,7 @@ const buttonStyle = {
   fontSize: '12px',
   textAlign: 'center',
   color: 'white',
-  backgroundColor: 'purple',
+  backgroundColor: '#686192',
   marginTop: '3px',
   padding: '10px',
 }

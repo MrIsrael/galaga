@@ -5,6 +5,16 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: false } }
       }
+    case 'CHANGE_LANGUAGE':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ isSpanish: action.payload } }
+      }
+    case 'CHOOSE_AVATAR':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ avatar: action.payload } }
+      }
     case 'PAUSE_GAME':
       return {
         ...state,

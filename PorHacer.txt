@@ -13,11 +13,13 @@ Atributos de gameInfo para cambio de nivel (automáticos): enemiesLeft
 Atributos de gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, lives, level, speed
 Atributos de gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
 Atributos de gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
-Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore
+Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 PENDIENTES FASE 2:
+- Incluir pantalla de bienvenida (WelcomeScreen), incluyendo un tutorial con las instrucciones del juego, selección
+  de idioma, selección de avatar, y botón para empezar a jugar.
 - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
   de nivel. Debería haber un puntaje extra por esto.
@@ -27,18 +29,18 @@ PENDIENTES FASE 2:
   Tambien la cantidad de bombas, con bombProbability.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
-- Elegir el background color que tendrá el juego.
+- Elegir el background color que tendrá el juego (gris oscuro, no negro).
 
 PENDIENTES FASE 3:
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
-- Se podrían luego incluir obstáculos que haya que destruir primero con balas, y que se vayan desintegrando por
-  niveles, para después de destruirlos poder impactar los enemigos que hay detrás. Los enemigos deberían poder saber
-  si mientras avanzan encuentran un obstáculo, y rodearlo, antes de seguir avanzando hacia abajo.
+- Incluir funcionalidad de seleccionar lenguaje: Español o inglés. Poner una banderita o algo. Se podría cambiar durante
+  el juego, o sólo al inicio?
 - Se podría incluir un botón que permita cambiar el avatar del jugador: Cañón, ovni, Milennium Falcon, etc.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
   silenciar la música.
 - Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
   pérdida de una vida, comienzo de un nuevo nivel.
+- Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
 
 PENDIENTES FASE 4:
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
@@ -103,6 +105,10 @@ YA HECHAS:
 - Las vidas podrían mostrarse como pequeños logos de naves. Cada vez que el jugador sea destruido (pierda una vida),
   se restaría una de las navecitas (se mostrarán las vidas mejor como números, para no tener que poner más <div> y
   más reglas CSS).
+- Se podrían luego incluir obstáculos que haya que destruir primero con balas, y que se vayan desintegrando por
+  niveles, para después de destruirlos poder impactar los enemigos que hay detrás. Los enemigos deberían poder saber
+  si mientras avanzan encuentran un obstáculo, y rodearlo, antes de seguir avanzando hacia abajo (opción por incluir
+  en la v2.0).
 
 
 PREGUNTAS:
