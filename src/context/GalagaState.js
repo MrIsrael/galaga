@@ -8,6 +8,7 @@ const initialState = {
                               // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   gameInfo: {
     buttonText: 'Click here to play',
+    mainFrameText: '',
     isSpanish: false,
     avatar: 1,
     pausedGame: true,
@@ -19,10 +20,10 @@ const initialState = {
     enemiesLeft: 0,
     firedBullets: 0,
     playerWasHit: false,
-    bombProbability: 45,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    bombProbability: 10,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
     speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
-    msInterval: 1000,
+    msInterval: 200,
     lives: 5,
     score: 0,
     highScore: 0,
@@ -63,31 +64,41 @@ export const GlobalProvider = ({ children }) => {
   function startGame(text) {
     dispatch({
       type: 'START_GAME',
-      payload: text
+      payload: text,
+      mainFrameText: ''
     })
   }
 
-  function pauseGame(text) {
+  function pauseGame(text, text2) {
     dispatch({
       type: 'PAUSE_GAME',
-      payload: text
+      payload: text,
+      mainFrameText: text2
     })
   }
 
   function decreaseCountdown(qty) {
+    state.gameInfo.initialCountdown === 1 ? forceMainFrameText(state.gameInfo.isSpanish ? 'A LUCHAR!' : 'FIGHT!') 
+                                          : forceMainFrameText((state.gameInfo.initialCountdown - 1).toString() + '...')
     dispatch({
       type: 'DECREASE_COUNTDOWN',
       payload: state.gameInfo.initialCountdown - qty,
     })
-    console.log(state.gameInfo.initialCountdown)
   }
 
   function turnOnMovement() {
+    forceMainFrameText('')
     dispatch({
       type: 'TURN_ON_MOVEMENT',
       payload: false
     })
-    console.log('Fight!')
+  }
+
+  function forceMainFrameText(text) {
+    dispatch({
+      type: 'FORCE_MAIN_FRAME_TEXT',
+      mainFrameText: text
+    })
   }
 
   // Códigos de teclas: Barra espaciadora: 32, Flecha izquierda: 37, Flecha derecha: 39, ESC: 27, Enter: 13, Tab: 9
@@ -119,11 +130,15 @@ export const GlobalProvider = ({ children }) => {
         }
         break
       case 9:     // Tecla Tab presionada: Pausar / Reanudar el juego
-        pauseGame(state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume')
+        pauseGame((state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
-        if (pausedGame && !state.gameInfo.playerWasHit) { startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') }
-        if (!pausedGame && !state.gameInfo.playerWasHit) { pauseGame(state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume') }
+        if (pausedGame && !state.gameInfo.playerWasHit) { 
+          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') 
+        }
+        if (!pausedGame && !state.gameInfo.playerWasHit) { 
+          pauseGame((state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED')) 
+        }
         if (pausedGame && state.gameInfo.playerWasHit) {
           // Borrar las balas, explosiones y bombas que hayan, dejar solo enemigos, antes de continuar el nivel actual al presionar Enter:
           setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'bullet').map(bullet => bullet.position))
@@ -132,6 +147,7 @@ export const GlobalProvider = ({ children }) => {
           // Resetear atributos de gameInfo: levelJustStarted = true, playerWasHit = false, initialCountdown = 5, score = 0, lives--
           continueCurrentLevel(true, false, 5, 0, -1)
           startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')
+          forceMainFrameText(state.gameInfo.isSpanish ? 'LISTO?' : 'READY?')
         }
         break
       default: break
@@ -157,6 +173,13 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'MOVE_PLAYER',
       payload: newPlayerPos
+    })
+  }
+
+  function resetState(text) {
+    dispatch({
+      type: 'RESET_STATE',
+      payload: text
     })
   }
 
@@ -320,6 +343,7 @@ export const GlobalProvider = ({ children }) => {
     initializeEnemyFormation,
     updateBattleground,
     updateScore,
+    resetState,
   }}>
     { children }
   </GlobalContext.Provider>)

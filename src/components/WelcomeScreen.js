@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import logo from '../assets/images/logo.gif'
+import logo from '../assets/images/misc/logo.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 

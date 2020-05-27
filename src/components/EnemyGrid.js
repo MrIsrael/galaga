@@ -6,9 +6,9 @@ import theThing from '../assets/images/enemies/boss1.gif'
 import terminator from '../assets/images/enemies/boss2.gif'
 import alienQueen from '../assets/images/enemies/boss3.gif'
 import predator from '../assets/images/enemies/boss4.gif'
-import bullet from '../assets/images/bullet1.gif'
-import explosion from '../assets/images/explosion.gif'
-import bomb from '../assets/images/bomb1.gif'
+import bullet from '../assets/images/ammo/bullet1.gif'
+import explosion from '../assets/images/ammo/explosion.gif'
+import bomb from '../assets/images/ammo/bomb1.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 import { GridMovement } from '../functions/GridMovement'    // Contiene toda la lógica de movimiento en el tablero enemigo
@@ -19,6 +19,7 @@ const EnemyGrid = ({ changeScreen }) => {
   // Flag que permite movimiento del juego sólo cada vez que transcurra 1 intervalo de tiempo definido por msInterval;
   // de lo contrario, habría un loop infinito de re-renders y React estallaría:
   const [flag, setFlag] = useState(false)
+  let nextScreen = changeScreen
 
   // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
   useEffect(() => {
@@ -29,6 +30,13 @@ const EnemyGrid = ({ changeScreen }) => {
     // eslint-disable-next-line
   }, [])
 
+  // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER!
+  if (flag && gameInfo.lives === 0) {
+    setFlag(false)
+    pauseGame((gameInfo.isSpanish ? 'Perdiste!' : 'You lose!'), (gameInfo.isSpanish ? 'NAVE DESTRUÍDA!' : 'GAME OVER!'))
+    nextScreen(-4)
+  }
+  
   // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida:
   if (flag && !gameInfo.pausedGame && gameInfo.levelJustStarted) {
     setFlag(false)
@@ -45,9 +53,9 @@ const EnemyGrid = ({ changeScreen }) => {
   }
 
   // Si el jugador es impactado por un alienígena o una bomba:
-  if (flag && gameInfo.playerWasHit) {
+  if (flag && gameInfo.playerWasHit && gameInfo.lives > 0) {
     setFlag(false)
-    pauseGame(gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue')
+    pauseGame((gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue'), (gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'))
   }
 
   // Si todos los enemigos son eliminados y hay cambio de nivel:
@@ -57,15 +65,19 @@ const EnemyGrid = ({ changeScreen }) => {
     // usar todos los enemigos: dos niveles por enemigo? 
 // }
 
-  // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER!
-// if (flag && gameInfo.xxx) {
-// }
-
 // Atts gameInfo para cambio de nivel (automáticos): enemiesLeft
-// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, lives, level, speed
+// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level, speed
 // Atts gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
 // Atts gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
 // Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
+
+// - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
+//   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
+//   de nivel. Debería haber un puntaje extra por esto.
+// - El siguiente nivel debe empezar con una formación enemiga diferente, incluyendo uno o varios bosses nuevos.
+// - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
+//   y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
+//   Tambien la cantidad de bombas, con bombProbability.
 
   return (
     <Fragment>

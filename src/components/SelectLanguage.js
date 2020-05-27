@@ -10,7 +10,7 @@ const SelectLanguage = ({ changeScreen }) => {
  
   function changeLang(lang) {
     toggleLanguage(lang === 'ES' ? true : false)
-    pauseGame(lang === 'ES' ? 'Clic aquí para jugar' : 'Click here to play')
+    pauseGame((lang === 'ES' ? 'Clic aquí para jugar' : 'Click here to play'), (lang === 'ES' ? 'LISTO?' : 'READY?'))
     nextScreen(0)
   }
 

@@ -3,7 +3,7 @@ export default (state, action) => {
     case 'START_GAME':
       return {
         ...state,
-        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: false } }
+      gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: false } }
       }
     case 'CHANGE_LANGUAGE':
       return {
@@ -18,7 +18,12 @@ export default (state, action) => {
     case 'PAUSE_GAME':
       return {
         ...state,
-        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, pausedGame: true } }
+        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: true } }
+      }
+    case 'FORCE_MAIN_FRAME_TEXT':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ mainFrameText: action.mainFrameText } }
       }
     case 'DECREASE_COUNTDOWN':
       return {
@@ -67,6 +72,15 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ levelJustStarted: action.restartLevel, playerWasHit: action.wasHit, initialCountdown: action.countdown,
                                             score: action.score, lives: action.quitOneLife }
+                  }
+      }
+    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: '', pausedGame: true, levelJustStarted: true, 
+                                            initialCountdown: 5, timeElapsed: 0, pressedKeyCode: 0, enemiesKilled: 0, enemiesLeft: 0,
+                                            firedBullets: 0, playerWasHit: false, bombProbability: 45, level: 1, speed: 1, msInterval: 1000, 
+                                            lives: 5, score: 0, highScore: 0 }
                   }
       }
     default:
