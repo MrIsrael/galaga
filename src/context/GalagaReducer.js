@@ -67,6 +67,11 @@ export default (state, action) => {
                                             score: action.addToScore, highScore: action.highScore } 
                   }
       }
+    case 'SET_DIFICULTY':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ msInterval: action.intervalDuration, bombProbability: action.bombProbability } }
+      }
     case 'CONTINUE_CURRENT_LEVEL':
       return {
         ...state,
@@ -74,13 +79,13 @@ export default (state, action) => {
                                             score: action.score, lives: action.quitOneLife }
                   }
       }
-    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente
-      return {
+    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente, y por
+      return {                            // msInterval y bombProbability, que se definen según el nivel
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: '', pausedGame: true, levelJustStarted: true, 
                                             initialCountdown: 5, timeElapsed: 0, pressedKeyCode: 0, enemiesKilled: 0, enemiesLeft: 0,
-                                            firedBullets: 0, playerWasHit: false, bombProbability: 45, level: 1, speed: 1, msInterval: 1000, 
-                                            lives: 5, score: 0, highScore: 0 }
+                                            firedBullets: 0, playerWasHit: false, level: 1, lives: 5, score: 0, highScore: 0
+                                          }
                   }
       }
     default:

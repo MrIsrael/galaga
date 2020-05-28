@@ -12,18 +12,15 @@ const StatusBar = () => {
       <div className='status-bar-left'>
         <h4>{gameInfo.isSpanish ? 'Nivel: ' : 'Level: '} {gameInfo.level}</h4>
         <h4>{gameInfo.isSpanish ? 'Intervalos de tiempo: ' : 'Elapsed intervals: '} {gameInfo.timeElapsed}</h4>
-        {/* <h4>{gameInfo.isSpanish ? 'Velocidad: ' : 'Speed: '} x{gameInfo.speed}</h4> */}
         <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
         <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
         <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4>
       </div>
 
       <div className='status-bar-middle'>
-
         {gameInfo.mainFrameText === '' ? <img src={logo} alt='game-logo' style={logoStyle} />
                                        : <div style={messageStyle}><p style={textStyle}>{gameInfo.mainFrameText}</p></div>}
         <br />
-
         <input type='text' readOnly size='35' style={buttonStyle} value={gameInfo.buttonText}
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
               onFocus={() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')}

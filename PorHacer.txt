@@ -10,7 +10,7 @@ Enemy grid element types:
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 Atributos de gameInfo para cambio de nivel (automáticos): enemiesLeft
-Atributos de gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level, speed
+Atributos de gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level
 Atributos de gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
 Atributos de gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
 Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
@@ -54,7 +54,7 @@ YA HECHAS:
 - Crear una separación visual entre casillas, para poder diferenciarlas durante el desarrollo. En la versión final
   se debe retirar, al igual que los bordes punteados.
 - Se debe mover el jugador con las flechas, y disparar con barra espaciadora.
-- Hay que incluir 4 contadores: "Level", "Speed", "Enemies killed" y "Lives".
+- Hay que incluir 3 contadores: "Level", "Enemies killed" y "Lives".
 - Si pausedGame = true, todo se debería detener, debería aparecer un letrero que diga "paused" y debería sólo poder
   reiniciarse si se presiona Enter.
   La única manera de que el juego inicie es que input.onFocus se dispare, dando clic dentro de él, y poder capturar

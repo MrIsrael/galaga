@@ -25,7 +25,7 @@ const GameOver = ({ changeScreen }) => {
       </div>
       <div><button className='button' onClick={() => oneMoreTime(0)}>{gameInfo.isSpanish ? 'VOLVER AL MENÚ PRINCIPAL' : 'BACK TO MAIN MENU'}</button></div>
       <div></div>
-      <div><button className='button' onClick={() => oneMoreTime(-1)}>{gameInfo.isSpanish ? 'REINICIAR JUEGO' : 'RESTART GAME'}</button></div>
+      <div><button className='button' autoFocus onClick={() => oneMoreTime(-1)}>{gameInfo.isSpanish ? 'REINICIAR JUEGO' : 'RESTART GAME'}</button></div>
     </Fragment>
   )
 }

@@ -11,39 +11,51 @@ import explosion from '../assets/images/ammo/explosion.gif'
 import bomb from '../assets/images/ammo/bomb1.gif'
 
 import { GlobalContext } from '../context/GalagaState'
-import { GridMovement } from '../functions/GridMovement'    // Contiene toda la lógica de movimiento en el tablero enemigo
+import { GridMovement } from '../functions/GridMovement'            // Contiene toda la lógica de movimiento en el tablero enemigo, cálculo de puntaje, vidas restantes, etc
+import { EnemyFormations } from '../functions/EnemyFormations'      // Determina las formaciones enemigas iniciales y demás configuraciones de cada nivel, cuando éste comience
 
 const EnemyGrid = ({ changeScreen }) => {
   const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore,
           pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
   // Flag que permite movimiento del juego sólo cada vez que transcurra 1 intervalo de tiempo definido por msInterval;
-  // de lo contrario, habría un loop infinito de re-renders y React estallaría:
+  // de lo contrario, habría un loop infinito de re-renders y React estallaría!
   const [flag, setFlag] = useState(false)
+  const [lock, setLock] = useState(false)
   let nextScreen = changeScreen
-
-  // Emular comportamiento de la lifecycle function componentDidMount(), para posicionar formación enemiga inicial
+  
+  // Emular comportamiento de la lifecycle function componentDidMount(), para disparar generador ininterrumpido de intervalos de tiempo,
+  // apenas cargue el componente --> Ejecución constante
   useEffect(() => {
-    initializeEnemyFormation(enemyInfo)
-    setInterval(() => {
-      setFlag(true)
-    }, gameInfo.msInterval)
+    setInterval(() => { setFlag(true) }, gameInfo.msInterval)
     // eslint-disable-next-line
   }, [])
 
-  // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER!
+  // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER! --> Última ejecución, 1 sola vez
   if (flag && gameInfo.lives === 0) {
     setFlag(false)
     pauseGame((gameInfo.isSpanish ? 'Perdiste!' : 'You lose!'), (gameInfo.isSpanish ? 'NAVE DESTRUÍDA!' : 'GAME OVER!'))
     nextScreen(-4)
   }
+
+  // Posicionamiento de formación enemiga inicial y niveles subsiguientes: --> Primera ejecución, 1 sola vez, apenas cargue el componente
+  // levelConfig = [setEnemyFormation1, setEnemyFormation2, setIsolatedNoEnemyPlaces1, newIntervalDuration, newBombProbability]
+  if (flag && !lock && gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 5) {
+    setFlag(false)
+    setLock(true)
+    console.log(gameInfo.msInterval)
+    console.log(gameInfo.bombProbability)
+    const levelConfig = EnemyFormations(gameInfo.level)
+    console.log(levelConfig)
+    initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2], levelConfig[3], levelConfig[4])
+  }
   
-  // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida:
+  // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida: --> Segunda ejecución, 5 veces
   if (flag && !gameInfo.pausedGame && gameInfo.levelJustStarted) {
     setFlag(false)
     gameInfo.initialCountdown === 0 ? turnOnMovement() : decreaseCountdown(1)
   }
 
-  // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego:
+  // Condición imprescindible para que haya movimiento automático de elementos en el tablero de juego: --> Ejecución constante
   if (flag && !gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit) {
     setFlag(false)
     setIntervalsElapsed(1)
@@ -52,21 +64,21 @@ const EnemyGrid = ({ changeScreen }) => {
     updateScore(updatedGrid[1], updatedGrid[2], updatedGrid[3])                                   // (wasHit, enemiesKilled, addToScore)
   }
 
-  // Si el jugador es impactado por un alienígena o una bomba:
+  // Si el jugador es impactado por un alienígena o una bomba: --> Ejecución eventual
   if (flag && gameInfo.playerWasHit && gameInfo.lives > 0) {
     setFlag(false)
     pauseGame((gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue'), (gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'))
   }
 
-  // Si todos los enemigos son eliminados y hay cambio de nivel:
-// if (flag && gameInfo.xxx) {
-
-    // Crear nuevo .js en functions, que maneje las formaciones de enemigos nuevas, con un switch, y generar nuevo nivel con un solo action / reducer
-    // usar todos los enemigos: dos niveles por enemigo? 
-// }
+  // Si todos los enemigos son eliminados y hay cambio de nivel: --> Ejecución eventual
+  if (flag && gameInfo.enemiesLeft === 0 && true) {
+    setFlag(false)
+    // gameInfo.level++
+    // - HAY QUE AÑADIR PUNTOS AL SCORE, SI HUBO CAMBIO DE NIVEL / PONER FÓRMULA SENCILLA
+  }
 
 // Atts gameInfo para cambio de nivel (automáticos): enemiesLeft
-// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level, speed
+// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level
 // Atts gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
 // Atts gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
 // Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar

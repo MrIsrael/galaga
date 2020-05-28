@@ -20,10 +20,9 @@ const initialState = {
     enemiesLeft: 0,
     firedBullets: 0,
     playerWasHit: false,
-    bombProbability: 10,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    bombProbability: 25,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
-    speed: 1,                 // este atributo podría omitirse; con 'level' se puede calcular la velocidad
-    msInterval: 200,
+    msInterval: 350,
     lives: 5,
     score: 0,
     highScore: 0,
@@ -318,13 +317,16 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
-  // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
-  function initializeEnemyFormation(enemyArray) {
-    setEnemyFormation(enemyArray, 1, ((enemyGridWidth * 10) / 2), 'scarecrow')
-    setEnemyFormation(enemyArray, 9, 11, 'theThing')
-    setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')
-    setIsolatedNoEnemyPlaces(enemyArray, [20,39,40,58,38,56,57,76,59,60,77,78,74,75,94,95])
+  function initializeEnemyFormation(enemyArray, Formation1, Formation2, NoEnemyPlaces, newIntervalDuration, newBombProbability) {
+    setEnemyFormation(enemyArray, Formation1[0], Formation1[1], Formation1[2])
+    setEnemyFormation(enemyArray, Formation2[0], Formation2[1], Formation2[2])
+    setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')   // Esta function call siempre es la misma
+    setIsolatedNoEnemyPlaces(enemyArray, NoEnemyPlaces)
+    dispatch({
+      type: 'SET_DIFICULTY',
+      intervalDuration: newIntervalDuration, 
+      bombProbability: newBombProbability
+    })
   }
 
   return (<GlobalContext.Provider value={{
