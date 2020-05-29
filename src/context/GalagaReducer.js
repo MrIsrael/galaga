@@ -67,10 +67,13 @@ export default (state, action) => {
                                             score: action.addToScore, highScore: action.highScore } 
                   }
       }
-    case 'SET_DIFICULTY':
+    case 'NEXT_LEVEL_VALUES':
       return {
         ...state,
-        gameInfo: { ...state.gameInfo, ...{ msInterval: action.intervalDuration, bombProbability: action.bombProbability } }
+        gameInfo: { ...state.gameInfo, ...{ msInterval: action.intervalDuration, bombProbability: action.newBombProbability,
+                                            score: action.updatedScore, level: action.levelUp, levelJustStarted: action.startNewLevel, 
+                                            initialCountdown: action.countdown, highScore: action.highScore }
+                  }
       }
     case 'CONTINUE_CURRENT_LEVEL':
       return {
@@ -79,13 +82,13 @@ export default (state, action) => {
                                             score: action.score, lives: action.quitOneLife }
                   }
       }
-    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente, y por
-      return {                            // msInterval y bombProbability, que se definen según el nivel
+    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente
+      return {                            // Se ejecuta si el jugador regresa al menú principal, después de un Game Over
         ...state,
-        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: '', pausedGame: true, levelJustStarted: true, 
+        gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: true, levelJustStarted: true, 
                                             initialCountdown: 5, timeElapsed: 0, pressedKeyCode: 0, enemiesKilled: 0, enemiesLeft: 0,
-                                            firedBullets: 0, playerWasHit: false, level: 1, lives: 5, score: 0, highScore: 0
-                                          }
+                                            firedBullets: 0, playerWasHit: false, level: 1, lives: 5, score: 0, highScore: 0,
+                                            msInterval: 1000, bombProbability: 45 }
                   }
       }
     default:

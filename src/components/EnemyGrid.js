@@ -15,12 +15,13 @@ import { GridMovement } from '../functions/GridMovement'            // Contiene 
 import { EnemyFormations } from '../functions/EnemyFormations'      // Determina las formaciones enemigas iniciales y demás configuraciones de cada nivel, cuando éste comience
 
 const EnemyGrid = ({ changeScreen }) => {
-  const { gameInfo, enemyInfo, initializeEnemyFormation, setIntervalsElapsed, updateBattleground, updateScore,
-          pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
+  const { gameInfo, enemyInfo, playerInfo, initializeEnemyFormation, initializePlayerPos, setIntervalsElapsed, 
+          updateBattleground, updateScore, pauseGame, turnOnMovement, decreaseCountdown } = useContext(GlobalContext)
   // Flag que permite movimiento del juego sólo cada vez que transcurra 1 intervalo de tiempo definido por msInterval;
   // de lo contrario, habría un loop infinito de re-renders y React estallaría!
   const [flag, setFlag] = useState(false)
   const [lock, setLock] = useState(false)
+  const [goOut, setGoOut] = useState(false)
   let nextScreen = changeScreen
   
   // Emular comportamiento de la lifecycle function componentDidMount(), para disparar generador ininterrumpido de intervalos de tiempo,
@@ -31,22 +32,22 @@ const EnemyGrid = ({ changeScreen }) => {
   }, [])
 
   // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER! --> Última ejecución, 1 sola vez
-  if (flag && gameInfo.lives === 0) {
+  if (!goOut && !gameInfo.pausedGame && gameInfo.lives === 0) {
     setFlag(false)
-    pauseGame((gameInfo.isSpanish ? 'Perdiste!' : 'You lose!'), (gameInfo.isSpanish ? 'NAVE DESTRUÍDA!' : 'GAME OVER!'))
+    setGoOut(true)
     nextScreen(-4)
   }
 
   // Posicionamiento de formación enemiga inicial y niveles subsiguientes: --> Primera ejecución, 1 sola vez, apenas cargue el componente
-  // levelConfig = [setEnemyFormation1, setEnemyFormation2, setIsolatedNoEnemyPlaces1, newIntervalDuration, newBombProbability]
-  if (flag && !lock && gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 5) {
+  // levelConfig = [setEnemyFormation1, setEnemyFormation2, setIsolatedNoEnemyPlaces1]
+  if (!lock && gameInfo.pausedGame && gameInfo.levelJustStarted && gameInfo.initialCountdown === 5) {
     setFlag(false)
     setLock(true)
+    const levelConfig = EnemyFormations(gameInfo.level)
+    initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2])
+    initializePlayerPos(playerInfo)
     console.log(gameInfo.msInterval)
     console.log(gameInfo.bombProbability)
-    const levelConfig = EnemyFormations(gameInfo.level)
-    console.log(levelConfig)
-    initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2], levelConfig[3], levelConfig[4])
   }
   
   // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida: --> Segunda ejecución, 5 veces
@@ -67,29 +68,18 @@ const EnemyGrid = ({ changeScreen }) => {
   // Si el jugador es impactado por un alienígena o una bomba: --> Ejecución eventual
   if (flag && gameInfo.playerWasHit && gameInfo.lives > 0) {
     setFlag(false)
-    pauseGame((gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue'), (gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'))
+    gameInfo.lives === 1 ? pauseGame((gameInfo.isSpanish ? 'Perdiste! Enter para continuar' : 'You lose! Press Enter to continue'), 
+                                     (gameInfo.isSpanish ? 'NAVE DESTRUÍDA!' : 'GAME OVER!'))
+                         : pauseGame((gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue'), 
+                                     (gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'))
   }
 
   // Si todos los enemigos son eliminados y hay cambio de nivel: --> Ejecución eventual
-  if (flag && gameInfo.enemiesLeft === 0 && true) {
+  if (flag && !gameInfo.levelJustStarted && gameInfo.enemiesLeft === 0) {
     setFlag(false)
-    // gameInfo.level++
-    // - HAY QUE AÑADIR PUNTOS AL SCORE, SI HUBO CAMBIO DE NIVEL / PONER FÓRMULA SENCILLA
+    setLock(false)
+    pauseGame((gameInfo.isSpanish ? 'Aliens destruídos! Presione Enter' : 'All enemies destroyed! Press Enter'), (gameInfo.isSpanish ? 'ALIENS K.O.!' : 'LEVEL UP!'))
   }
-
-// Atts gameInfo para cambio de nivel (automáticos): enemiesLeft
-// Atts gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level
-// Atts gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability
-// Atts gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
-// Atts gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
-
-// - Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
-//   en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
-//   de nivel. Debería haber un puntaje extra por esto.
-// - El siguiente nivel debe empezar con una formación enemiga diferente, incluyendo uno o varios bosses nuevos.
-// - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
-//   y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
-//   Tambien la cantidad de bombas, con bombProbability.
 
   return (
     <Fragment>

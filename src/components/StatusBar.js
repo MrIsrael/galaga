@@ -24,7 +24,7 @@ const StatusBar = () => {
         <input type='text' readOnly size='35' style={buttonStyle} value={gameInfo.buttonText}
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
               onFocus={() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')}
-              onBlur={() => pauseGame((gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Clic here to resume'), (gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))}
+              onBlur={() => pauseGame((gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))}
         />
       </div>
 

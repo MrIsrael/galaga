@@ -17,23 +17,17 @@ Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyC
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-PENDIENTES FASE 2:
-- Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
-  en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
-  de nivel. Debería haber un puntaje extra por esto.
-- El siguiente nivel debe empezar con una formación enemiga diferente, incluyendo uno o varios bosses nuevos.
-- Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
-  y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
-  Tambien la cantidad de bombas, con bombProbability.
-- Elegir el background color que tendrá el juego (gris oscuro, no negro).
-
 PENDIENTES FASE 3:
-- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto.
+- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
+  screenshots de una partida real junto con el texto explicativo.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
   silenciar la música.
 - Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
   pérdida de una vida, comienzo de un nuevo nivel.
 - Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
+- Probar el juego completo varias veces, a ver si se deben poner más vidas, o si la variación de velocidad progresiva del 
+  juego y de la cantidad de bombas debería ser más lenta.
+- Elegir el background color que tendrá el juego (gris oscuro, no negro).
 
 PENDIENTES FASE 4:
 - Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
@@ -109,6 +103,13 @@ YA HECHAS:
 - Se podría incluir un botón que permita cambiar el avatar del jugador: Cañón, ovni, Milennium Falcon, etc.
 - Si el jugador es eliminado, mostrar mensaje de "Game Over!". Debería haber un botón que permita reiniciar el 
   juego.
+- Si el jugador termina un nivel (elimina a todos los enemigos), debe aparecer un mensaje (en la status bar? 
+  en el centro de la game grid, encima de todo?) que avise del cambio de nivel. Se incrementa también el contador
+  de nivel. Debería haber un puntaje extra por esto.
+- El siguiente nivel debe empezar con una formación enemiga diferente, incluyendo uno o varios bosses nuevos.
+- Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
+  y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
+  Tambien la cantidad de bombas, con bombProbability.
 
 
 PREGUNTAS:

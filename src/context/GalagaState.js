@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from 'react'
+import { SetDificulty } from '../functions/SetDificulty'    // Define los valores de level, score, msInterval y bombProbability para el siguiente nivel del juego
 import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
@@ -8,7 +9,7 @@ const initialState = {
                               // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   gameInfo: {
     buttonText: 'Click here to play',
-    mainFrameText: '',
+    mainFrameText: 'READY?',
     isSpanish: false,
     avatar: 1,
     pausedGame: true,
@@ -20,10 +21,10 @@ const initialState = {
     enemiesLeft: 0,
     firedBullets: 0,
     playerWasHit: false,
-    bombProbability: 25,      // Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    bombProbability: 50,      // Valor original: 45  ---  Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
-    msInterval: 350,
-    lives: 5,
+    msInterval: 500,          // Valor original: 1000
+    lives: 2,                 // Valor original: 5
     score: 0,
     highScore: 0,
   }
@@ -68,15 +69,16 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function pauseGame(text, text2) {
+  function pauseGame(text1, text2) {
     dispatch({
       type: 'PAUSE_GAME',
-      payload: text,
+      payload: text1,
       mainFrameText: text2
     })
   }
 
   function decreaseCountdown(qty) {
+    if (state.gameInfo.initialCountdown === 5) { forceMainFrameText(state.gameInfo.isSpanish ? 'LISTO?' : 'READY?') }
     state.gameInfo.initialCountdown === 1 ? forceMainFrameText(state.gameInfo.isSpanish ? 'A LUCHAR!' : 'FIGHT!') 
                                           : forceMainFrameText((state.gameInfo.initialCountdown - 1).toString() + '...')
     dispatch({
@@ -132,12 +134,22 @@ export const GlobalProvider = ({ children }) => {
         pauseGame((state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
-        if (pausedGame && !state.gameInfo.playerWasHit) { 
+        // Si se terminó el nivel, aniquilando a todos los enemigos --> Al presionar Enter comienza el siguiente nivel
+        if (pausedGame && !state.gameInfo.levelJustStarted && state.gameInfo.enemiesLeft === 0) {
+          const nextLvlSettings = SetDificulty(state.gameInfo.level)
+          // Resetear atributos de gameInfo: msInterval (más corto), bombProbability (más alta), score (adición), level (+1), levelJustStarted = true, initialCountdown = 5
+          nextLevel(nextLvlSettings[0], nextLvlSettings[1], nextLvlSettings[2], nextLvlSettings[3], true, 5)
+          pauseGame((state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume'), (state.gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
+        }
+        // Si el nivel está en curso, pero el juego estaba pausado --> Al presionar Enter se reanuda el nivel, donde iba
+        if (pausedGame && !state.gameInfo.playerWasHit && state.gameInfo.enemiesLeft !== 0) { 
           startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') 
         }
+        // Si el nivel está en curso, y el juego no está pausado --> Al presionar Enter se pausa el nivel
         if (!pausedGame && !state.gameInfo.playerWasHit) { 
           pauseGame((state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED')) 
         }
+        // Si el jugador fue impactado, perdió una vida, pero aún no es game over --> Al presionar Enter se continúa el nivel, donde iba, retirando las bombas que había
         if (pausedGame && state.gameInfo.playerWasHit) {
           // Borrar las balas, explosiones y bombas que hayan, dejar solo enemigos, antes de continuar el nivel actual al presionar Enter:
           setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'bullet').map(bullet => bullet.position))
@@ -145,8 +157,8 @@ export const GlobalProvider = ({ children }) => {
           setIsolatedNoEnemyPlaces(state.enemyInfo, state.enemyInfo.filter(alien => alien.type === 'explosion').map(explosion => explosion.position))
           // Resetear atributos de gameInfo: levelJustStarted = true, playerWasHit = false, initialCountdown = 5, score = 0, lives--
           continueCurrentLevel(true, false, 5, 0, -1)
-          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')
           forceMainFrameText(state.gameInfo.isSpanish ? 'LISTO?' : 'READY?')
+          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')
         }
         break
       default: break
@@ -168,6 +180,20 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
+  // nextLvlSettings = [newIntervalDuration, newBombProbability, addToScore, newLevel]
+  function nextLevel(newIntervalDuration, newBombProbability, addToScore, newLevel, levelJustStarted, initialCountdown) {
+    dispatch({
+      type: 'NEXT_LEVEL_VALUES',
+      intervalDuration: newIntervalDuration,
+      newBombProbability: newBombProbability,
+      updatedScore: state.gameInfo.score + addToScore,
+      levelUp: newLevel,
+      startNewLevel: levelJustStarted, 
+      countdown: initialCountdown,
+      highScore: highScore
+    })
+  }
+
   function movePlayer(newPlayerPos) {
     dispatch({
       type: 'MOVE_PLAYER',
@@ -175,10 +201,11 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function resetState(text) {
+  function resetState(text1, text2) {
     dispatch({
       type: 'RESET_STATE',
-      payload: text
+      payload: text1,
+      mainFrameText: text2
     })
   }
 
@@ -317,16 +344,11 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function initializeEnemyFormation(enemyArray, Formation1, Formation2, NoEnemyPlaces, newIntervalDuration, newBombProbability) {
+  function initializeEnemyFormation(enemyArray, Formation1, Formation2, NoEnemyPlaces) {
     setEnemyFormation(enemyArray, Formation1[0], Formation1[1], Formation1[2])
     setEnemyFormation(enemyArray, Formation2[0], Formation2[1], Formation2[2])
     setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')   // Esta function call siempre es la misma
     setIsolatedNoEnemyPlaces(enemyArray, NoEnemyPlaces)
-    dispatch({
-      type: 'SET_DIFICULTY',
-      intervalDuration: newIntervalDuration, 
-      bombProbability: newBombProbability
-    })
   }
 
   return (<GlobalContext.Provider value={{

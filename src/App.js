@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <GlobalProvider>
-      <h2>Valor flag de App comp: {flag}</h2>
+      <h2>Valor flag de App screen: {flag}</h2>
       <div className={flag !== -1 ? 'hidden' : 'status-bar-container'}>
         <StatusBar />
       </div>
