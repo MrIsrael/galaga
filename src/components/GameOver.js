@@ -18,6 +18,7 @@ const GameOver = ({ changeScreen }) => {
       <div className='language-banner'>
         <h1 style={textStyle}>{gameInfo.isSpanish ? 'FIN DEL JUEGO!' : 'GAME OVER!'}</h1>
         <h3 style={textStyle}>{gameInfo.isSpanish ? 'Estadísticas del jugador:' : 'Game statistics:'}</h3>
+        <p>{gameInfo.isSpanish ? 'Dificultad elegida: ' : 'Chosen difficulty: '} {(gameInfo.difficulty).toUpperCase()}</p>
         <p>{gameInfo.isSpanish ? 'Puntaje máximo: ' : 'High score: '} {gameInfo.highScore}</p>
         <p>{gameInfo.isSpanish ? 'Máximo nivel alcanzado: ' : 'Level reached: '} {gameInfo.level}</p>
         <p>{gameInfo.isSpanish ? 'Enemigos aniquilados: ' : 'Enemies killed: '} {gameInfo.enemiesKilled}</p>
@@ -33,7 +34,7 @@ const GameOver = ({ changeScreen }) => {
 // Estilos para la imagen de game over
 const koStyle = {
   maxHeight: '250px',
-  marginTop: '20px',
+  marginTop: '40px',
 }
 
 const textStyle = {

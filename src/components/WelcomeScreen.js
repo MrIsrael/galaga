@@ -17,6 +17,9 @@ const WelcomeScreen = ({ changeScreen }) => {
       <div><button className='button' onClick={() => nextScreen(1)}>{gameInfo.isSpanish ? 'INSTRUCCIONES DEL JUEGO' : 'GAME INSTRUCTIONS'}</button></div>
       <div><button className='button' onClick={() => nextScreen(-2)}>{gameInfo.isSpanish ? 'SELECCIONAR IDIOMA' : 'SELECT LANGUAGE'}</button></div>
       <div><button className='button' onClick={() => nextScreen(-3)}>{gameInfo.isSpanish ? 'SELECCIONE SU AVATAR' : 'SELECT YOUR AVATAR'}</button></div>
+      <div><button className='button' onClick={() => nextScreen(-6)}>{gameInfo.isSpanish ? 'DEFINIR DIFICULTAD' : 'SELECT DIFFICULTY'}</button></div>
+      <div><button className='button' onClick={() => nextScreen(-7)}>{gameInfo.isSpanish ? 'ENCENDER / APAGAR SONIDOS' : 'SOUNDS ON / OFF'}</button></div>
+      <div><button className='button' onClick={() => nextScreen(-8)}>{gameInfo.isSpanish ? 'ACERCA DE / CRÉDITOS' : 'ABOUT / CREDITS'}</button></div>
     </Fragment>
   )
 }

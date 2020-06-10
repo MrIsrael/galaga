@@ -18,16 +18,19 @@ Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyC
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 PENDIENTES FASE 3:
-- Incluir selector de dificultad (rookie, normal, berserker).
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
   screenshots de una partida real junto con el texto explicativo.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
-  silenciar la música.
+  silenciar la música (nuevo botón en WelcomeScreen).
+- Poner un sexto botón en WelcomeScreen, que sea un "About / créditos".
 - Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
   pérdida de una vida, comienzo de un nuevo nivel.
 - Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
 - Probar el juego completo varias veces, a ver si se deben poner más vidas, o si la variación de velocidad progresiva del 
   juego y de la cantidad de bombas debería ser más lenta.
+- Ajustar el padding y fontsize de la StatusBar, para hacer más pequeño el tablero de juego y que se vea completo en una 
+  pantalla de portátil. Ocultar también las posiciones de las casillas, y los letreros de "No Enemy".
+- Poner las imágenes y los gifs todos transparentes. No deben quedar fondos blancos.
 - Elegir el background color que tendrá el juego (gris oscuro, no negro).
 
 PENDIENTES FASE 4:
@@ -111,6 +114,7 @@ YA HECHAS:
 - Cada dos o 3 niveles, debe aumentar la velocidad del juego: Los marcianos deben moverse más rápido, vertical
   y horizontalmente. Se haría esto cambiando el valor en milisegundos del SetInterval(), en EnemyGrid.
   Tambien la cantidad de bombas, con bombProbability.
+- Incluir selector de dificultad (rookie, trooper, berserker).
 
 
 PREGUNTAS:

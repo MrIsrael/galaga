@@ -1,5 +1,4 @@
 import React, { createContext, useReducer } from 'react'
-import { SetDificulty } from '../functions/SetDificulty'    // Define los valores de level, score, msInterval y bombProbability para el siguiente nivel del juego
 import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
@@ -12,6 +11,7 @@ const initialState = {
     mainFrameText: 'READY?',
     isSpanish: false,
     avatar: 1,
+    difficulty: 'trooper',     // Dificultad media, por defecto
     pausedGame: true,
     levelJustStarted: true,   // Si es true, el nivel recién comienza, o el jugador fue eliminado pero aún no ha agotado todas sus vidas
     initialCountdown: 5,
@@ -23,7 +23,7 @@ const initialState = {
     playerWasHit: false,
     bombProbability: 48,      // Valor original: 48  ---  Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
-    msInterval: 750,          // Valor original: 950
+    msInterval: 950,          // Valor original: 950
     lives: 8,                 // Valor original: 8
     score: 0,
     highScore: 0,
@@ -58,6 +58,13 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'CHOOSE_AVATAR',
       payload: avatar
+    })
+  }
+
+  function chooseDifficulty(difficulty) {
+    dispatch({
+      type: 'CHOOSE_DIFFICULTY',
+      payload: difficulty
     })
   }
 
@@ -134,13 +141,6 @@ export const GlobalProvider = ({ children }) => {
         pauseGame((state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
-        // Si se terminó el nivel, aniquilando a todos los enemigos --> Al presionar Enter comienza el siguiente nivel
-        if (pausedGame && !state.gameInfo.levelJustStarted && state.gameInfo.enemiesLeft === 0) {
-          const nextLvlSettings = SetDificulty(state.gameInfo.level)
-          // Resetear atributos de gameInfo: msInterval (más corto), bombProbability (más alta), score (adición), level (+1), levelJustStarted = true, initialCountdown = 5
-          nextLevel(nextLvlSettings[0], nextLvlSettings[1], nextLvlSettings[2], nextLvlSettings[3], true, 5)
-          pauseGame((state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume'), (state.gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
-        }
         // Si el nivel está en curso, pero el juego estaba pausado --> Al presionar Enter se reanuda el nivel, donde iba
         if (pausedGame && !state.gameInfo.playerWasHit && state.gameInfo.enemiesLeft !== 0) { 
           startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') 
@@ -358,6 +358,7 @@ export const GlobalProvider = ({ children }) => {
     gameInfo: state.gameInfo,
     toggleLanguage,
     chooseAvatar,
+    chooseDifficulty,
     startGame,
     pauseGame,
     turnOnMovement,
@@ -369,6 +370,7 @@ export const GlobalProvider = ({ children }) => {
     updateBattleground,
     updateScore,
     resetState,
+    nextLevel,
   }}>
     { children }
   </GlobalContext.Provider>)

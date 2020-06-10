@@ -6,9 +6,9 @@ import theThing from '../assets/images/enemies/boss1.gif'
 import terminator from '../assets/images/enemies/boss2.gif'
 import alienQueen from '../assets/images/enemies/boss3.gif'
 import predator from '../assets/images/enemies/boss4.gif'
-import bullet from '../assets/images/ammo/bullet1.gif'
+import bullet from '../assets/images/ammo/bullet.png'
 import explosion from '../assets/images/ammo/explosion.gif'
-import bomb from '../assets/images/ammo/bomb1.gif'
+import bomb from '../assets/images/ammo/bomb.gif'
 
 import { GlobalContext } from '../context/GalagaState'
 import { GridMovement } from '../functions/GridMovement'            // Contiene toda la lógica de movimiento en el tablero enemigo, cálculo de puntaje, vidas restantes, etc
@@ -22,24 +22,22 @@ const EnemyGrid = ({ changeScreen }) => {
   const [flag, setFlag] = useState(false)
   const [lock, setLock] = useState(false)
   const [goOut, setGoOut] = useState(false)
-  const [movementInterval, setMovementInterval] = useState(gameInfo.msInterval)
   let nextScreen = changeScreen
   
   // Emular comportamiento de la lifecycle function componentDidMount(), para disparar generador ininterrumpido de intervalos de tiempo,
   // apenas cargue el componente --> Ejecución constante
   useEffect(() => {
-    setInterval(() => { 
-      setFlag(true)
-      setMovementInterval(gameInfo.msInterval)
-    }, movementInterval)
+    let timer = setInterval(() => { setFlag(true) }, gameInfo.msInterval)
+    return () => { clearInterval(timer) }                                     // Cleanup function para el hook useEffect. Emula el comportamiento
+                                                                              // de componentWillUnmount(), para detener correctamente el timer.
     // eslint-disable-next-line
-  }, [])
+  }, [])                                                                      // La función cleanup funciona solamente si el 2o parámetro de useEffect es '[]' (vacío)
 
   // Si el jugador es impactado por un alienígena o una bomba, y sólo le quedaba 1 vida: GAME OVER! --> Última ejecución, 1 sola vez
   if (!goOut && !gameInfo.pausedGame && gameInfo.lives === 0) {
     setFlag(false)
     setGoOut(true)
-    nextScreen(-4)
+    nextScreen(-5)
   }
 
   // Posicionamiento de formación enemiga inicial y niveles subsiguientes: --> Primera ejecución, 1 sola vez, apenas cargue el componente
@@ -50,7 +48,6 @@ const EnemyGrid = ({ changeScreen }) => {
     const levelConfig = EnemyFormations(gameInfo.level)
     initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2], levelConfig[3])
     initializePlayerPos(playerInfo)
-    // setMovementInterval(gameInfo.msInterval)
     console.log('msInterval = ' + gameInfo.msInterval)
     console.log('bombProbability = ' + gameInfo.bombProbability)
   }
@@ -83,7 +80,7 @@ const EnemyGrid = ({ changeScreen }) => {
   if (flag && !gameInfo.levelJustStarted && gameInfo.enemiesLeft === 0) {
     setFlag(false)
     setLock(false)
-    pauseGame((gameInfo.isSpanish ? 'Aliens destruídos! Presione Enter' : 'All enemies destroyed! Press Enter'), (gameInfo.isSpanish ? 'ALIENS K.O.!' : 'LEVEL UP!'))
+    nextScreen(-4)
   }
 
   return (

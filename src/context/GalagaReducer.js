@@ -15,6 +15,11 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ avatar: action.payload } }
       }
+    case 'CHOOSE_DIFFICULTY':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ difficulty: action.payload } }
+      }
     case 'PAUSE_GAME':
       return {
         ...state,
@@ -83,12 +88,12 @@ export default (state, action) => {
                   }
       }
     case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente
-      return {                            // Se ejecuta si el jugador regresa al menú principal, después de un Game Over
+      return {                            // Se ejecuta si el jugador regresa al menú principal, después de un Game Over o un cambio de nivel
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: true, levelJustStarted: true, 
                                             initialCountdown: 5, timeElapsed: 0, pressedKeyCode: 0, enemiesKilled: 0, enemiesLeft: 0,
                                             firedBullets: 0, playerWasHit: false, level: 1, lives: 8, score: 0, highScore: 0,
-                                            msInterval: 950, bombProbability: 48 }
+                                            msInterval: 950, bombProbability: 48, difficulty: 'trooper' }
                   }
       }
     default:

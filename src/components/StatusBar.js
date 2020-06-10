@@ -12,9 +12,10 @@ const StatusBar = () => {
       <div className='status-bar-left'>
         <h4>{gameInfo.isSpanish ? 'Nivel: ' : 'Level: '} {gameInfo.level}</h4>
         <h4>{gameInfo.isSpanish ? 'Conteo de movimientos: ' : 'Elapsed movements: '} {gameInfo.timeElapsed}</h4>
+{/* <h4>{gameInfo.isSpanish ? 'Dificultad: ' : 'Difficulty: '} {(gameInfo.difficulty).toUpperCase()}</h4> */}
         <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
         <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
-        <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 950)).toFixed(2)} {'%'}</h4>
+        <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 1000)).toFixed(2)} {'%'}</h4>
         {/* <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4> */}
       </div>
 
