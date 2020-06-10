@@ -120,7 +120,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
     for (let i = t5.length - 1; i >= 0 ; i--) {
       if (t5[i] + 19 >= 191) { 
         wasHit = true                       //  -->  Un enemigo impactó al jugador! Se debe restar una vida!
-        console.log('RESTAR UNA VIDA!')
+        // console.log('RESTAR UNA VIDA!')
         setNoEnemy(enemyArray, [t5[i]])
         continue
       } else if (enemyArray[t5[i] - 1 + 19].type === 'none') {
@@ -162,7 +162,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
   for (let i = t9.length - 1; i >= 0 ; i--) {
     if (t9[i] + 19 >= 191) { 
       wasHit = true                       //  -->  Una bomba impactó al jugador! Se debe restar una vida!
-      console.log('RESTAR UNA VIDA!')
+      // console.log('RESTAR UNA VIDA!')
       setNoEnemy(enemyArray, [t9[i]])
       continue
     } else if (enemyArray[t9[i] - 1 + 19].type === 'none') {

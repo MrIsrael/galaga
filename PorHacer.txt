@@ -18,6 +18,7 @@ Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyC
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 PENDIENTES FASE 3:
+- Incluir selector de dificultad (rookie, normal, berserker).
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
   screenshots de una partida real junto con el texto explicativo.
 - Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
@@ -30,7 +31,7 @@ PENDIENTES FASE 3:
 - Elegir el background color que tendrá el juego (gris oscuro, no negro).
 
 PENDIENTES FASE 4:
-- Al final subir el build a Firebase y Netlify, a ver si corren desde allí.
+- Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí.
 - Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 

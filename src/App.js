@@ -27,7 +27,7 @@ const App = () => {
 
   return (
     <GlobalProvider>
-      <h2>Valor flag de App screen: {flag}</h2>
+      {console.log('FLAG DE APP SCREEN ACTIVO: ' + flag)}
       <div className={flag !== -1 ? 'hidden' : 'status-bar-container'}>
         <StatusBar />
       </div>
@@ -38,6 +38,7 @@ const App = () => {
         {flag === -1 && <EnemyGrid changeScreen = {changeScreen} />}
         {flag === 0 && <WelcomeScreen changeScreen = {changeScreen} />}
         {flag === 1 && <Page1 changeScreen = {changeScreen} />}
+        {/* PONER AQUÍ LAS SIGUIENTES PAGINAS DE INSTRUCCIONES */}
       </div>
       <div className={flag !== -1 ? 'hidden' : 'player-platform-container'}>
         <PlayerPlatform />

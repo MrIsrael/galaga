@@ -22,12 +22,16 @@ const EnemyGrid = ({ changeScreen }) => {
   const [flag, setFlag] = useState(false)
   const [lock, setLock] = useState(false)
   const [goOut, setGoOut] = useState(false)
+  const [movementInterval, setMovementInterval] = useState(gameInfo.msInterval)
   let nextScreen = changeScreen
   
   // Emular comportamiento de la lifecycle function componentDidMount(), para disparar generador ininterrumpido de intervalos de tiempo,
   // apenas cargue el componente --> Ejecución constante
   useEffect(() => {
-    setInterval(() => { setFlag(true) }, gameInfo.msInterval)
+    setInterval(() => { 
+      setFlag(true)
+      setMovementInterval(gameInfo.msInterval)
+    }, movementInterval)
     // eslint-disable-next-line
   }, [])
 
@@ -44,10 +48,11 @@ const EnemyGrid = ({ changeScreen }) => {
     setFlag(false)
     setLock(true)
     const levelConfig = EnemyFormations(gameInfo.level)
-    initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2])
+    initializeEnemyFormation(enemyInfo, levelConfig[0], levelConfig[1], levelConfig[2], levelConfig[3])
     initializePlayerPos(playerInfo)
-    console.log(gameInfo.msInterval)
-    console.log(gameInfo.bombProbability)
+    // setMovementInterval(gameInfo.msInterval)
+    console.log('msInterval = ' + gameInfo.msInterval)
+    console.log('bombProbability = ' + gameInfo.bombProbability)
   }
   
   // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida: --> Segunda ejecución, 5 veces

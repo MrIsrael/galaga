@@ -7,18 +7,13 @@
 //  Tambien la cantidad de bombas, con bombProbability.
 
 export const SetDificulty = (currentLevel) => {
-  let newIntervalDuration, newBombProbability, addToScore, newLevel
+  let newIntervalDuration, newBombProbability, addToScore, newLevel, initialMsInterval = 750, initialBombProbability = 48
   addToScore = currentLevel * 1000
   newLevel = currentLevel + 1
+  newIntervalDuration = initialMsInterval - (150 * currentLevel)   // original: (30 * currentLevel)
+  newBombProbability = initialBombProbability - currentLevel
 
-  switch (newLevel) {
-    case 2:
-      newIntervalDuration = 450     // valor original: 950
-      newBombProbability = 25       // valor original: 43
-      break
-    // SEGUIR AQUÍ CON LOS DEMÁS NIVELES
-    default: break
-  }
+// INCLUIR SELECCIÓN DE NIVEL DE DIFICULTAD: BEBITO, NORMAL, BERSERK
 
   return ([newIntervalDuration, newBombProbability, addToScore, newLevel])
 }

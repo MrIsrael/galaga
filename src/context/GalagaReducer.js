@@ -87,8 +87,8 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: true, levelJustStarted: true, 
                                             initialCountdown: 5, timeElapsed: 0, pressedKeyCode: 0, enemiesKilled: 0, enemiesLeft: 0,
-                                            firedBullets: 0, playerWasHit: false, level: 1, lives: 5, score: 0, highScore: 0,
-                                            msInterval: 1000, bombProbability: 45 }
+                                            firedBullets: 0, playerWasHit: false, level: 1, lives: 8, score: 0, highScore: 0,
+                                            msInterval: 950, bombProbability: 48 }
                   }
       }
     default:

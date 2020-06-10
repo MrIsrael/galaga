@@ -11,10 +11,11 @@ const StatusBar = () => {
     <Fragment>
       <div className='status-bar-left'>
         <h4>{gameInfo.isSpanish ? 'Nivel: ' : 'Level: '} {gameInfo.level}</h4>
-        <h4>{gameInfo.isSpanish ? 'Intervalos de tiempo: ' : 'Elapsed intervals: '} {gameInfo.timeElapsed}</h4>
+        <h4>{gameInfo.isSpanish ? 'Conteo de movimientos: ' : 'Elapsed movements: '} {gameInfo.timeElapsed}</h4>
         <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
         <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
-        <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4>
+        <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 950)).toFixed(2)} {'%'}</h4>
+        {/* <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4> */}
       </div>
 
       <div className='status-bar-middle'>
@@ -33,7 +34,8 @@ const StatusBar = () => {
         <h4>{gameInfo.isSpanish ? 'Enemigos restantes: ' : 'Enemies left: '} {gameInfo.enemiesLeft}</h4>
         <h4>{gameInfo.isSpanish ? 'Balas disparadas: ' : 'Fired bullets: '} {gameInfo.firedBullets}</h4>
         <h4>{gameInfo.isSpanish ? 'Vidas restantes: ' : 'Lives remaining: '} {gameInfo.lives}</h4>
-        <h4>{gameInfo.isSpanish ? 'Posición del jugador: ' : 'Player cell: '} {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4>
+        <h4>{gameInfo.isSpanish ? 'Probabilidad de bomba: ' : 'Bomb probability: '} {100 - ((gameInfo.bombProbability * 100) / 50)} {'%'}</h4>
+        {/* <h4>{gameInfo.isSpanish ? 'Posición del jugador: ' : 'Player cell: '} {playerInfo.findIndex(pos => pos.playerHere) + 1}</h4> */}
       </div>
     </Fragment>
   )

@@ -21,10 +21,10 @@ const initialState = {
     enemiesLeft: 0,
     firedBullets: 0,
     playerWasHit: false,
-    bombProbability: 50,      // Valor original: 45  ---  Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
+    bombProbability: 48,      // Valor original: 48  ---  Valor entre 0 y 50: 0 = bombas siempre; 50 = ninguna bomba
     level: 1,
-    msInterval: 500,          // Valor original: 1000
-    lives: 2,                 // Valor original: 5
+    msInterval: 750,          // Valor original: 950
+    lives: 8,                 // Valor original: 8
     score: 0,
     highScore: 0,
   }
@@ -344,9 +344,10 @@ export const GlobalProvider = ({ children }) => {
     })
   }
 
-  function initializeEnemyFormation(enemyArray, Formation1, Formation2, NoEnemyPlaces) {
+  function initializeEnemyFormation(enemyArray, Formation1, Formation2, Formation3, NoEnemyPlaces) {
     setEnemyFormation(enemyArray, Formation1[0], Formation1[1], Formation1[2])
     setEnemyFormation(enemyArray, Formation2[0], Formation2[1], Formation2[2])
+    if (Formation3 !== []) { setEnemyFormation(enemyArray, Formation3[0], Formation3[1], Formation3[2]) }
     setEnemyFormation(enemyArray, ((enemyGridWidth * 10) / 2) + 1, enemyGridWidth * 10, 'none')   // Esta function call siempre es la misma
     setIsolatedNoEnemyPlaces(enemyArray, NoEnemyPlaces)
   }
