@@ -7,7 +7,7 @@ const initialState = {
   enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
                               // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   gameInfo: {
-    buttonText: 'Click here to play',
+    buttonText: 'Loading...',
     mainFrameText: 'READY?',
     isSpanish: false,
     avatar: 1,
@@ -138,7 +138,7 @@ export const GlobalProvider = ({ children }) => {
         }
         break
       case 9:     // Tecla Tab presionada: Pausar / Reanudar el juego
-        pauseGame((state.gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
+        pauseGame((state.gameInfo.isSpanish ? 'Click aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
         // Si el nivel está en curso, pero el juego estaba pausado --> Al presionar Enter se reanuda el nivel, donde iba

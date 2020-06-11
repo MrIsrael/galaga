@@ -50,6 +50,7 @@ const EnemyGrid = ({ changeScreen }) => {
     initializePlayerPos(playerInfo)
     console.log('msInterval = ' + gameInfo.msInterval)
     console.log('bombProbability = ' + gameInfo.bombProbability)
+    console.log('timeElapsed = ' + gameInfo.timeElapsed)
   }
   
   // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida: --> Segunda ejecución, 5 veces

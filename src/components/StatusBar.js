@@ -4,6 +4,9 @@ import logo from '../assets/images/misc/logo.gif'
 import { GlobalContext } from '../context/GalagaState'
 
 // Si aquí se engloba todo el JSX en un tag diferente de <Fragment> (p.ej. <div>), el css grid se daña!
+// Hay que asegurarse que el text input que captura las teclas presionadas por el usuario, tenga su atributo "autoFocus" activo siempre,
+// para que no haya que dar clic en él cada vez que se quiera jugar cuando comience un nivel. Para ello, hay que garantizar que <StatusBar />
+// se recargue siempre en <App />, cuando el juego comience.
 const StatusBar = () => {
   const { gameInfo, playerInfo, startGame, pauseGame, keyCode } = useContext(GlobalContext)
 
@@ -11,8 +14,8 @@ const StatusBar = () => {
     <Fragment>
       <div className='status-bar-left'>
         <h4>{gameInfo.isSpanish ? 'Nivel: ' : 'Level: '} {gameInfo.level}</h4>
-        <h4>{gameInfo.isSpanish ? 'Conteo de movimientos: ' : 'Elapsed movements: '} {gameInfo.timeElapsed}</h4>
-{/* <h4>{gameInfo.isSpanish ? 'Dificultad: ' : 'Difficulty: '} {(gameInfo.difficulty).toUpperCase()}</h4> */}
+        {/* <h4>{gameInfo.isSpanish ? 'Conteo de movimientos: ' : 'Elapsed movements: '} {gameInfo.timeElapsed}</h4> */}
+        <h4>{gameInfo.isSpanish ? 'Dificultad: ' : 'Difficulty: '} {(gameInfo.difficulty).toUpperCase()}</h4>
         <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
         <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
         <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 1000)).toFixed(2)} {'%'}</h4>
@@ -23,10 +26,11 @@ const StatusBar = () => {
         {gameInfo.mainFrameText === '' ? <img src={logo} alt='game-logo' style={logoStyle} />
                                        : <div style={messageStyle}><p style={textStyle}>{gameInfo.mainFrameText}</p></div>}
         <br />
-        <input type='text' readOnly size='35' style={buttonStyle} value={gameInfo.buttonText}
+        <input id={gameInfo.pausedGame ? 'buttonStyle-paused' : 'buttonStyle'}
+              type='text' autoFocus readOnly size='50' style={buttonStyle} value={gameInfo.buttonText}
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
-              onFocus={() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')}
-              onBlur={() => pauseGame((gameInfo.isSpanish ? 'Clic aquí para continuar' : 'Click here to resume'), (gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))}
+              onFocus={() => setTimeout(() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause'), 1500)}
+              onBlur={() => pauseGame((gameInfo.isSpanish ? 'Click aquí para continuar' : 'Click here to resume'), (gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))}
         />
       </div>
 
@@ -65,12 +69,12 @@ const textStyle = {
 
 // Estilos para el textfield ("botón") de inicio / pausa del juego
 const buttonStyle = {
-  fontSize: '12px',
+  fontSize: '18px',
   textAlign: 'center',
   color: 'white',
   backgroundColor: '#686192',
   marginTop: '3px',
-  padding: '10px',
+  padding: '8px',
 }
 
 export default StatusBar

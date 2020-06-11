@@ -8,7 +8,7 @@ const GameOver = ({ changeScreen }) => {
   let nextScreen = changeScreen
 
   function oneMoreTime(screen) {
-    resetState((gameInfo.isSpanish ? 'Clic aquí para jugar' : 'Click here to play'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
+    resetState((gameInfo.isSpanish ? 'Cargando...' : 'Loading...'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
     nextScreen(screen)
   }
 

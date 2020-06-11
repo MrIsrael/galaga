@@ -37,7 +37,7 @@ const App = () => {
     <GlobalProvider>
       {console.log('FLAG DE APP SCREEN ACTIVO: ' + flag)}
       <div className={flag !== -1 ? 'hidden' : 'status-bar-container'}>
-        <StatusBar />
+        {flag === -1 ? <StatusBar /> : <i></i>}
       </div>
       <div className={flag !== -1 ? 'welcome-screen-container' : 'enemy-grid-container'}>
         {flag === -8 && <AboutAndCredits changeScreen = {changeScreen} />}

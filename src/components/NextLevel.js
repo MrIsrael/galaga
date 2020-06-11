@@ -9,7 +9,7 @@ const NextLevel = ({ changeScreen }) => {
   let nextScreen = changeScreen
 
   function backToMainMenu(screen) {
-    resetState((gameInfo.isSpanish ? 'Clic aquí para jugar' : 'Click here to play'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
+    resetState((gameInfo.isSpanish ? 'Cargando...' : 'Loading...'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
     nextScreen(screen)
   }
 
@@ -17,7 +17,7 @@ const NextLevel = ({ changeScreen }) => {
     const nextLvlSettings = SetDifficulty(gameInfo.level, gameInfo.difficulty)
     // Resetear atributos de gameInfo: msInterval (más corto), bombProbability (más alta), score (adición), level (+1), levelJustStarted = true, initialCountdown = 5
     nextLevel(nextLvlSettings[0], nextLvlSettings[1], nextLvlSettings[2], nextLvlSettings[3], true, 5)
-    pauseGame((gameInfo.isSpanish ? 'Clic aquí para jugar' : 'Click here to play'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
+    pauseGame((gameInfo.isSpanish ? 'Cargando...' : 'Loading...'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
     nextScreen(screen)
   }
 

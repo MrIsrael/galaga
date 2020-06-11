@@ -51,6 +51,15 @@ body {
   padding-top: 0px;
 }
 
+#buttonStyle-paused {
+  animation: pausedgame 1s infinite alternate;
+}
+
+@keyframes pausedgame {
+  from {background-color: #686192;}
+  to {background-color: red;}
+}
+
 .player-platform-container {
   display: grid;
   grid-template-columns: 
