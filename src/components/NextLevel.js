@@ -1,19 +1,31 @@
-import React, { Fragment, useContext } from 'react'
-import { SetDifficulty } from '../functions/SetDifficulty'    // Define los valores de level, score, msInterval y bombProbability para el siguiente nivel del juego
+import React, { Fragment, useContext, useEffect } from 'react'
 import success from '../assets/images/misc/success.gif'
 
 import { GlobalContext } from '../context/GalagaState'
+import { AudioLibrary } from '../functions/AudioLibrary'
+import { SetDifficulty } from '../functions/SetDifficulty'    // Define los valores de level, score, msInterval y bombProbability para el siguiente nivel del juego
 
 const NextLevel = ({ changeScreen }) => {
   const { gameInfo, resetState, nextLevel, pauseGame } = useContext(GlobalContext)
   let nextScreen = changeScreen
 
+  useEffect(() => {
+    if (gameInfo.soundsOn) { AudioLibrary('next_level') }
+    // eslint-disable-next-line
+  }, [])
+
   function backToMainMenu(screen) {
+    AudioLibrary('click')
+    if (gameInfo.soundsOn) { 
+      AudioLibrary('any_music_off') 
+      AudioLibrary('jazz_on') 
+    }
     resetState((gameInfo.isSpanish ? 'Cargando...' : 'Loading...'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
     nextScreen(screen)
   }
 
   function goToNextLevel(screen) {
+    AudioLibrary('click')
     const nextLvlSettings = SetDifficulty(gameInfo.level, gameInfo.difficulty)
     // Resetear atributos de gameInfo: msInterval (más corto), bombProbability (más alta), score (adición), level (+1), levelJustStarted = true, initialCountdown = 5
     nextLevel(nextLvlSettings[0], nextLvlSettings[1], nextLvlSettings[2], nextLvlSettings[3], true, 5)

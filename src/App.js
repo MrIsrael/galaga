@@ -27,9 +27,7 @@ const App = () => {
   // flag = -2  --> Select language
   // flag = -1  --> Enemy grid
   // flag = 0   --> Welcome screen
-  // flag = 1   --> Instructions page 1
-  // flag = 2   --> Instructions page 2
-  // flag = 3   --> Instructions page 3
+  // flag = 1   --> Instructions page 1...
 
   const changeScreen = (val) => { setFlag(val) }
 

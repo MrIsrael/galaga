@@ -1,15 +1,16 @@
 import React, { createContext, useReducer } from 'react'
+import { AudioLibrary } from '../functions/AudioLibrary'
 import GalagaReducer from '../context/GalagaReducer'
 
 // Initial state
-const initialState = {
+const initialState = {        // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
+  enemyInfo: [],              // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   playerInfo: [],             // playerArray[i] = { id, playerHere (true, false) }
-  enemyInfo: [],              // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
-                              // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
   gameInfo: {
     buttonText: 'Loading...',
     mainFrameText: 'READY?',
     isSpanish: false,
+    soundsOn: false,
     avatar: 1,
     difficulty: 'trooper',     // Dificultad media, por defecto
     pausedGame: true,
@@ -51,6 +52,13 @@ export const GlobalProvider = ({ children }) => {
     dispatch({
       type: 'CHANGE_LANGUAGE',
       payload: lang
+    })
+  }
+
+  function toggleSoundOnOff(soundEnabled) {
+    dispatch({
+      type: 'TOGGLE_SOUNDS',
+      payload: soundEnabled
     })
   }
 
@@ -139,15 +147,18 @@ export const GlobalProvider = ({ children }) => {
         break
       case 9:     // Tecla Tab presionada: Pausar / Reanudar el juego
         pauseGame((state.gameInfo.isSpanish ? 'Click aquí para continuar' : 'Click here to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))
+        if (state.gameInfo.soundsOn) { AudioLibrary('pauseMusic') }
         break
       case 13:    // Tecla Enter presionada: Pausar / Reanudar el juego
         // Si el nivel está en curso, pero el juego estaba pausado --> Al presionar Enter se reanuda el nivel, donde iba
         if (pausedGame && !state.gameInfo.playerWasHit && state.gameInfo.enemiesLeft !== 0) { 
-          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause') 
+          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o click afuera' : 'Press Enter or click outside to pause') 
+          if (state.gameInfo.soundsOn) { AudioLibrary('continueLevel') }
         }
         // Si el nivel está en curso, y el juego no está pausado --> Al presionar Enter se pausa el nivel
         if (!pausedGame && !state.gameInfo.playerWasHit) { 
           pauseGame((state.gameInfo.isSpanish ? 'Presione Enter para continuar' : 'Press Enter to resume'), (state.gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED')) 
+          if (state.gameInfo.soundsOn) { AudioLibrary('pauseMusic') }
         }
         // Si el jugador fue impactado, perdió una vida, pero aún no es game over --> Al presionar Enter se continúa el nivel, donde iba, retirando las bombas que había
         if (pausedGame && state.gameInfo.playerWasHit) {
@@ -158,7 +169,8 @@ export const GlobalProvider = ({ children }) => {
           // Resetear atributos de gameInfo: levelJustStarted = true, playerWasHit = false, initialCountdown = 5, score = 0, lives--
           continueCurrentLevel(true, false, 5, 0, -1)
           forceMainFrameText(state.gameInfo.isSpanish ? 'LISTO?' : 'READY?')
-          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause')
+          startGame(state.gameInfo.isSpanish ? 'Pause con Enter o click afuera' : 'Press Enter or click outside to pause')
+          if (state.gameInfo.soundsOn) { AudioLibrary('continueLevel') }
         }
         break
       default: break
@@ -295,6 +307,7 @@ export const GlobalProvider = ({ children }) => {
       let enemiesKilled = 0
       let scorePlus = 0
       let addedBullets = 0
+      // if (state.gameInfo.soundsOn) { AudioLibrary('bullet') }
       if (enemyArray[newPosForBullet - 1].type === 'none') {
         addedBullets++
         enemyArray[newPosForBullet - 1].type = 'bullet'
@@ -357,6 +370,7 @@ export const GlobalProvider = ({ children }) => {
     enemyInfo: state.enemyInfo,
     gameInfo: state.gameInfo,
     toggleLanguage,
+    toggleSoundOnOff,
     chooseAvatar,
     chooseDifficulty,
     startGame,

@@ -10,6 +10,11 @@ export default (state, action) => {
         ...state,
         gameInfo: { ...state.gameInfo, ...{ isSpanish: action.payload } }
       }
+    case 'TOGGLE_SOUNDS':
+      return {
+        ...state,
+        gameInfo: { ...state.gameInfo, ...{ soundsOn: action.payload } }
+      }
     case 'CHOOSE_AVATAR':
       return {
         ...state,
@@ -87,7 +92,7 @@ export default (state, action) => {
                                             score: action.score, lives: action.quitOneLife }
                   }
       }
-    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma y avatar seleccionados inicialmente
+    case 'RESET_STATE':                   // Retorno al estado inicial, excepto por el idioma, avatar y modo de audio seleccionados inicialmente
       return {                            // Se ejecuta si el jugador regresa al menú principal, después de un Game Over o un cambio de nivel
         ...state,
         gameInfo: { ...state.gameInfo, ...{ buttonText: action.payload, mainFrameText: action.mainFrameText, pausedGame: true, levelJustStarted: true, 

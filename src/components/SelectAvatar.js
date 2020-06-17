@@ -2,7 +2,9 @@ import React, { Fragment, useContext } from 'react'
 import spaceShip from '../assets/images/avatars/spaceShip.gif'
 import falcon from '../assets/images/avatars/millenium-falcon.gif'
 import ufo from '../assets/images/avatars/ufo.gif'
+
 import { GlobalContext } from '../context/GalagaState'
+import { AudioLibrary } from '../functions/AudioLibrary'
 
 const SelectAvatar = ({ changeScreen }) => {
   const { gameInfo, chooseAvatar } = useContext(GlobalContext)
@@ -10,6 +12,7 @@ const SelectAvatar = ({ changeScreen }) => {
  
   function avatarSelection(avatar) {
     chooseAvatar(avatar)
+    AudioLibrary('click')
     nextScreen(0)
   }
 

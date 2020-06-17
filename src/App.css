@@ -52,7 +52,7 @@ body {
 }
 
 #buttonStyle-paused {
-  animation: pausedgame 1s infinite alternate;
+  animation: pausedgame 0.5s infinite alternate;
 }
 
 @keyframes pausedgame {
@@ -135,6 +135,24 @@ body {
 
 .language-banner { 
   grid-column: 2 / span 2;
+}
+
+.about-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 5px;
+
+  width: 50%;
+  margin: auto;
+  border: dotted 1px #333;
+  padding: 1px;
+  text-align: center;
+}
+
+.about-container > div {
+  vertical-align: middle;
+  border: 1px solid;
+  padding: 3px;
 }
 
 .button {

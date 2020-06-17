@@ -2,7 +2,9 @@ import React, { Fragment, useContext } from 'react'
 import baby from '../assets/images/difficulties/baby.gif'
 import stormtrooper from '../assets/images/difficulties/stormtrooper.gif'
 import berserk from '../assets/images/difficulties/berserk.gif'
+
 import { GlobalContext } from '../context/GalagaState'
+import { AudioLibrary } from '../functions/AudioLibrary'
 
 const SelectDifficulty = ({ changeScreen }) => {
   const { gameInfo, chooseDifficulty } = useContext(GlobalContext)
@@ -10,6 +12,7 @@ const SelectDifficulty = ({ changeScreen }) => {
  
   function diffSelection(diff) {
     chooseDifficulty(diff)
+    AudioLibrary('click')
     nextScreen(0)
   }
 

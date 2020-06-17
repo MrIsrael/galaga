@@ -3,6 +3,7 @@ import spanish from '../assets/images/flags/spain.jpg'
 import english from '../assets/images/flags/UK.png'
 
 import { GlobalContext } from '../context/GalagaState'
+import { AudioLibrary } from '../functions/AudioLibrary'
 
 const SelectLanguage = ({ changeScreen }) => {
   const { toggleLanguage, pauseGame } = useContext(GlobalContext)
@@ -11,6 +12,7 @@ const SelectLanguage = ({ changeScreen }) => {
   function changeLang(lang) {
     toggleLanguage(lang === 'ES' ? true : false)
     pauseGame((lang === 'ES' ? 'Cargando...' : 'Loading...'), (lang === 'ES' ? 'LISTO?' : 'READY?'))
+    AudioLibrary('click')
     nextScreen(0)
   }
 

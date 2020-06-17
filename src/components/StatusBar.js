@@ -18,7 +18,7 @@ const StatusBar = () => {
         <h4>{gameInfo.isSpanish ? 'Dificultad: ' : 'Difficulty: '} {(gameInfo.difficulty).toUpperCase()}</h4>
         <h4>{gameInfo.isSpanish ? 'Mayor puntaje: ' : 'High score: '} {gameInfo.highScore}</h4>
         <h4>{gameInfo.isSpanish ? 'Puntaje: ' : 'Score: '} {gameInfo.score}</h4>
-        <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 1000)).toFixed(2)} {'%'}</h4>
+        <h4>{gameInfo.isSpanish ? 'Velocidad del juego: ' : 'Game speed: '} {(100 - ((gameInfo.msInterval * 100) / 1000)).toFixed(1)} {'%'}</h4>
         {/* <h4>{gameInfo.isSpanish ? 'Tecla presionada: ' : 'Pressed key: '} {gameInfo.pressedKeyCode}</h4> */}
       </div>
 
@@ -29,7 +29,7 @@ const StatusBar = () => {
         <input id={gameInfo.pausedGame ? 'buttonStyle-paused' : 'buttonStyle'}
               type='text' autoFocus readOnly size='50' style={buttonStyle} value={gameInfo.buttonText}
               onKeyDown={(event) => keyCode(event, playerInfo, gameInfo.pausedGame)}
-              onFocus={() => setTimeout(() => startGame(gameInfo.isSpanish ? 'Pause con Enter o clic afuera' : 'Press Enter or click outside to pause'), 1500)}
+              onFocus={() => setTimeout(() => startGame(gameInfo.isSpanish ? 'Pause con Enter o click afuera' : 'Press Enter or click outside to pause'), 1500)}
               onBlur={() => pauseGame((gameInfo.isSpanish ? 'Click aquí para continuar' : 'Click here to resume'), (gameInfo.isSpanish ? 'EN PAUSA' : 'GAME PAUSED'))}
         />
       </div>

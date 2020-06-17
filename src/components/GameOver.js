@@ -1,13 +1,24 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext, useEffect } from 'react'
 import skull from '../assets/images/avatars/skull.gif'
 
 import { GlobalContext } from '../context/GalagaState'
+import { AudioLibrary } from '../functions/AudioLibrary'
 
 const GameOver = ({ changeScreen }) => {
   const { gameInfo, resetState } = useContext(GlobalContext)
   let nextScreen = changeScreen
 
+  useEffect(() => {
+    if (gameInfo.soundsOn) { AudioLibrary('game_over') }
+    // eslint-disable-next-line
+  }, [])
+
   function oneMoreTime(screen) {
+    AudioLibrary('click')
+    if (gameInfo.soundsOn && screen === 0) { 
+      AudioLibrary('any_music_off') 
+      AudioLibrary('jazz_on') 
+    }
     resetState((gameInfo.isSpanish ? 'Cargando...' : 'Loading...'), (gameInfo.isSpanish ? 'LISTO?' : 'READY?'))
     nextScreen(screen)
   }

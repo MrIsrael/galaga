@@ -12,20 +12,12 @@ Enemy grid element types:
 Atributos de gameInfo para cambio de nivel (automáticos): enemiesLeft
 Atributos de gameInfo para cambio de nivel (modificables): pausedGame, levelJustStarted, playerWasHit, buttonText, mainFrameText, lives, level
 Atributos de gameInfo para control de cambios y movimiento (modificables): msInterval, bombProbability, difficulty
-Atributos de gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown
+Atributos de gameInfo para control de cambios y movimiento (automáticos): timeElapsed, initialCountdown, soundsOn
 Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyCode, firedBullets, enemiesKilled, score, highScore, isSpanish, avatar
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 PENDIENTES FASE 3:
-- Definir las formaciones enemigas para los niveles que faltan (hasta el 20, y luego repetir casos).
-- Se puede agregar música de juego de Nintendo? Buscar midi y cómo reproducirlo. También habría un checkbox para
-  silenciar la música (nuevo botón en WelcomeScreen).
-- Poner un sexto botón en WelcomeScreen, que sea un "About / créditos".
-- Buscar sonidos para destrucción de un enemigo, destrucción de un boss, destrucción de la nave del jugador, disparo,
-  pérdida de una vida, comienzo de un nuevo nivel.
-- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
-  screenshots de una partida real junto con el texto explicativo.
 - Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
 - Probar el juego completo varias veces, a ver si se deben poner más vidas, o si la variación de velocidad progresiva del 
   juego y de la cantidad de bombas debería ser más lenta.
@@ -33,6 +25,9 @@ PENDIENTES FASE 3:
   pantalla de portátil. Ocultar también las posiciones de las casillas, y los letreros de "No Enemy".
 - Poner las imágenes y los gifs todos transparentes. No deben quedar fondos blancos.
 - Elegir el background color que tendrá el juego (gris oscuro, no negro).
+- Mirar cómo agregar fuentes al build, y que se preinstalen o muestren en un equipo que no las temga por defecto.
+- Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
+  screenshots de una partida real junto con el texto explicativo.
 
 PENDIENTES FASE 4:
 - Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí.
@@ -118,6 +113,23 @@ YA HECHAS:
 - Incluir selector de dificultad (rookie, trooper, berserker).
 - Agrandar botón de reinicio del juego (morado); intentar habilitar iniciar nivel solo con Enter (también con click).
   Incluir parpadeo de advertencia en el botón, para que el jugador sepa qué hacer si el juego está pausado.
+- Definir las formaciones enemigas para los niveles que faltan (hasta el 12, y luego repetir casos).
+- Poner un sexto botón en WelcomeScreen, que sea un "About / créditos".
+- Se puede agregar música de juego de 8 bits? Buscar midi y cómo reproducirlo. También habría un checkbox para
+  silenciar la música (nuevo botón en WelcomeScreen).
+- Buscar sonidos y efectos para:
+  --> Menú principal y configuración, juego en pausa (jazz)
+  --> Click en un botón
+  --> Comienzo de nivel (lightsabre sound)
+  --> Durante la batalla (techno) --> 13 posibles tracks, reproducidos aleatoriamente
+  --> Movimiento vertical de los aliens
+  --> Disparo de una bala
+  --> Disparo de una bomba
+  --> Explosión de un enemigo o bomba
+  --> Explosión de un boss
+  --> Destrucción de la nave del jugador / pérdida de una vida
+  --> Fin de nivel / pantalla de next level (ceremonia de condecoración)
+  --> Pantalla de game over, antes de volver al welcomescreen (estilo menú de MetalGear)
 
 
 PREGUNTAS:

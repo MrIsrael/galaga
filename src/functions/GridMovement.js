@@ -2,8 +2,9 @@
 // Primero se limpian las explosiones, luego se mueven los enemigos, luego las bombas, luego las balas
 // enemyArray[i] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
 // Enemy types: scarecrow, bane, joker --- theThing, terminator, alienQueen, predator --- bullet --- explosion, bomb --- none
+import { AudioLibrary } from '../functions/AudioLibrary'
 
-export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
+export const GridMovement = (enemyArray, intervalsElapsed, bombProbability, soundsOn) => {
   const enemyGridWidth = 19
   let wasHit = false
   let enemiesKilled = 0
@@ -37,9 +38,10 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
 
   // Si ya había EXPLOSIONES en el tablero, deben volverse espacios vacíos:
   const t4 = enemyArray.filter(alien => alien.type === 'explosion').map(explosion => explosion.position)    // Array con las explosiones que hay actualmente
+  if (soundsOn && (t4.length > 0)) { AudioLibrary('enemy_explosion') }
 
   for (let i=0; i < t4.length; i++) {
-    setNoEnemy(enemyArray, [t4[i]])
+    setNoEnemy(enemyArray, [t4[i]])    
   }
 
   // Movimiento HORIZONTAL de los enemigos:
@@ -55,6 +57,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
                                alien.type !== 'explosion' && alien.type !== 'bomb').map(alien => alien.position)
 
   if (intervalsElapsed % 3 === 0 && intervalsElapsed % 20 !== 0) { //  -->  Movimiento exclusivamente horizontal aleatorio de enemigos, cada 3 intervalos
+    if (soundsOn) { AudioLibrary('horizontal') }
     if (randomMove === 'right') {
       for (let i = t5.length - 1; i >= 0 ; i--) {
         if (t5[i] + 1 >= 191) {         //  -->  El alienígena está en la última casilla del tablero, antes de intentar moverse a la derecha;
@@ -117,6 +120,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
       }
     }
   } else if (intervalsElapsed % 20 === 0) { //  -->  Movimiento exclusivamente vertical de enemigos, cada 20 intervalos
+    if (soundsOn) { AudioLibrary('vertical') }
     for (let i = t5.length - 1; i >= 0 ; i--) {
       if (t5[i] + 19 >= 191) { 
         wasHit = true                       //  -->  Un enemigo impactó al jugador! Se debe restar una vida!
@@ -203,6 +207,7 @@ export const GridMovement = (enemyArray, intervalsElapsed, bombProbability) => {
   const t8 = Math.floor(Math.random() * t7.length)
   if ((Math.random() * 50) > bombProbability) { 
     setEnemy(enemyArray, t7[t8] + 19, 'bomb', 1, 250)
+    if (soundsOn) { AudioLibrary('bomb_launch') }
   }
 
   // Evaluar si la BALA se va a mover fuera del tablero, si va a moverse a un espacio vacío,

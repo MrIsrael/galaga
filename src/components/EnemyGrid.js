@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react'
 import scarecrow from '../assets/images/enemies/enemy1.gif'
-import bane from '../assets/images/enemies/enemy2.gif'
-import joker from '../assets/images/enemies/enemy3.gif'
+import bane from '../assets/images/enemies/enemy3.gif'
+import joker from '../assets/images/enemies/enemy2.gif'
 import theThing from '../assets/images/enemies/boss1.gif'
 import terminator from '../assets/images/enemies/boss2.gif'
 import alienQueen from '../assets/images/enemies/boss3.gif'
@@ -13,6 +13,7 @@ import bomb from '../assets/images/ammo/bomb.gif'
 import { GlobalContext } from '../context/GalagaState'
 import { GridMovement } from '../functions/GridMovement'            // Contiene toda la lógica de movimiento en el tablero enemigo, cálculo de puntaje, vidas restantes, etc
 import { EnemyFormations } from '../functions/EnemyFormations'      // Determina las formaciones enemigas iniciales y demás configuraciones de cada nivel, cuando éste comience
+import { AudioLibrary } from '../functions/AudioLibrary'
 
 const EnemyGrid = ({ changeScreen }) => {
   const { gameInfo, enemyInfo, playerInfo, initializeEnemyFormation, initializePlayerPos, setIntervalsElapsed, 
@@ -22,14 +23,21 @@ const EnemyGrid = ({ changeScreen }) => {
   const [flag, setFlag] = useState(false)
   const [lock, setLock] = useState(false)
   const [goOut, setGoOut] = useState(false)
+  const [playerDown, setPlayerDown] = useState(false)
   let nextScreen = changeScreen
   
   // Emular comportamiento de la lifecycle function componentDidMount(), para disparar generador ininterrumpido de intervalos de tiempo,
   // apenas cargue el componente --> Ejecución constante
   useEffect(() => {
+    if (gameInfo.soundsOn) { 
+      AudioLibrary('any_music_off')
+      AudioLibrary('battleground')
+    }
     let timer = setInterval(() => { setFlag(true) }, gameInfo.msInterval)
-    return () => { clearInterval(timer) }                                     // Cleanup function para el hook useEffect. Emula el comportamiento
-                                                                              // de componentWillUnmount(), para detener correctamente el timer.
+    return () => {                                                            // Cleanup function para el hook useEffect. Emula el comportamiento
+      clearInterval(timer)                                                    // de componentWillUnmount(), para detener correctamente el timer.
+      if (gameInfo.soundsOn) { AudioLibrary('any_music_off') }
+    }
     // eslint-disable-next-line
   }, [])                                                                      // La función cleanup funciona solamente si el 2o parámetro de useEffect es '[]' (vacío)
 
@@ -50,12 +58,12 @@ const EnemyGrid = ({ changeScreen }) => {
     initializePlayerPos(playerInfo)
     console.log('msInterval = ' + gameInfo.msInterval)
     console.log('bombProbability = ' + gameInfo.bombProbability)
-    console.log('timeElapsed = ' + gameInfo.timeElapsed)
   }
   
   // Animación temporizada de inicio de nivel o reanudación del juego después de perder una vida: --> Segunda ejecución, 5 veces
   if (flag && !gameInfo.pausedGame && gameInfo.levelJustStarted) {
     setFlag(false)
+    setPlayerDown(false)
     gameInfo.initialCountdown === 0 ? turnOnMovement() : decreaseCountdown(1)
   }
 
@@ -63,18 +71,23 @@ const EnemyGrid = ({ changeScreen }) => {
   if (flag && !gameInfo.pausedGame && !gameInfo.levelJustStarted && !gameInfo.playerWasHit) {
     setFlag(false)
     setIntervalsElapsed(1)
-    const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed, gameInfo.bombProbability)
+    const updatedGrid = GridMovement(enemyInfo, gameInfo.timeElapsed, gameInfo.bombProbability, gameInfo.soundsOn)
     updateBattleground(updatedGrid[0])                                                            // (enemyArray)
     updateScore(updatedGrid[1], updatedGrid[2], updatedGrid[3])                                   // (wasHit, enemiesKilled, addToScore)
+    // console.log('timeElapsed = ' + gameInfo.timeElapsed)
   }
 
   // Si el jugador es impactado por un alienígena o una bomba: --> Ejecución eventual
-  if (flag && gameInfo.playerWasHit && gameInfo.lives > 0) {
+  if (flag && !playerDown && gameInfo.playerWasHit && gameInfo.lives > 0) {
     setFlag(false)
+    setPlayerDown(true)
     gameInfo.lives === 1 ? pauseGame((gameInfo.isSpanish ? 'Perdiste! Enter para continuar' : 'You lose! Press Enter to continue'), 
                                      (gameInfo.isSpanish ? 'NAVE DESTRUÍDA!' : 'GAME OVER!'))
                          : pauseGame((gameInfo.isSpanish ? 'Nave caída! Enter para continuar' : 'Enemy won! Press Enter to continue'), 
                                      (gameInfo.isSpanish ? 'NAVE IMPACTADA!' : 'PLAYER DOWN!'))
+    if (gameInfo.soundsOn) { AudioLibrary('any_sound_off') }
+    if (gameInfo.soundsOn) { AudioLibrary('player_explosion') }
+    if (gameInfo.soundsOn) { AudioLibrary('pauseMusic') }
   }
 
   // Si todos los enemigos son eliminados y hay cambio de nivel: --> Ejecución eventual
