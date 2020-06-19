@@ -48,15 +48,16 @@ const StatusBar = () => {
 
 // Estilos para la imagen del logo del juego
 const logoStyle = {
-  maxHeight: '102px',
-  padding: '0px',
-  paddingTop: '15px',         // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
+  // maxHeight: '102px',
+  height: '87px',
+  paddingBottom: '15px',
+  paddingTop: '15px',           // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
 }
 
 // Estilos para el textfield de sucesos del juego (pausado, cambio de nivel, etc)
 const messageStyle = {
   margin: 'auto',
-  marginTop: '15px',          // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
+  marginTop: '15px',            // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
   height: '75px',
   border: '3px dotted',
   maxWidth: '170px',
@@ -72,9 +73,9 @@ const buttonStyle = {
   fontSize: '18px',
   textAlign: 'center',
   color: 'white',
-  backgroundColor: '#686192',
-  marginTop: '3px',
-  padding: '8px',
+  backgroundColor: '#7d7d7d',   // rgb(125, 125, 125)
+  marginTop: '3px',             // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
+  padding: '6px',               // Modificar esta propiedad si se cambia el número de datos a mostrar en la Status Bar
 }
 
 export default StatusBar

@@ -13,6 +13,9 @@ const Page1 = ({ changeScreen }) => {
     nextScreen(screenToGo)
   }
 
+  // RESOLUCIÓN MÍNIMA: 1210 x 664 píxeles
+  // Sólo se puede jugar en un PC o Mac, con teclado y/o ratón. No es posible controlar el juego desde dispositivos móviles.
+
   return (
     <Fragment>
       <div><img src={test} alt='inst_page_1' style={instStyle} /></div>
@@ -21,9 +24,9 @@ const Page1 = ({ changeScreen }) => {
         <p>{gameInfo.isSpanish ? 'Esta es la primera página de instrucciones. Cambiar la imagen.' 
                                : "This is the first instructions page. Don't forget to change image"}</p>
       </div>
-      <div><button className='button' onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'Atrás' : 'Back'}</button></div>
+      <div><button className='button' onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'ATRÁS' : 'BACK'}</button></div>
       <div></div>
-      <div><button className='button' onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'Siguiente' : 'Next'}</button></div>
+      <div><button className='button' onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'SIGUIENTE' : 'NEXT'}</button></div>
     </Fragment>
   )
 }

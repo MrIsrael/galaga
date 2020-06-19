@@ -66,7 +66,7 @@ export default (state, action) => {
         enemyInfo: action.payload,
         gameInfo: { ...state.gameInfo, ...{ enemiesLeft: action.payload.filter(alien => alien.type !== 'none' && 
                                                                                         alien.type !== 'bullet' &&
-                                                                                        alien.type !== 'explosion').length,     // valor inicial = 79
+                                                                                        alien.type !== 'explosion').length,
                                             firedBullets: action.firedBullets }
                   }
       }

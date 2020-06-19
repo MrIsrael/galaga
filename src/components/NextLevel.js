@@ -37,7 +37,7 @@ const NextLevel = ({ changeScreen }) => {
     <Fragment>
       <div><img src={success} alt='death' style={nlvlStyle} /></div>
       <div className='language-banner'>
-        <h1 style={textStyle}>{gameInfo.isSpanish ? 'NIVEL COMPLETADO!' : 'LEVEL COMPLETED!'}</h1>
+        <h1 className='game-name-style' style={textStyle}>{gameInfo.isSpanish ? 'NIVEL COMPLETADO!' : 'LEVEL COMPLETED!'}</h1>
         <h3 style={textStyle}>{gameInfo.isSpanish ? 'Todos los aliens fueron destruidos...' : 'All enemies wiped out...'}</h3>
         <h3 style={textStyle}>{gameInfo.isSpanish ? 'Bien hecho!' : 'Well done!'}</h3>
         <p>{gameInfo.isSpanish ? 'Siguiente nivel: ' : 'Next level: '} {gameInfo.level + 1}</p>

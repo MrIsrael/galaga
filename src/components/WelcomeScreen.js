@@ -17,7 +17,7 @@ const WelcomeScreen = ({ changeScreen }) => {
     <Fragment>
       <div className='welcome-screen-banner'>
         <img src={logo} alt='game-logo' style={logoStyle} />
-        <h1>{gameInfo.isSpanish ? 'BIENVENIDO A GALAGA!' : 'WELCOME TO GALAGA!'}</h1>
+        <h1 className='game-name-style'>{gameInfo.isSpanish ? 'BIENVENIDO A GALAGA!' : 'WELCOME TO GALAGA!'}</h1>
         <button className='button' autoFocus onClick={() => nextScreen(-1)}>{gameInfo.isSpanish ? 'COMENZAR JUEGO' : 'START GAME'}</button>
       </div>
       <div><button className='button' onClick={() => moveTo(1)}>{gameInfo.isSpanish ? 'INSTRUCCIONES DEL JUEGO' : 'GAME INSTRUCTIONS'}</button></div>

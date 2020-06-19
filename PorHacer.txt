@@ -18,19 +18,15 @@ Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyC
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 PENDIENTES FASE 3:
-- Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
-- Probar el juego completo varias veces, a ver si se deben poner más vidas, o si la variación de velocidad progresiva del 
-  juego y de la cantidad de bombas debería ser más lenta.
-- Ajustar el padding y fontsize de la StatusBar, para hacer más pequeño el tablero de juego y que se vea completo en una 
-  pantalla de portátil. Ocultar también las posiciones de las casillas, y los letreros de "No Enemy".
 - Poner las imágenes y los gifs todos transparentes. No deben quedar fondos blancos.
-- Elegir el background color que tendrá el juego (gris oscuro, no negro).
-- Mirar cómo agregar fuentes al build, y que se preinstalen o muestren en un equipo que no las temga por defecto.
+- Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
   screenshots de una partida real junto con el texto explicativo.
 
 PENDIENTES FASE 4:
-- Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí.
+- Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí. 
+  Avisarle a los testers para que prueben la app!
+- Liberar el repositorio en GitHub, para que el código quede público.
 - Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 
@@ -130,7 +126,13 @@ YA HECHAS:
   --> Destrucción de la nave del jugador / pérdida de una vida
   --> Fin de nivel / pantalla de next level (ceremonia de condecoración)
   --> Pantalla de game over, antes de volver al welcomescreen (estilo menú de MetalGear)
-
+- Mirar cómo agregar fuentes al build, y que se preinstalen o muestren en un equipo que no las tenga por defecto.
+- Probar el juego completo varias veces, a ver si se deben poner más vidas, o si la variación de velocidad progresiva del 
+  juego y de la cantidad de bombas debería ser más lenta.
+  - Elegir el background color que tendrá el juego (gris oscuro, no negro).
+- Ajustar el padding y fontsize de la StatusBar, para hacer más pequeño el tablero de juego y que se vea completo en una 
+  pantalla de portátil. Ocultar también las posiciones de las casillas, y los letreros de "No Enemy".
+  
 
 PREGUNTAS:
 - Cómo se enlazan propiedades css a una imagen insertada en un componente en React? Que tome las propiedades definidas

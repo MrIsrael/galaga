@@ -102,7 +102,8 @@ const EnemyGrid = ({ changeScreen }) => {
       {enemyInfo.map(alien => <div className='enemy' key={alien.id}>
                                 {/* alien.id */}
                                 {alien.type === 'bullet' && <img src={bullet} alt='bullet' style={alienStyle} />}
-                                {alien.type === 'none' && <div style={emptyAlienStyle}>NO ENEMY</div>}
+                                {alien.type === 'none' && <div style={alienStyle}></div>}
+                                {/* alien.type === 'none' && <div style={emptyAlienStyle}>NO ENEMY</div> */}
                                 {alien.type === 'explosion' && <img src={explosion} alt='explosion' style={alienStyle} />}
                                 {alien.type === 'bomb' && <img src={bomb} alt='bomb' style={alienStyle} />}
                                 {alien.type === 'scarecrow' && <div id={!gameInfo.pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
@@ -119,7 +120,6 @@ const EnemyGrid = ({ changeScreen }) => {
                                                                   <img src={alienQueen} alt='alien' style={alienStyle} /></div>}
                                 {alien.type === 'predator' && <div id={!gameInfo.pausedGame ? 'enemydiv' : 'enemydiv-paused'}>
                                                                   <img src={predator} alt='alien' style={alienStyle} /></div>}
-                                {alien.position}
                                 {/* alien.position */}
                               </div>
                     )}
@@ -132,16 +132,16 @@ const alienStyle = {
   maxWidth: '33px',
   minHeight: '35px',
   maxHeight: '35px',
-  padding: '1px',
+  // padding: '1px',
 }
 
-const emptyAlienStyle = {
+/* const emptyAlienStyle = {
   margin: 'auto',
   maxWidth: '33px',
   minHeight: '35px',
   maxHeight: '35px',
   paddingTop: '2px',
   backgroundColor: '#ccc',
-}
+} */
 
 export default EnemyGrid

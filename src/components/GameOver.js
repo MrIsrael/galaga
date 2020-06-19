@@ -27,7 +27,7 @@ const GameOver = ({ changeScreen }) => {
     <Fragment>
       <div><img src={skull} alt='death' style={koStyle} /></div>
       <div className='language-banner'>
-        <h1 style={textStyle}>{gameInfo.isSpanish ? 'FIN DEL JUEGO!' : 'GAME OVER!'}</h1>
+        <h1 className='game-name-style' style={textStyle}>{gameInfo.isSpanish ? 'FIN DEL JUEGO!' : 'GAME OVER!'}</h1>
         <h3 style={textStyle}>{gameInfo.isSpanish ? 'Estadísticas del jugador:' : 'Game statistics:'}</h3>
         <p>{gameInfo.isSpanish ? 'Dificultad elegida: ' : 'Chosen difficulty: '} {(gameInfo.difficulty).toUpperCase()}</p>
         <p>{gameInfo.isSpanish ? 'Puntaje máximo: ' : 'High score: '} {gameInfo.highScore}</p>

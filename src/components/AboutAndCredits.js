@@ -23,11 +23,11 @@ const AboutAndCredits = ({ changeScreen }) => {
     <Fragment>
       <div><button className='button' autoFocus onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'VOLVER' : 'RETURN'}</button></div>
       <div className='welcome-screen-banner'>
-        <h1>GALAGA</h1>
-        <p style={{marginBottom: '45px'}}>{gameInfo.isSpanish ? 'versión 1.0' : 'version 1.0'}</p>
+        <h1 className='game-name-style'>GALAGA</h1>
+        <p style={{marginBottom: '45px'}}>{gameInfo.isSpanish ? 'versión 1.0.0' : 'version 1.0.0'}</p>
 
-        <p>{gameInfo.isSpanish ? 'Diseño conceptual y programación:' : 'Concept, design and programming:'}</p>
-        <h3 style={{marginBottom: '45px'}}>Israel Uribe Salazar</h3>
+        <p>{gameInfo.isSpanish ? 'Idea original, diseño y programación:' : 'Concept, design and programming:'}</p>
+        <h2 style={{marginBottom: '45px'}}>Israel Uribe Salazar</h2>
 
         <div className='about-container'>
           <div><img src={linkedin} alt='linkedin' width='100' height='43' /></div>
@@ -55,22 +55,22 @@ const AboutAndCredits = ({ changeScreen }) => {
 
         <div className='about-container'>
           <div><img src={js} alt='js' width='100' height='43' /></div>
-          <div style={{paddingTop: '20px'}}>JavaScript (ES6)</div>
+          <div style={{paddingTop: '17px'}}>JavaScript (ES6)</div>
           
           <div><img src={react} alt='react' width='100' height='43' /></div>
-          <div style={{paddingTop: '20px'}}>React Hooks + Context</div>
+          <div style={{paddingTop: '17px'}}>React Hooks + Context</div>
 
           <div><img src={css} alt='css' width='100' height='43' /></div>
-          <div style={{paddingTop: '20px'}}>CSS grid & animations</div>
+          <div style={{paddingTop: '17px'}}>CSS grid + animations</div>
         </div>
 
-        <p style={{marginTop: '45px'}}>{gameInfo.isSpanish ? 'Asesoría artística y edición de imágenes:' : 'Artistic consulting and image editing:'}</p>
-        <h3 style={{marginBottom: '45px'}}>Carmen Lucía Alvarez Palma</h3>
+        <p style={{marginTop: '45px'}}>{gameInfo.isSpanish ? 'Asesoría artística y edición de imágenes:' : 'Style consulting and image editing:'}</p>
+        <h2 style={{marginBottom: '45px'}}>Carmen Lucía Alvarez Palma</h2>
 
         <p>Testers:</p>
-        <h3>Mauricio Serna Castaño</h3>
-        <h3>Martina Serna Hoyos</h3>
-        <h3>Simón Serna Hoyos</h3>
+        <h2>Mauricio Serna Castaño</h2>
+        <h2>Martina Serna Hoyos</h2>
+        <h2>Simón Serna Hoyos</h2>
       </div>
     </Fragment>
   )
