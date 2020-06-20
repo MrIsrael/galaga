@@ -1,4 +1,5 @@
 CONSTANTES DEL JUEGO:
+
 playerInfo[19] = { id, playerHere (true, false) }
 enemyInfo[190] = { id, position, type ('joker'..., 'bullet', 'none'), remainingShots, scoreIfDestroyed }
 Enemy grid element types:
@@ -6,6 +7,7 @@ Enemy grid element types:
   BOSSES: theThing, terminator, alienQueen, predator
   AMMO: bullet, bomb
   OTHERS: explosion, none
+
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
@@ -17,14 +19,9 @@ Atributos de gameInfo solo para mostrar en StatusBar (automáticos): pressedKeyC
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
-PENDIENTES FASE 3:
-- Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
 
 PENDIENTES FASE 4:
-- Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí. 
-  Avisarle a los testers para que prueben la app!
-- Liberar el repositorio en GitHub, para que el código quede público.
-- Intentar correr la aplicación y crear un build exitoso configurando Webpack desde cero, sin usar 'npm create-react-app'.
+- Crear un build exitoso configurando Webpack desde cero.
 - Empaquetar el build con Electron, a ver si el juego corre como aplicación de escritorio.
 
 
@@ -132,7 +129,11 @@ YA HECHAS:
 - Poner las imágenes y los gifs todos transparentes. No deben quedar fondos blancos.
 - Incluir un tutorial con las instrucciones de juego: Un link que abra un modal, o un popup con el texto. Poner 
   screenshots de una partida real junto con el texto explicativo.
-    
+- Modificar favicon y archivo Readme.md (quitar referencias a create-react-app)
+- Al final subir el build a Firebase, Netlify o Synology NAS, a ver si corren desde allí. 
+  Avisarle a los testers para que prueben la app!
+- Liberar el repositorio en GitHub, para que el código quede público.
+
 
 PREGUNTAS:
 - Cómo se enlazan propiedades css a una imagen insertada en un componente en React? Que tome las propiedades definidas
