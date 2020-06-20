@@ -22,7 +22,7 @@ const AboutAndCredits = ({ changeScreen }) => {
   return (
     <Fragment>
       <div><button className='button' autoFocus onClick={() => moveTo(0)}>{gameInfo.isSpanish ? 'VOLVER' : 'RETURN'}</button></div>
-      <div className='welcome-screen-banner'>
+      <div className='welcome-screen-banner' style={{marginBottom: '60px'}}>
         <h1 className='game-name-style'>GALAGA</h1>
         <p style={{marginBottom: '45px'}}>{gameInfo.isSpanish ? 'versión 1.0.0' : 'version 1.0.0'}</p>
 

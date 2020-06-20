@@ -19,18 +19,22 @@ import enemy_explosion from '../assets/audio/GridMovement/enemy_explosion.mp3'
 let music, pauseMusic, sound
 
 export const AudioLibrary = (whichSound) => {
+  const effectsVolume = 0.25            // Los efectos de audio sonarán al 25% de su volumen original. Al volumen máximo, aturdirían.
 
   switch (whichSound) {
     case 'click':
       sound = new Audio(click_sound)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'bullet':
       sound = new Audio(bullet)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'horizontal':
       sound = new Audio(horizontal)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'vertical':
@@ -39,14 +43,17 @@ export const AudioLibrary = (whichSound) => {
       break
     case 'bomb_launch':
       sound = new Audio(bomb_launch)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'player_explosion':
       sound = new Audio(player_explosion)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'enemy_explosion':
       sound = new Audio(enemy_explosion)
+      sound.volume = effectsVolume
       sound.play()
       break
     case 'any_sound_off':

@@ -139,6 +139,10 @@ body {
   display: inline;
 }
 
+.welcome-screen-banner > p { 
+  font-size: 17px;
+}
+
 .language-banner { 
   grid-column: 2 / span 2;
 }
@@ -180,7 +184,7 @@ body {
 }
 
 .button:hover {
-	background-color: rgb(142, 140, 125);
+	background-color: rgb(240, 240, 240);
   color: rgb(50, 50, 50);
 }
 

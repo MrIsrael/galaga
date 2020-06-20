@@ -1,5 +1,5 @@
 import React, { Fragment, useContext } from 'react'
-import spanish from '../assets/images/flags/spain.jpg'
+import spanish from '../assets/images/flags/spain.png'
 import english from '../assets/images/flags/UK.png'
 
 import { GlobalContext } from '../context/GalagaState'

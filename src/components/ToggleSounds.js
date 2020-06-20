@@ -22,12 +22,12 @@ const ToggleSounds = ({ changeScreen }) => {
       <div><img src={sound_on} alt='sound_on' style={audioStyle} /></div>
       <div className='language-banner'>
         <button className='button' style={btnStyle} autoFocus onClick={() => enableAudio(true)}>
-            {gameInfo.isSpanish ? 'HABILITAR MÚSICA' : 'ENABLE MUSIC'}</button>
+            {gameInfo.isSpanish ? 'HABILITAR MÚSICA Y EFECTOS' : 'ENABLE MUSIC AND EFFECTS'}</button>
       </div>
       <div><img src={sound_off} alt='sound_off' style={audioStyle} /></div>
       <div className='language-banner'>
         <button className='button' style={btnStyle} onClick={() => enableAudio(false)}>
-            {gameInfo.isSpanish ? 'MÚSICA SILENCIADA' : 'MUTE MUSIC'}</button>
+            {gameInfo.isSpanish ? 'SILENCIAR TODO AUDIO' : 'MUTE ALL AUDIO SOURCES'}</button>
       </div>
     </Fragment>
   )
